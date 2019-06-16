@@ -136,7 +136,358 @@ public class branchtwo implements ActionListener
 	System.out.println("Message: " + ex.getMessage());
 	System.exit(-1);
       }
+	}
+	
+	// job site methods
+
+	/*
+     * lists tables in DB
+     */ 
+    private void checkTables()
+    {
+	
+	PreparedStatement  ps;
+	  
+	try
+	{
+		// disable auto commit mode
+		con.setAutoCommit(false);
+
+		ps = con.prepareStatement("select table_name from user_tables");
+		ResultSet rs = ps.executeQuery();
+		while(rs.next())
+	  {
+		System.out.println(rs.getString("table_name"));
+	  }
+		
+	  con.commit();
+
+	  ps.close();
+	}
+	catch (SQLException ex)
+	{
+	    System.out.println("Message: " + ex.getMessage());
+
+            try 
+	    {
+		con.rollback();	
+	    }
+	    catch (SQLException ex2)
+	    {
+		System.out.println("Message: " + ex2.getMessage());
+		System.exit(-1);
+	    }
+	}
+	}
+	
+	public void dropTable(String tableName){
+		{
+	
+		PreparedStatement  ps;
+			
+		try
+		{
+			// disable auto commit mode
+			con.setAutoCommit(false);
+	
+			ps = con.prepareStatement("DROP TABLE ?");
+			ps.setString(1,tableName);
+			ps.executeUpdate();
+			
+			con.commit();
+	
+			ps.close();
+		}
+		catch (SQLException ex)
+		{
+			System.out.println("Message: " + ex.getMessage());
+	
+				try 
+			{
+			con.rollback();	
+			}
+			catch (SQLException ex2)
+			{
+			System.out.println("Message: " + ex2.getMessage());
+			System.exit(-1);
+			}
+		}
+		}
+	}
+
+	/*
+     * deletes all tables in DB
+     */ 
+    private void clearAllTables()
+    {
+	
+	PreparedStatement  ps;
+	  
+	try
+	{
+		// disable auto commit mode
+		con.setAutoCommit(false);
+
+		ps = con.prepareStatement("select table_name from user_tables");
+		ResultSet rs = ps.executeQuery();
+		String s;
+		while(rs.next())
+		{
+			s = rs.getString("table_name");
+			System.out.println("Drop Table? y/n " + s);
+			String choice = in.readLine();
+			if (choice == "y"){
+				dropTable(s);
+			}
+			
+		}
+		
+	  con.commit();
+
+	  ps.close();
+	}
+	catch (IOException e)
+		{
+			System.out.println("IOException!");
+	
+			try
+			{
+			con.close();
+			System.exit(-1);
+			}
+			catch (SQLException ex)
+			{
+			 System.out.println("Message: " + ex.getMessage());
+			}
+		}
+	catch (SQLException ex)
+	{
+	    System.out.println("Message: " + ex.getMessage());
+
+            try 
+	    {
+		con.rollback();	
+	    }
+	    catch (SQLException ex2)
+	    {
+		System.out.println("Message: " + ex2.getMessage());
+		System.exit(-1);
+	    }
+	}
     }
+
+
+	/*
+     * creates and populates account table
+     */ 
+    private void getAccount(int accountId)
+    {
+	
+	PreparedStatement  ps;
+	  
+	try
+	{
+		// disable auto commit mode
+		con.setAutoCommit(false);
+
+		ps = con.prepareStatement("select * from Account WHERE accountId = ?");
+		ps.setInt(2, accountId);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next())
+	  {
+		System.out.println(rs.getString("accountId"));
+		System.out.println(rs.getString("name"));
+		System.out.println(rs.getString("email"));
+		System.out.println(rs.getString("postalCode"));
+	  }
+		
+	  con.commit();
+
+	  ps.close();
+	}
+	catch (SQLException ex)
+	{
+	    System.out.println("Message: " + ex.getMessage());
+
+            try 
+	    {
+		con.rollback();	
+	    }
+	    catch (SQLException ex2)
+	    {
+		System.out.println("Message: " + ex2.getMessage());
+		System.exit(-1);
+	    }
+	}
+    }
+	/*
+     * creates and populates tables
+     */ 
+    private void createTablesJobSite()
+    {
+	
+	PreparedStatement  ps;
+	  
+	try
+	{
+		// disable auto commit mode
+		con.setAutoCommit(false);
+	  
+		System.out.println("Add Table CountryLanguage? y/n ");
+		String choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE "+
+			"CountryLanguage "+
+			"(country char(30) PRIMARY KEY,"+
+			"primaryLanguage char(30))");
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+
+		System.out.println("Add Table City? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE City "+
+			"(cityName char(30), state char(30), country char(30), population int,"+
+			"PRIMARY KEY (cityName, state),"+
+			"FOREIGN KEY (country) REFERENCES CountryLanguage(country))");
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+		System.out.println("Add Table PostalCode? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE "+
+			"PostalCode "+
+			"(postalCode char(10), cityName char(30) not null, state char(30) not null, "+
+			"PRIMARY KEY (postalCode)," +
+			"FOREIGN KEY (cityName, state) REFERENCES City(cityName, state))");
+
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+		
+		System.out.println("Add Table PostalCode? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE Account "+
+			"(accountId int, name char(30), email char(30), postalCode char(10) not null, "+
+			"PRIMARY KEY (accountId),"+
+			"FOREIGN KEY (postalCode) references PostalCode(postalCode))");
+
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+		ps = con.prepareStatement("");
+		ps.close();
+		
+	}
+	catch (IOException e)
+		{
+			System.out.println("IOException!");
+	
+			try
+			{
+			con.close();
+			System.exit(-1);
+			}
+			catch (SQLException ex)
+			{
+			 System.out.println("Message: " + ex.getMessage());
+			}
+		}
+	catch (SQLException ex)
+	{
+	    System.out.println("Message: " + ex.getMessage());
+
+            try 
+	    {
+		con.rollback();	
+	    }
+	    catch (SQLException ex2)
+	    {
+		System.out.println("Message: " + ex2.getMessage());
+		System.exit(-1);
+	    }
+	}
+	}
+
+	/*
+     * populates tables
+     */ 
+    private void populateTablesJobSite()
+    {
+	
+	PreparedStatement  ps;
+	  
+	try
+	{
+		// disable auto commit mode
+		con.setAutoCommit(false);
+
+		String query = "INSERT INTO CountryLanguage (country, primaryLanguage) VALUES (?, ?)";
+		ps = con.prepareStatement(query); 
+		ps.setString(1, "Canada");
+		ps.setString(2, "English");
+		ps.addBatch();
+		ps.setString(1, "USA");
+		ps.setString(2, "English");
+		ps.addBatch();
+		ps.setString(1, "Mexico");
+		ps.setString(2, "Spanish");
+		ps.addBatch();
+		
+		ps.executeBatch();
+		con.commit();
+
+		query = "INSERT INTO City (cityName, state, country, population) VALUES (?, ?, ?, ?)";
+		ps = con.prepareStatement(query); 
+		ps.setString(1, "Vancouver");
+		ps.setString(2, "BC");
+		ps.setString(3, "Canada");
+		ps.setInt(4, 650000);
+		ps.addBatch();
+		ps.setString(1, "San Francisco");
+		ps.setString(2, "CA");
+		ps.setString(3, "USA");
+		ps.setInt(4, 1200000);
+		ps.addBatch();
+		ps.setString(1, "Toronto");
+		ps.setString(2, "ON");
+		ps.setString(3, "Canada");
+		ps.setInt(4, 1700000);
+		ps.addBatch();
+		ps.setString(1, "Mexico City");
+		ps.setString(2, "Mexico");
+		ps.setString(3, "Mexico");
+		ps.setInt(4, 8900000);
+		ps.addBatch();
+		
+		ps.executeBatch();
+		con.commit();
+
+		ps.close();
+	}
+	catch (SQLException ex)
+	{
+	    System.out.println("Message: " + ex.getMessage());
+
+            try 
+	    {
+		con.rollback();	
+	    }
+	    catch (SQLException ex2)
+	    {
+		System.out.println("Message: " + ex2.getMessage());
+		System.exit(-1);
+	    }
+	}
+	}
+	
+
+
+
+
 
 	private  String dispatch(Map<String, String> queryParams, String[] urlPath){
         String response= "";
@@ -224,7 +575,8 @@ public class branchtwo implements ActionListener
 	  // if the username and password are valid, 
 	  // remove the login window and display a text menu 
 	  mainFrame.dispose();
-		  showMenu();     
+		showMenu();
+		    
 	}
 	else
 	{
@@ -250,93 +602,107 @@ public class branchtwo implements ActionListener
      */ 
     private void showMenu() 
     {
-
-		try
-	    {
-			welcomeSocket = new ServerSocket(6789);
-	    }
-	    catch (Exception ex)
-	    {
-		 System.out.println("Message: " + ex.getMessage());
-		 System.exit(0);
-	    }
+		int choice;
+		boolean quit;
 	
-
-	int choice;
-	boolean quit;
-
-	quit = false;
+		quit = false;
+		
+		try 
+		{
+			// disable auto commit mode
+			con.setAutoCommit(false);
 	
-	try 
-	{
-	    // disable auto commit mode
-	    con.setAutoCommit(false);
-	    while (!quit) {
-  try{
-   Socket connectionSocket = welcomeSocket.accept();
-   BufferedReader inFromClient =
-    new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-   DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-   String urlPath;
-   URL requestURL;
-   String[] parsedPath = new String[]{""};
-   Map<String, String> urlParams = new HashMap<String, String>();
-   while (inFromClient.ready() && (inFromClient.read(clientSentence, 0, 10000) != -1)) {
-        urlPath = new String(clientSentence).split(" ", 3)[1];
+			while (!quit)
+			{
+			System.out.print("\n\nPlease choose one of the following: \n");
+			System.out.print("1.  list tables\n");
+			System.out.print("2.  create job site tables\n");
+			System.out.print("3.  populate job site tables\n");
+			System.out.print("4.  Run the server\n");
+			System.out.print("5.  Quit\n>> ");
+	
+			choice = Integer.parseInt(in.readLine());
+			
+			System.out.println(" ");
+	
+			switch(choice)
+			{
+			   case 1:  checkTables(); break;
+			   case 2:  createTablesJobSite(); break;
+			   case 3:  populateTablesJobSite(); break;
+			   case 4:  runServer(); break;
+			   case 5:  quit = true;
+			}
+			}
+	
+			con.close();
+			in.close();
+			System.out.println("\nGood Bye!\n\n");
+			System.exit(0);
+		}
+		catch (IOException e)
+		{
+			System.out.println("IOException!");
+	
+			try
+			{
+			con.close();
+			System.exit(-1);
+			}
+			catch (SQLException ex)
+			{
+			 System.out.println("Message: " + ex.getMessage());
+			}
+		}
+		catch (SQLException ex)
+		{
+			System.out.println("Message: " + ex.getMessage());
+		}
+		}
 
-        requestURL = new URL("http://localhost:6789"+urlPath);
-        parsedPath = requestURL.getPath().split("/");
-        
-        urlParams = getQueryMap(requestURL.getQuery());
-        System.out.println(urlParams);
+	public int runServer(){
+	try{
+		welcomeSocket = new ServerSocket(6789);
+		Socket connectionSocket = welcomeSocket.accept();
+		BufferedReader inFromClient =
+			new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+		DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+		String urlPath;
+		URL requestURL;
+		String[] parsedPath = new String[]{""};
+		Map<String, String> urlParams = new HashMap<String, String>();
+		while (inFromClient.ready() && (inFromClient.read(clientSentence, 0, 10000) != -1)) {
+				urlPath = new String(clientSentence).split(" ", 3)[1];
 
-   }
-   
-   String response = dispatch(urlParams, parsedPath);
-   PrintWriter pw = new PrintWriter(outToClient);
-   		pw.print("HTTP/1.1 200 \r\n"); // Version & status code
-        pw.print("Content-Type: application/json\r\n"); // The type of data
-        pw.print("Access-Control-Allow-Origin: *\r\n");
-        pw.print("X-Content-Type-Options: nosniff\r\n");
-        pw.print("Access-Control-Allow-Headers: *\r\n");
-        pw.print("Allow: OPTIONS, GET, HEAD, POST\r\n");
-        pw.print("Connection: close\r\n"); // Will close stream
-        pw.print("\r\n"); // End of headers
-		pw.println(response);
-		pw.println("test");
-		pw.flush();
-		pw.close();	
-   // fetch('http://localhost:6789/path/?params').then((res) => res.json()).then(data => console.log(data)).catch(err => console.error(err));
-   }catch(Exception e){
-	   System.out.println(e);
-	   quit=true;
-   }
-  }
+				requestURL = new URL("http://localhost:6789"+urlPath);
+				parsedPath = requestURL.getPath().split("/");
+				
+				urlParams = getQueryMap(requestURL.getQuery());
+				System.out.println(urlParams);
 
-	    con.close();
-            in.close();
-	    System.out.println("\nGood Bye!\n\n");
-	    System.exit(0);
+		}
+		
+		String response = dispatch(urlParams, parsedPath);
+		PrintWriter pw = new PrintWriter(outToClient);
+				pw.print("HTTP/1.1 200 \r\n"); // Version & status code
+				pw.print("Content-Type: application/json\r\n"); // The type of data
+				pw.print("Access-Control-Allow-Origin: *\r\n");
+				pw.print("X-Content-Type-Options: nosniff\r\n");
+				pw.print("Access-Control-Allow-Headers: *\r\n");
+				pw.print("Allow: OPTIONS, GET, HEAD, POST\r\n");
+				pw.print("Connection: close\r\n"); // Will close stream
+				pw.print("\r\n"); // End of headers
+				pw.println(response);
+				pw.println("test");
+				pw.flush();
+				pw.close();	
+				return 0;
+		// fetch('http://localhost:6789/path/?params').then((res) => res.json()).then(data => console.log(data)).catch(err => console.error(err));
+		}catch(Exception e){
+			System.out.println(e);
+			return 1;
+		}
 	}
-	catch (IOException e)
-	{
-	    System.out.println("IOException!");
-
-	    try
-	    {
-		con.close();
-		System.exit(-1);
-	    }
-	    catch (SQLException ex)
-	    {
-		 System.out.println("Message: " + ex.getMessage());
-	    }
-	}
-	catch (SQLException ex)
-	{
-	    System.out.println("Message: " + ex.getMessage());
-	}
-    }
 
 
     /*
