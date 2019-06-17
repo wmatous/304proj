@@ -275,48 +275,84 @@ public class branchtwo implements ActionListener
 
 
 	/*
-     * creates and populates account table
+     * retrieves endorsement count for account
      */ 
-    private void getAccount(int accountId)
+    private String getAccountEndorsements(int accountId)
     {
-	
-	PreparedStatement  ps;
+		PreparedStatement ps = con.createStatement("SELECT COUNT(*) as count FROM Endorses WHERE endorsedId = ?");
+		ps.setInt(1, accountId);
+		return getRecordsAsJSON(ps);
 	  
-	try
-	{
-		// disable auto commit mode
-		con.setAutoCommit(false);
-
-		ps = con.prepareStatement("select * from Account WHERE accountId = ?");
-		ps.setInt(2, accountId);
-		ResultSet rs = ps.executeQuery();
-		while(rs.next())
-	  {
-		System.out.println(rs.getString("accountId"));
-		System.out.println(rs.getString("name"));
-		System.out.println(rs.getString("email"));
-		System.out.println(rs.getString("postalCode"));
-	  }
-		
-	  con.commit();
-
-	  ps.close();
 	}
-	catch (SQLException ex)
-	{
-	    System.out.println("Message: " + ex.getMessage());
 
-            try 
-	    {
-		con.rollback();	
-	    }
-	    catch (SQLException ex2)
-	    {
-		System.out.println("Message: " + ex2.getMessage());
-		System.exit(-1);
-	    }
+	/*
+     * retrieves skills for account
+     */ 
+    private String getAccountSkills(int accountId)
+    {
+		PreparedStatement ps = con.createStatement("SELECT name FROM ExperiencedAt WHERE accountId = ?");
+		ps.setInt(1, accountId);
+		return getRecordsAsJSON(ps);
+	  
 	}
+
+	/*
+     * retrieves specified account
+     */ 
+    private String getAccount(int accountId)
+    {
+		PreparedStatement ps = con.createStatement("SELECT * FROM Account WHERE accountId = ?");
+		ps.setInt(1, accountId);
+		return getRecordsAsJSON(ps);
+	  
 	}
+
+	/*
+     * updates account table for specified account
+     */ 
+    private int updateAccount(int accountId, String name, String email, String postalCode)
+    {
+		// create postalcode?
+		PreparedStatement ps = con.createStatement("UPDATE TABLE Account SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
+		ps.setString(1, name);
+		ps.setString(2, email);
+		ps.setString(3, postalCode);
+		return executeUpdateStatement(ps);
+	}
+
+
+	/*
+	* executes preparedstatement update
+	*/
+	public int executeUpdateStatement(PreparedStatement ps){
+		try
+		{
+			// disable auto commit mode
+			con.setAutoCommit(false);
+			String updatedRecords = "{ status: 'success', updatedRecords : " + ps.executeUpdate() + "}";
+			con.commit();
+			ps.close();
+			return updatedRecords;
+			
+		}
+		catch (SQLException ex)
+		{
+			System.out.println("Message: " + ex.getMessage());
+
+				try 
+			{
+			con.rollback();	
+			}
+			catch (SQLException ex2)
+			{
+			System.out.println("Message: " + ex2.getMessage());
+			System.exit(-1);
+			}
+			return "{ status: 'failure'}";
+		}
+	}
+
+	
 	
 	/*
      * takes preparedstatement select query and executes query, returning JSON string
@@ -336,7 +372,7 @@ public class branchtwo implements ActionListener
 		// get number of columns
 		int numCols = rsmd.getColumnCount();
 
-		// display column names;
+		// get column names;
 		for (int i = 0; i < numCols; i++)
 		{
 		fields.push(rsmd.getColumnName(i+1));    
@@ -429,7 +465,7 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 		
-		System.out.println("Add Table PostalCode? y/n ");
+		System.out.println("Add Table Account? y/n ");
 		choice = in.readLine();
 		if (choice == "y"){
 			ps = con.prepareStatement("CREATE TABLE Account "+
@@ -440,6 +476,50 @@ public class branchtwo implements ActionListener
 			System.out.println(ps.executeUpdate());
 			con.commit();
 		}
+
+		System.out.println("Add Table Skill? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE Skill "+
+			"(name char(30) PRIMARY KEY)");
+
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+
+		System.out.println("Add Table ExperiencedAt? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE ExperiencedAt ("+
+				"accountID integer, "+
+				"name char(30), "+
+				"PRIMARY KEY (accountID, name), "+
+				"FOREIGN KEY (accountID) REFERENCES Account(accountID) ON DELETE CASCADE, "+
+				"FOREIGN KEY (name) REFERENCES Skill (name) ON DELETE CASCADE)");
+
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+
+		System.out.println("Add Table ExperiencedAt? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE "+
+				"Endorses "+
+				"(endorserID int, endorsedID int,  "+
+				"PRIMARY KEY (endorserID, endorsedID),  "+
+				"FOREIGN KEY (endorserID) REFERENCES Account (accountId)  "+
+				"ON DELETE CASCADE,  "+
+				"FOREIGN KEY (endorsedID) REFERENCES Account (accountId)  "+
+				"ON DELETE CASCADE)");
+
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+
+		
+
+
 		ps = con.prepareStatement("");
 		ps.close();
 		
@@ -489,9 +569,11 @@ public class branchtwo implements ActionListener
 
 		String query = "INSERT INTO CountryLanguage (country, primaryLanguage) VALUES (?, ?)";
 		ps = con.prepareStatement(query); 
+		//
 		ps.setString(1, "Canada");
 		ps.setString(2, "English");
 		ps.addBatch();
+		//
 		ps.setString(1, "USA");
 		ps.setString(2, "English");
 		ps.addBatch();
@@ -501,14 +583,17 @@ public class branchtwo implements ActionListener
 		
 		ps.executeBatch();
 		con.commit();
+		//
 
 		query = "INSERT INTO City (cityName, state, country, population) VALUES (?, ?, ?, ?)";
 		ps = con.prepareStatement(query); 
+		//
 		ps.setString(1, "Vancouver");
 		ps.setString(2, "BC");
 		ps.setString(3, "Canada");
 		ps.setInt(4, 650000);
 		ps.addBatch();
+		//
 		ps.setString(1, "San Francisco");
 		ps.setString(2, "CA");
 		ps.setString(3, "USA");
@@ -525,16 +610,193 @@ public class branchtwo implements ActionListener
 		ps.setInt(4, 8900000);
 		ps.addBatch();
 
+		ps.executeBatch();
+		con.commit();
+		//
+
 		query = "INSERT INTO Account (accountId, name, email, postalCode) VALUES (?, ?, ?, ?)";
 		ps = con.prepareStatement(query);
 		ps.setInt(1, 1);
 		ps.setString(2, "Will Matous");
 		ps.setString(3, "willmatous@gmail.com");
-		ps.setString(4, "v9m3z3");
+		ps.setString(4, "V9M3Z3");
+		ps.addBatch();
+		//
+		ps.setInt(1, 2);
+		ps.setString(2, "Max Hnatiuk");
+		ps.setString(3, "maximilian.hnatiuk@gmail.com");
+		ps.setString(4, "V6T1Z4");
+		ps.addBatch();
+		//
+		ps.setInt(1, 3);
+		ps.setString(2, "Kiera Peters");
+		ps.setString(3, "kierapeters14@gmail.com");
+		ps.setString(4, "V6T1Z4");
+		ps.addBatch();
+		//
+		ps.setInt(1, 4);
+		ps.setString(2, "Anton Zubchenko");
+		ps.setString(3, "zubara@inbox.ru");
+		ps.setString(4, "V6T1Z4");
+		ps.addBatch();
+		//
+		ps.setInt(1, 5);
+		ps.setString(2, "Joe Smith");
+		ps.setString(3, "joesmith@gmail.com");
+		ps.setString(4, "94103");
+		ps.addBatch();
+		//
+		ps.setInt(1, 6);
+		ps.setString(2, "Microsoft Vancouver");
+		ps.setString(3, "vancouver@microsoft.com");
+		ps.setString(4, "V6B1C1");
+		ps.addBatch();
+		//
+		ps.setInt(1, 7);
+		ps.setString(2, "Uber");
+		ps.setString(3, "info@uber.com");
+		ps.setString(4, "94103");
+		ps.addBatch();
+		//
+		ps.setInt(1, 8);
+		ps.setString(2, "Airbnb");
+		ps.setString(3, "info@airbnb.com");
+		ps.setString(4, "94103");
+		ps.addBatch();
+		//
+		ps.setInt(1, 9);
+		ps.setString(2, "SAP Vancouver");
+		ps.setString(3, "vancouver@sap.com");
+		ps.setString(4, "94103");
+		ps.addBatch();
+		//
+		ps.setInt(1, 9);
+		ps.setString(2, "Airbnb");
+		ps.setString(3, "info@airbnb.com");
+		ps.setString(4, "V6B1C1");
+		ps.addBatch();
+		//
+		ps.setInt(1, 9);
+		ps.setString(2, "Zoom Carpets");
+		ps.setString(3, "info@zoomcarpets.com");
+		ps.setString(4, "V6S1H7");
+		ps.addBatch();
+
+		ps.executeBatch();
+		con.commit();
+		//
+
+		query = "INSERT INTO Skill (name) VALUES (?)";
+		ps = con.prepareStatement(query);
+		//
+		ps.setString(1, "javascript");
+		ps.addBatch();
+		//
+		ps.setString(1, "python");
+		ps.addBatch();
+		ps.setString(1, "database");
+		ps.addBatch();
+		ps.setString(1, "frontend");
+		ps.addBatch();
+		ps.setString(1, "server");
+		ps.addBatch();
+		ps.setString(1, "bloodwork");
+		ps.addBatch();
+		ps.setString(1, "icu");
+		ps.addBatch();
+		ps.setString(1, "inpatient");
+		ps.addBatch();
+		ps.setString(1, "forklift");
+		ps.addBatch();
+		ps.setString(1, "mechanic");
+		ps.addBatch();
+		ps.setString(1, "cad");
+		ps.addBatch();
+		ps.setString(1, "mockups");
 		ps.addBatch();
 		
 		ps.executeBatch();
 		con.commit();
+		//
+
+		query = "INSERT INTO ExperiencedAt (accountId, name) VALUES (?, ?)";
+		ps = con.prepareStatement(query);
+		ps.setInt(1, 1);
+		ps.setString(2, "javascript");
+		ps.addBatch();
+		//
+		ps.setString(2, "java");
+		ps.addBatch();
+		//
+		ps.setInt(1, 2);
+		ps.setString(2, "javascript");
+		ps.addBatch();
+		ps.setString(2, "java");
+		ps.addBatch();
+		ps.setString(2, "server");
+		ps.addBatch();
+		ps.setString(2, "python");
+		ps.addBatch();
+		//
+		ps.setInt(1, 3);
+		ps.setString(2, "bloodwork");
+		ps.addBatch();
+		ps.setString(2, "icu");
+		ps.addBatch();
+		//
+		ps.setInt(1, 4);
+		ps.setString(2, "forklift");
+		ps.addBatch();
+		ps.setString(2, "mechanic");
+		ps.addBatch();
+		//
+		ps.setInt(1, 5);
+		ps.setString(2, "cad");
+		ps.addBatch();
+		ps.setString(2, "mockups");
+		ps.addBatch();
+		ps.setString(2, "javascript");
+		ps.addBatch();
+		ps.setString(2, "database");
+		ps.addBatch();
+		//
+
+		ps.executeBatch();
+		con.commit();
+		//
+
+		query = "INSERT INTO Endorses (endorserID, endorsedID) VALUES (?, ?)";
+		ps = con.prepareStatement(query);
+		ps.setInt(1,1);
+		ps.setInt(2,2);
+		ps.addBatch();
+		ps.setInt(2,3);
+		ps.addBatch();
+		ps.setInt(2,4);
+		ps.addBatch();
+		//
+		ps.setInt(1,2);
+		ps.setInt(2,1);
+		ps.addBatch();
+		ps.setInt(2,3);
+		ps.addBatch();
+		//
+		ps.setInt(1,3);
+		ps.setInt(2,2);
+		ps.addBatch();
+		ps.setInt(2,1);
+		ps.addBatch();
+		ps.setInt(2,4);
+		ps.addBatch();
+		//
+		ps.setInt(1,4);
+		ps.setInt(2,2);
+		ps.addBatch();
+		//
+
+		ps.executeBatch();
+		con.commit();
+		//
 
 		ps.close();
 	}

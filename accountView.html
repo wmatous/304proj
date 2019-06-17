@@ -1,33 +1,4 @@
-<script>
-        submitForm = function(){
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const postalCode = document.getElementById('postalCode').value;
-            const accountId = document.getElementById('accountId').value;
-            let cmpSize, cmpIndustry, indStatus, indAge;
-            if (document.getElementById('companyView')){
-                cmpSize = document.getElementById('cmpSize').value;
-                cmpIndustry = document.getElementById('cmpIndustry').value;
-            } else {
-                indStatus = document.getElementById('cmpInduindStatusstry').value;
-                indAge = document.getElementById('indAge').value;
-            }
-
-            let urlPath = 'http://localhost:6789/account/create';
-            urlPath += ('/?name='+name+'&email='+email+'&postalCode='+postalCode +'&accountId='+accountId);
-            if (cmpSize){
-                urlPath+= ('&size='+cmpSize+'&industry='+cmpIndustry);
-            } else {
-                urlPath+= ('&status='+indStatus+'&age='+indAge);
-            }
-    
-            fetch(urlPath, 
-                {method:'POST'})
-            .then((res) => res.json())
-            .then(data => console.log(data))
-            .catch(err => console.error(err));
-        }
-        </script>
+<script src='./accountView.js'> </script>
         <style>
             input {
     border: 0;
@@ -36,14 +7,25 @@
 }
 .accountBox{
     background: rgb(206, 206, 206);
+    border-radius: 3px;
+    padding:5px;
+    margin:3px;
+}
+.skillBox{
+    background: rgb(206, 206, 206);
+    border-radius: 3px;
+    padding:5px;
+    margin: 3px;
+
 }
         </style>
 
 <div >
+    <h1>Account Info</h1>
     <table class = 'accountBox'>
             <input hidden='true' 
-            id = 'name'
-              data-fieldid ='name' 
+            id = 'accountId'
+              data-fieldid ='accountId' 
                />
           <tr > 
               <td>
@@ -78,7 +60,7 @@
               />
                     </td>
                 </tr>
-                <div class = 'companyView'>
+                <div id = 'companyView' style = 'visibility: hidden'>
                         <tr > 
                             <td>
                                 Size:
@@ -102,7 +84,7 @@
                             </td>
                         </tr>
                     </div>
-                    <div class = 'individualView'>
+                    <div id = 'individualView'>
                             <tr > 
                                 <td>
                                     Age:
@@ -128,6 +110,11 @@
                         </div>
                     
             </table>
-            <button onclick = 'submitForm()'> Save </button>
+            <button onclick = 'updateAccount()'> Save </button>
         </div>
+    <div id="skills">
+    </div>
+    <div class="endorsements">
+            <h1 id = 'endorseCount'></h1>
+    </div>
         
