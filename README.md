@@ -40,7 +40,8 @@ using 1-based index
 # dispatch
 
 all requests will come through dispatch with a path like /account, a set of query params, and an HTTP method verb like GET or PUT or POST. the path should determine what handler takes the request to build a response/update the db, the params are your variables, and the method describes what the action does for example:
-``` http://localhost:6789/account/?accountId=123&name=will&email=will@example.com&postalCode=V9M3Z3 method = 'PUT'
+``` 
+http://localhost:6789/account/?accountId=123&name=will&email=will@example.com&postalCode=V9M3Z3 method = 'PUT'
 ```
 this will update an existing account record with the supplied values. HTTP verbs describe what sort of action you are doing:
 GET = retrieval - no changes should be made to anything on the backend
