@@ -1,7 +1,3 @@
-
-
-
-
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -776,7 +772,7 @@ public class branchtwo implements ActionListener
 
     /*
      * inserts a branch
-     */ 
+     
     private void insertBranch()
     {
 	int                bid;
@@ -851,12 +847,12 @@ public class branchtwo implements ActionListener
 		System.exit(-1);
 	    }
 	}
-    }
+    } */
 
 
     /*
      * deletes a branch
-     */ 
+      
     private void deleteBranch()
     {
 	int                bid;
@@ -899,12 +895,13 @@ public class branchtwo implements ActionListener
 		System.exit(-1);
 	    }
 	}
-    }
+	}
+	*/
     
 
     /*
-     * updates the name of a branchm
-     */ 
+     * updates the name of a branch
+     
     private void updateBranch()
     {
 	int                bid;
@@ -951,12 +948,13 @@ public class branchtwo implements ActionListener
 		System.exit(-1);
 	    }
 	}	
-    }
+	}
+	*/
 
     
     /*
      * display information about branches
-     */ 
+     
     private void showBranch()
     {
 	String     bid;
@@ -1036,7 +1034,8 @@ public class branchtwo implements ActionListener
 	{
 	    System.out.println("Message: " + ex.getMessage());
 	}	
-    }
+	}
+	*/
     
  
     public static void main(String args[])
