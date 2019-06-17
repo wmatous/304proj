@@ -18,3 +18,21 @@ ssh tunnel your local machine to the remote machine
 ssh -L 6789:localhost:6789 remote.students.cs.ubc.ca
 ```
 tada! requests to localhost on the demo machine will be sent to the remote machine and the database will work (probably)
+
+# helper method for returning results as JSON 
+
+Use the helper method  
+``` 
+private String getRecordsAsJSON(PreparedStatement ps) 
+```
+to retrieve the results of a query as JSON. PreparedStatement can be created like this:
+```
+ps = con.prepareStatement("select * from Account");
+```
+or to insert the value of variables:
+```
+ps = con.prepareStatement("select * from Account WHERE accountId = ? AND age > ?");
+ps.setString(1, acctID);
+ps.setInt(2, minAge);
+```
+using 1-based index

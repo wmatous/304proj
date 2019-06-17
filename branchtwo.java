@@ -7,6 +7,7 @@ import java.net.*;
 import java.util.*;
 import java.sql.*;
 import oracle.jdbc.driver.OracleDriver;
+import javax.json.stream.*;
 
 
 // for the login window
@@ -319,7 +320,72 @@ public class branchtwo implements ActionListener
 		System.exit(-1);
 	    }
 	}
-    }
+	}
+	
+	/*
+     * takes preparedstatement select query and executes query, returning JSON string
+     */ 
+    private String getRecordsAsJSON(PreparedStatement ps)
+    {
+	  
+	try
+	{
+		// disable auto commit mode
+		con.setAutoCommit(false);
+
+		ResultSet rs = ps.executeQuery();
+
+		// get info on ResultSet
+		ResultSetMetaData rsmd = rs.getMetaData();
+		// get number of columns
+		int numCols = rsmd.getColumnCount();
+
+		// display column names;
+		for (int i = 0; i < numCols; i++)
+		{
+		fields.push(rsmd.getColumnName(i+1));    
+		}
+
+		StringWriter sw = new StringWriter();
+		JsonGenerator gen = Json.createGenerator(sw);
+
+		gen.writeStartArray();
+		
+		while(rs.next())
+		{
+			for (String s : fields){
+				gen.write(s, rs.getString(s));
+			}
+			
+		}
+		gen.close();
+
+		con.commit();
+
+	  ps.close();
+
+		return sw.toString();
+	  
+	}
+	catch (SQLException ex)
+	{
+	    System.out.println("Message: " + ex.getMessage());
+
+            try 
+	    {
+		con.rollback();	
+	    }
+	    catch (SQLException ex2)
+	    {
+		System.out.println("Message: " + ex2.getMessage());
+		System.exit(-1);
+	    }
+	}
+	}
+	
+
+
+
 	/*
      * creates and populates tables
      */ 
@@ -462,6 +528,14 @@ public class branchtwo implements ActionListener
 		ps.setString(3, "Mexico");
 		ps.setInt(4, 8900000);
 		ps.addBatch();
+
+		query = "INSERT INTO Account (accountId, name, email, postalCode) VALUES (?, ?, ?, ?)";
+		ps = con.prepareStatement(query);
+		ps.setInt(1, 1);
+		ps.setString(2, "Will Matous");
+		ps.setString(3, "willmatous@gmail.com");
+		ps.setString(4, "v9m3z3");
+		ps.addBatch();
 		
 		ps.executeBatch();
 		con.commit();
@@ -487,8 +561,6 @@ public class branchtwo implements ActionListener
 
 
 
-
-
 	private  String dispatch(Map<String, String> queryParams, String[] urlPath){
         String response= "";
         if(urlPath.length != 0){ // urlPath[0] will be entity type eg account, skill, posting etc
@@ -507,9 +579,6 @@ public class branchtwo implements ActionListener
 
     private  String handleAccount(Map<String, String> queryParams, String[] path){
 
-        //if (action == "update"){
-
-        //}
         return "";
     }
 
