@@ -1,4 +1,5 @@
-populateAccountView = function(account){
+populateAccountView = function(accounts){
+    var account = accounts[0];
     document.getElementById('name').value = account.name;
     document.getElementById('email').value = account.email;
     document.getElementById('accountId').value = account.accountId;
@@ -28,7 +29,7 @@ updateAccount = function(){
         indAge = document.getElementById('indAge').value;
     }
 
-    let urlPath = 'http://localhost:6789/account/create';
+    let urlPath = 'http://localhost:6789/account';
     urlPath += ('/?name='+name+'&email='+email+'&postalCode='+postalCode +'&accountId='+accountId);
     if (cmpSize){
         urlPath+= ('&size='+cmpSize+'&industry='+cmpIndustry);
@@ -37,7 +38,7 @@ updateAccount = function(){
     }
 
     fetch(urlPath, 
-        {method:'POST'})
+        {method:'PUT'})
     .then((res) => res.json())
     .then(data => console.log(data))
     .catch(err => console.error(err));
@@ -63,7 +64,7 @@ populateSkills = function(skills){
 }
 
 getSkills = function(accountId){
-    let urlPath = 'http://localhost:6789/skills/'+accountId;
+    let urlPath = 'http://localhost:6789/skill/'+accountId;
     fetch(urlPath)
     .then((res) => res.json())
     .then(data => {
@@ -75,11 +76,11 @@ getSkills = function(accountId){
 }
 
 populateEndorsements = function(endorsements){
-    document.getElementById('endorseCount').innerHTML = "Endorsed by" + endorsements.count;
+    document.getElementById('endorseCount').innerHTML = "Endorsed by" + endorsements[0].count;
 }
 
 getEndorsements = function(accountId){
-    let urlPath = 'http://localhost:6789/endorsements/'+accountId;
+    let urlPath = 'http://localhost:6789/endorsement/'+accountId;
     fetch(urlPath)
     .then((res) => res.json())
     .then(data => {

@@ -383,11 +383,14 @@ public class branchtwo implements ActionListener
 
 		gen.writeStartArray();
 		
+		
 		while(rs.next())
 		{
+			gen.writeStartObject();
 			for (String s : fields){
 				gen.write(s, rs.getString(s));
 			}
+			gen.writeEnd();
 			
 		}
 		gen.close();
@@ -819,12 +822,18 @@ public class branchtwo implements ActionListener
 
 
 
-	private  String dispatch(Map<String, String> queryParams, String[] urlPath){
+	private  String dispatch(Map<String, String> queryParams, String[] urlPath, String method){
         String response= "";
         if(urlPath.length != 0){ // urlPath[0] will be entity type eg account, skill, posting etc
             switch(urlPath[0]){
                 case "account":
-                    handleAccount(queryParams, urlPath); // urlPath[1] will be null or action like create, update, delete
+                    response = handleAccount(queryParams, urlPath, method); // urlPath[1] will likely be null
+                break;
+                case "endorsement":
+					response = handleEndorsement(queryParams, urlPath, method); // urlPath[1] will likely be null
+                break;
+                case "skill":
+					response = handleSkill(queryParams, urlPath, method); // urlPath[1] will likely be null
                 break;
 
                 // add entries here for each database entity type
@@ -835,14 +844,29 @@ public class branchtwo implements ActionListener
 
     // add a handler method here for each type
 
-    private  String handleAccount(Map<String, String> queryParams, String[] path){
-
-        return "";
+    private  String handleAccount(Map<String, String> queryParams, String[] path, String method){
+		if (method == "GET"){
+			return getAccount(queryParams.get("accountId"));
+		} else if (method == "PUT") {
+			return updateAccount(queryParams.get("accountId"),
+				queryParams.get("name"), 
+				queryParams.get("email"), 
+				queryParams.get("postalCode"));
+		}
+		return "[]";
     }
-
-
-
-
+    private  String handleEndorsement(Map<String, String> queryParams, String[] path, String method){
+		if (method == "GET"){
+			return getAccountEndorsements(queryParams.get("accountId"));
+		}
+		return "[]";
+    }
+    private  String handleSkill(Map<String, String> queryParams, String[] path, String method){
+		if (method == "GET"){
+			return getAccountSkills(queryParams.get("accountId"));
+		}
+		return "[]";
+    }
 
     
     private  Map<String, String> getQueryMap(String query)  
@@ -995,21 +1019,26 @@ public class branchtwo implements ActionListener
 			new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
 		DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 		String urlPath;
+		String method;
 		URL requestURL;
 		String[] parsedPath = new String[]{""};
 		Map<String, String> urlParams = new HashMap<String, String>();
 		while (inFromClient.ready() && (inFromClient.read(clientSentence, 0, 10000) != -1)) {
-				urlPath = new String(clientSentence).split(" ", 3)[1];
-
-				requestURL = new URL("http://localhost:6789"+urlPath);
-				parsedPath = requestURL.getPath().split("/");
-				
-				urlParams = getQueryMap(requestURL.getQuery());
-				System.out.println(urlParams);
-
+			urlPath = new String(clientSentence).split(" ", 3)[1];
+			method = new String(clientSentence).split(" ", 3)[0];
+			requestURL = new URL("http://localhost:6789"+urlPath);
+			parsedPath = requestURL.getPath().split("/");
+			urlParams = getQueryMap(requestURL.getQuery());
+			System.out.println(clientSentence);
 		}
 		
-		String response = dispatch(urlParams, parsedPath);
+		String response="";
+		try{
+			response = dispatch(urlParams, parsedPath, method);
+		} catch (Exception e){
+			System.out.println(e);
+			response = "[]";
+		}
 		PrintWriter pw = new PrintWriter(outToClient);
 				pw.print("HTTP/1.1 200 \r\n"); // Version & status code
 				pw.print("Content-Type: application/json\r\n"); // The type of data
@@ -1020,10 +1049,8 @@ public class branchtwo implements ActionListener
 				pw.print("Connection: close\r\n"); // Will close stream
 				pw.print("\r\n"); // End of headers
 				pw.println(response);
-				pw.println("test");
 				pw.flush();
-				pw.close();	
-				return 0;
+				pw.close();
 		// fetch('http://localhost:6789/path/?params').then((res) => res.json()).then(data => console.log(data)).catch(err => console.error(err));
 		}catch(Exception e){
 			System.out.println(e);
