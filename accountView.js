@@ -45,7 +45,7 @@ updateAccount = function(){
 }
 
 getAccount = function(accountId){
-    let urlPath = 'http://localhost:6789/account/'+accountId;
+    let urlPath = 'http://localhost:6789/account/?accountId='+accountId;
     fetch(urlPath)
     .then((res) => res.json())
     .then(data => {
