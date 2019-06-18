@@ -2,7 +2,7 @@
 
     <script>
     loadaccountid = function () {
-        var url = new URL(window.location.href);
+        var url = new URL(location.href);
         var accountId = url.searchParams.get("accountId");
     }
     submitForm = function () {
