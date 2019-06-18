@@ -352,7 +352,7 @@ public class branchtwo implements ActionListener
 		}
 	}
 
-	
+
 	
 	/*
      * takes preparedstatement select query and executes query, returning JSON string
@@ -490,14 +490,27 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 
+		System.out.println("Add Table Posting? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE Posting "+
+			"(postingId int, title char(30) not null, active char(10), startDate date, address char(30), postalCode char(10) not null, description char(200), accountId int, "+
+			"PRIMARY KEY (postingId),"+
+			"FOREIGN KEY (accountId) references Account(accountId),"+
+			"FOREIGN KEY (postalCode) references PostalCode(postalCode)");
+
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+
 		System.out.println("Add Table ExperiencedAt? y/n ");
 		choice = in.readLine();
 		if (choice == "y"){
 			ps = con.prepareStatement("CREATE TABLE ExperiencedAt ("+
-				"accountID integer, "+
+				"accountId integer, "+
 				"name char(30), "+
-				"PRIMARY KEY (accountID, name), "+
-				"FOREIGN KEY (accountID) REFERENCES Account(accountID) ON DELETE CASCADE, "+
+				"PRIMARY KEY (accountId, name), "+
+				"FOREIGN KEY (accountId) REFERENCES Account(accountId) ON DELETE CASCADE, "+
 				"FOREIGN KEY (name) REFERENCES Skill (name) ON DELETE CASCADE)");
 
 			System.out.println(ps.executeUpdate());
@@ -520,8 +533,20 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 
-		
+		System.out.println("Add Table Involves? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE Involves"+
+				"(postingId int, skillName char(30), yearsExperience int,  "+
+				"PRIMARY KEY (postingId, skillName),  "+
+				"FOREIGN KEY (skillName) REFERENCES Skill(skillName)  "+
+				"ON DELETE CASCADE,  "+
+				"FOREIGN KEY (postingId) REFERENCES Posting(postingId)  "+
+				"ON DELETE CASCADE)");
 
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
 
 		ps = con.prepareStatement("");
 		ps.close();
@@ -801,6 +826,108 @@ public class branchtwo implements ActionListener
 		con.commit();
 		//
 
+		query = "INSERT INTO Involves (postingId, skillName, yearsExperience) VALUES (?, ?, ?)";
+		ps = con.prepareStatement(query);
+		ps.setInt(1, 51);
+		ps.setString(2, "javascript");
+		ps.setInt(3, 3);
+		ps.addBatch();
+
+		ps.setInt(1, 51);
+		ps.setString(2, "java");
+		ps.setInt(3, 3);
+		ps.addBatch();
+
+		ps.setInt(1, 51);
+		ps.setString(2, "database");
+		ps.setInt(3, 3);
+		ps.addBatch();
+		//
+		ps.setInt(1, 83);
+		ps.setString(2, "forklift");
+		ps.setInt(3, 1);
+		ps.addBatch();
+
+		ps.setInt(1, 45);
+		ps.setString(2, "bloodwork");
+		ps.setInt(3, 2);
+		ps.addBatch();
+
+		ps.setInt(1, 37);
+		ps.setString(2, "icu");
+		ps.setInt(3, 4);
+		ps.addBatch();
+
+		ps.executeBatch();
+		con.commit();
+
+
+		query = "INSERT INTO Posting (postingId, title, active, startDate, address, postalCode, description, accountId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		ps = con.prepareStatement(query);
+		ps.setInt(1, 51);
+		ps.setString(2, "Junior Software Developer");
+		ps.setString(3, "true"); // string?
+		//java.sql.Date sqlDate := new java.sql.Date(2019-);
+		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+		ps.setDate(4, new Date(2019, 7, 7));
+		ps.setString(5, "187 Main Street");
+		ps.setString(6, "94103");
+		ps.setString(7, "Seeking full time agile software developer with experience in Java.");
+		ps.setInt(8, 1);
+		ps.addBatch();
+
+		ps.setInt(1, 83);
+		ps.setString(2, "Construction");
+		ps.setString(3, "false"); // string?
+		//java.sql.Date sqlDate := new java.sql.Date(2019-);
+		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+		ps.setDate(4, new Date(2019, 8, 5));
+		ps.setString(5, "1080 Hamilton St.");
+		ps.setString(6, "V6S1H7");
+		ps.setString(7, "Looking for a construction worker to start in the fall doing physical labor.");
+		ps.setInt(8, 2);
+
+		ps.addBatch();
+
+		ps.setInt(1, 96);
+		ps.setString(2, "Architect");
+		ps.setString(3, "true"); // string?
+		//java.sql.Date sqlDate := new java.sql.Date(2019-);
+		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+		ps.setDate(4, new Date(2019, 7, 5));
+		ps.setString(5, "123 Granville St.");
+		ps.setString(6, "V6T1Z4");
+		ps.setString(7, "Small firm looking to hire experienced architect.");
+		ps.setInt(8, 3);
+		ps.addBatch();
+
+		ps.setInt(1, 45);
+		ps.setString(2, "Lab technician");
+		ps.setString(3, "true"); // string?
+		//java.sql.Date sqlDate := new java.sql.Date(2019-);
+		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+		ps.setDate(4, new Date(2019, 10, 5));
+		ps.setString(5, "955 Hornby St.");
+		ps.setString(6, "V6S1H7");
+		ps.setString(7, "Medical lab needs technician to analyze results and draw blood.");
+		ps.setInt(8, 4);
+		ps.addBatch();
+
+		ps.setInt(1, 37);
+		ps.setString(2, "Nurse");
+		ps.setString(3, "true"); // string?
+		//java.sql.Date sqlDate := new java.sql.Date(2019-);
+		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+		ps.setDate(4, new Date(2019, 12, 8));
+		ps.setString(5, "11 Hamilton St.");
+		ps.setString(6, "V6T1Z4");
+		ps.setString(7, "Hospital is looking for more OR nurses, experience preferred.");
+		ps.setInt(8, 2);
+		ps.addBatch();
+		
+		ps.executeBatch();
+		con.commit();
+
 		ps.close();
 	}
 	catch (SQLException ex)
@@ -835,6 +962,12 @@ public class branchtwo implements ActionListener
                 case "skill":
 					response = handleSkill(queryParams, urlPath, method); // urlPath[1] will likely be null
                 break;
+                case "posting":
+                	response = handlePosting(queryParams, urlPath, method);
+                break;
+                case "postingSkill":
+                	response = handleInvolves(queryParams, urlPath, method);
+                break;
 
                 // add entries here for each database entity type
             }
@@ -864,6 +997,28 @@ public class branchtwo implements ActionListener
     private  String handleSkill(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
 			return getAccountSkills(queryParams.get("accountId"));
+		}
+		return "[]";
+    }
+
+    private  String handlePosting(Map<String, String> queryParams, String[] path, String method){
+		if (method == "GET"){
+			return getPosting(queryParams.get("postingId"));
+		} else if (method == "PUT") {
+			return updatePosting(queryParams.get("postingId"),
+				queryParams.get("title"), 
+				queryParams.get("active"),
+				queryParams.get("startDate"), 
+				queryParams.get("address"), 
+				queryParams.get("postalCode"), 
+				queryParams.get("description"), 
+				queryParams.get("accountId"));
+		}
+		return "[]";
+    }
+    private  String handlePostingSkill(Map<String, String> queryParams, String[] path, String method){
+		if (method == "GET"){
+			return getPostingInvolves(queryParams.get("postingId"), queryParams.get("skillName"));
 		}
 		return "[]";
     }

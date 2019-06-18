@@ -1,0 +1,198 @@
+<script>
+        submitForm = function(){
+            const postingId = document.getElementById('postingId').value;
+            const title = document.getElementById('title').value;
+            const startDate = document.getElementById('startDate').value;
+            const active = document.getElementById('active').value;
+
+            const postalCode = document.getElementById('postalCode').value;
+            const address = document.getElementById('address').value;
+            const cityName = document.getElementById('cityName').value;
+            const state = document.getElementById('state').value;
+
+            const accountId = document.getElementById('accountId').value;
+
+
+            // let cmpSize, cmpIndustry, indStatus, indAge;
+            // if (document.getElementById('companyView')){
+            //     cmpSize = document.getElementById('cmpSize').value;
+            //     cmpIndustry = document.getElementById('cmpIndustry').value;
+            // } else {
+            //     indStatus = document.getElementById('cmpInduindStatusstry').value;
+            //     indAge = document.getElementById('indAge').value;
+            // }
+
+            let urlPath = 'http://localhost:6789/posting/create';
+            urlPath += ('/?title='+title+'&postingID='+postingID +'&accountId='+accountId);
+            // if (cmpSize){
+            //     urlPath+= ('&size='+cmpSize+'&industry='+cmpIndustry);
+            // } else {
+            //     urlPath+= ('&status='+indStatus+'&age='+indAge);
+            // }
+    
+            fetch(urlPath, 
+                {method:'POST'})
+            .then((res) => res.json())
+            .then(data => console.log(data))
+            .catch(err => console.error(err));
+        }
+        </script>
+        <style>
+            input {
+    border: 0;
+    outline: 0;
+    background:rgb(187, 187, 187);
+}
+.postingBox{
+    background: rgb(206, 206, 206);
+
+}
+        </style>
+
+<div >
+    <table class = 'postingBox'>
+            <input hidden='true' 
+            id = 'title'
+              data-fieldid ='title' 
+               />
+          <tr > 
+              <td>
+                Job Title:
+              </td>
+              <td>
+          <input type ='text' 
+                id = 'title'
+                  data-fieldid ='title' 
+                   />
+              </td>
+            </tr>
+          <tr >
+                <td>
+                        Active:
+                </td>
+                    <td>
+            <input type ='checkbox' 
+                id = 'active'
+                  data-fieldid ='active' 
+                   />
+                    </td>
+                </tr>
+          <tr >
+                <td>
+                        Start Date:
+                </td>
+                    <td>
+              <input type ='date' 
+                id = 'startDate'
+                  data-fieldid ='startDate' 
+              />
+                    </td>
+                </tr>
+          <tr > 
+              <td>
+                        Address:
+              </td>
+                <td>
+            <input type ='text' 
+                id = 'address'
+                  data-fieldid ='address' 
+                   />
+              </td>
+                        <tr > 
+              <td>
+                Postal Code:
+              </td>
+              <td>
+          <input type ='text' 
+                id = 'postalCode'
+                  data-fieldid ='postalCode' 
+                   />
+              </td>
+            </tr>
+
+                  <tr > 
+              <td>
+                City Name:
+              </td>
+              <td>
+          <input type ='text' 
+                id = 'cityName'
+                  data-fieldid ='cityName' 
+                   />
+              </td>
+            </tr>
+                      <tr > 
+              <td>
+                State:
+              </td>
+              <td>
+          <input type ='text' 
+                id = 'state'
+                  data-fieldid ='state' 
+                   />
+              </td>
+            </tr>
+                      <tr > 
+              <td>
+                Description:
+              </td>
+              <td>
+          <input type ='text' 
+                id = 'description'
+                  data-fieldid ='description' 
+                   />
+              </td>
+            </tr>
+            </tr>
+                <div class = 'companyView'>
+                        <tr > 
+                            <td>
+                                Size:
+                            </td>
+                            <td>
+                        <input type ='number' 
+                                id = 'cmpSize'
+                                data-fieldid ='cmpSize' 
+                                    />
+                            </td>
+                        </tr>
+                        <tr > 
+                            <td>
+                                Industry:
+                            </td>
+                            <td>
+                        <input type ='text' 
+                                id = 'cmpIndustry'
+                                data-fieldid ='cmpIndustry' 
+                                    />
+                            </td>
+                        </tr>
+                    </div>
+                    <div class = 'individualView'>
+                            <tr > 
+                                <td>
+                                    Age:
+                                </td>
+                                <td>
+                            <input type ='number' 
+                                    id = 'indAge'
+                                    data-fieldid ='indAge' 
+                                        />
+                                </td>
+                            </tr>
+                            <tr > 
+                                <td>
+                                    Status:
+                                </td>
+                                <td>
+                            <input type ='text' 
+                                    id = 'indStatus'
+                                    data-fieldid ='indStatus' 
+                                        />
+                                </td>
+                            </tr>
+                        </div>
+                    
+            </table>
+            <button onclick = 'submitForm()'> Save </button>
+        </div>
