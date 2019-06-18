@@ -1182,7 +1182,6 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 		ps.setString(3, resume);
 		ps.setInt(4, applicantID);
 		ps.setInt(5, posting);
-		ps.addBatch();
 		return getRecordsAsJSON(ps);
 	}
 	private  String handleApplication(Map<String, String> queryParams, String[] path, String method){
