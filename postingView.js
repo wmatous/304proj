@@ -1,5 +1,5 @@
 populatePostingView = function(postings){
-    var posting = posting[0];
+    var posting = postings[0];
     document.getElementById('postingId').value = posting.postingId;
     document.getElementById('title').value = posting.title;
     document.getElementById('active').value = posting.active;
@@ -12,8 +12,7 @@ populatePostingView = function(postings){
     document.getElementById('skills').value = posting.skills;
     // !!! both of these
     document.getElementById('accountId').value = posting.accountId;
-
-    // if (account.size){
+    // if (account.size){ 
     //     document.getElementById('companyView').style.visibility = 'visible';
     //     document.getElementById('size').value = account.size;
     //     document.getElementById('industry').value = account.industry;
@@ -33,7 +32,7 @@ updatePosting = function(){
     const postalCode = document.getElementById('postalCode').value;
     const cityName = document.getElementById('cityName').value = posting.cityName;
     const state = document.getElementById('state').value = posting.state;
-    // !!! how do we update this? / do I need to?
+    // !!! how do we update this? / do I need to? 
 
     const skills = document.getElementById('skills').value = posting.skills;
     // !!
@@ -74,8 +73,6 @@ getPosting = function(postingId){
     .catch(err => console.error(err));
 }
 
-
-
 populateSkills = function(skills){
     let innerHTML = '<h1>Skills</h1>';
     for (let i = 0; i < skills.length; i++){
@@ -93,7 +90,6 @@ getSkills = function(postingId){
         populateSkills(data);
     })
     .catch(err => console.error(err));
-
 }
 
 window.onload = function(){

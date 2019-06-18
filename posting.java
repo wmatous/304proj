@@ -1,3 +1,11 @@
+import java.util.*;
+import java.sql.*;
+
+class posting {
+  private Connection con;
+  posting(Connection c) {
+    this.con = c;
+  }
 
      /*
      creates a new job posting
@@ -26,7 +34,7 @@
       ps = con.prepareStatement("INSERT INTO Posting VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
       ps2 = con.prepareStatement("INSERT INTO PostalCode VALUES (?, ?, ?)");
       ps3 = con.prepareStatement("INSERT INTO Involves VALUES (?, ?, ?")
-      // do we need just a Skill table
+      // !!! do we still need just a Skill table
     
       System.out.print("\nPosting ID: ");
       postingId = Integer.parseInt(in.readLine());
@@ -206,6 +214,7 @@
         PreparedStatement ps = con.createStatement("SELECT * FROM Posting, PostalCode, Involves WHERE Posting.postalCode = PostalCode.postalCode AND Involves.postingId = Posting.postingId");
         return getRecordsAsJSON(ps);
         // natural join would probably be easier?
+        // still need to get all the things here too
 
     }
 
@@ -259,6 +268,7 @@
         ps.setInt(8, accountId);
         return executeUpdateStatement(ps);
     }
+  }
 
 
 

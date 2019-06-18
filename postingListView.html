@@ -1,4 +1,4 @@
-<script src='./postingListView.js'> </script>
+<script src='./postingView.js'> </script>
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,7 +14,9 @@
         .jumbotron {
             background-color: #FFE4B5;
             color: black;
-            padding: 15px;
+            padding: 0px;
+            width: 100%;
+            overflow-y: scroll;
         }
         a:link, a:visited a:link:active, a:visited:active {
             color: black;
@@ -25,47 +27,51 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="page-header">
             <h1>View Job Postings</h1>
         </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> Posting ID </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> Job Title </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> Active </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> Start Date </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> Address </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> PostalCode </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> City </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> State </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> Description </p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                    <p> Skills </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <div class="container-fluid">
+        <div class="jumbotron">
+        <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">PostingID</th>
+      <th scope="col">Job Title</th>
+      <th scope="col">Active</th>
+      <th scope="col">StartDate</th>
+      <th scope="col">Address</th>
+      <th scope="col">PostalCode</th>
+      <th scope="col">City</th>
+      <th scope="col">State</th>
+      <th scope="col">Description</th>
+      <th scope="col">Skills</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <div id="Row1"> 
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+  </div>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+<!-- </div> -->
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -1,56 +1,50 @@
-<script>
-        submitForm = function(){
-            const postingId = document.getElementById('postingId').value;
-            const title = document.getElementById('title').value;
-            const startDate = document.getElementById('startDate').value;
-            const active = document.getElementById('active').value;
+<script src='./postingView.js'> </script>
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-            const postalCode = document.getElementById('postalCode').value;
-            const address = document.getElementById('address').value;
-            const cityName = document.getElementById('cityName').value;
-            const state = document.getElementById('state').value;
+    <title>Create Posting</title>
 
-            const accountId = document.getElementById('accountId').value;
-
-
-            // let cmpSize, cmpIndustry, indStatus, indAge;
-            // if (document.getElementById('companyView')){
-            //     cmpSize = document.getElementById('cmpSize').value;
-            //     cmpIndustry = document.getElementById('cmpIndustry').value;
-            // } else {
-            //     indStatus = document.getElementById('cmpInduindStatusstry').value;
-            //     indAge = document.getElementById('indAge').value;
-            // }
-
-            let urlPath = 'http://localhost:6789/posting/create';
-            urlPath += ('/?title='+title+'&postingID='+postingID +'&accountId='+accountId);
-            // if (cmpSize){
-            //     urlPath+= ('&size='+cmpSize+'&industry='+cmpIndustry);
-            // } else {
-            //     urlPath+= ('&status='+indStatus+'&age='+indAge);
-            // }
-    
-            fetch(urlPath, 
-                {method:'POST'})
-            .then((res) => res.json())
-            .then(data => console.log(data))
-            .catch(err => console.error(err));
+    <style>
+        .jumbotron {
+            background-color: #FFE4B5;
+            color: black;
+            padding: 15px;
         }
-        </script>
-        <style>
-            input {
-    border: 0;
-    outline: 0;
-    background:rgb(187, 187, 187);
-}
-.postingBox{
-    background: rgb(206, 206, 206);
+        a:link, a:visited a:link:active, a:visited:active {
+            color: black;
+            text-decoration: none;
+            cursor: auto;
+        }
+        .postingBox {
+            background-color: #FFE4B5;
+        }
 
-}
-        </style>
 
-<div >
-    <table class = 'postingBox'>
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Create a Job Posting</h1>
+        </div>
+
+        <div class="container">
+
+        <div class="row">
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                    <div class="jumbotron">
+                        <p class="lead">Add information about the job here.</p>
+                        <hr class="my-4">
+                        <div class="container">
+                            <div class="row">
+                                    <table class = 'table'>
             <input hidden='true' 
             id = 'title'
               data-fieldid ='title' 
@@ -132,67 +126,50 @@
                    />
               </td>
             </tr>
-                      <tr > 
+                        <tr> 
               <td>
-                Description:
+                Skills:
               </td>
               <td>
           <input type ='text' 
+                id = 'skills'
+                  data-fieldid ='skills' 
+                   />
+              </td>
+            </tr>
+                      <tr> 
+              <td>
+                Description:
+              </td>
+              <td colspan="3">
+          <input type ='textarea' class="form-control form-control-lg"  rows="10"
                 id = 'description'
-                  data-fieldid ='description' 
+                  data-fieldid ='description'
                    />
               </td>
             </tr>
             </tr>
-                <div class = 'companyView'>
-                        <tr > 
-                            <td>
-                                Size:
-                            </td>
-                            <td>
-                        <input type ='number' 
-                                id = 'cmpSize'
-                                data-fieldid ='cmpSize' 
-                                    />
-                            </td>
-                        </tr>
-                        <tr > 
-                            <td>
-                                Industry:
-                            </td>
-                            <td>
-                        <input type ='text' 
-                                id = 'cmpIndustry'
-                                data-fieldid ='cmpIndustry' 
-                                    />
-                            </td>
-                        </tr>
-                    </div>
-                    <div class = 'individualView'>
-                            <tr > 
-                                <td>
-                                    Age:
-                                </td>
-                                <td>
-                            <input type ='number' 
-                                    id = 'indAge'
-                                    data-fieldid ='indAge' 
-                                        />
-                                </td>
-                            </tr>
-                            <tr > 
-                                <td>
-                                    Status:
-                                </td>
-                                <td>
-                            <input type ='text' 
-                                    id = 'indStatus'
-                                    data-fieldid ='indStatus' 
-                                        />
-                                </td>
-                            </tr>
-                        </div>
                     
             </table>
-            <button onclick = 'submitForm()'> Save </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        <div>
+            <div class="btn-group btn-group-lg" role="button">
+                <button type="submit" class="btn btn-success btn-lg" role="button">
+                    Submit Job Posting
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html> 
