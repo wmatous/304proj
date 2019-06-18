@@ -5,6 +5,9 @@ import java.sql.*;
 import oracle.jdbc.driver.OracleDriver;
 import javax.json.stream.*;
 
+import static helpers.DBVars.username;
+import static helpers.DBVars.password;
+
 
 // for the login window
 import javax.swing.*;
@@ -1196,7 +1199,7 @@ public class branchtwo implements ActionListener
     /*
      * connects to Oracle database named ug using user supplied username and password
      */ 
-    private boolean connect(String username, String password)
+    private boolean connect(String username1, String password1)
     {
       String connectURL = "jdbc:oracle:thin:@dbhost.students.cs.ubc.ca:1522:stu"; 
 
