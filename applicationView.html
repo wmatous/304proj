@@ -14,7 +14,7 @@
             const accountId = url.searchParams.get("accountId");
             const applicationId = postingid+accountId; // just a way to generate application ID
    
-            let urlPath = 'http://localhost:6789/account/';
+            let urlPath = 'http://localhost:6789/application/';
             urlPath = ('&accountId=' + accountId +  '&PostingID=' + postingid +  '&applicationId=' + applicationId +
                 '&coverletter=' + coverletter + '&resume=' + resume); // pretty dumb way to pass texts like that
             // post coverletter
