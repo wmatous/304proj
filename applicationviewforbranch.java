@@ -28,15 +28,7 @@
 		if (method == "POST"){
 			return postApplication(Integer.parseInt(queryParams.get("applicationId")));
 		}
-		if (method == "GET"){
-			return getApplication(Integer.parseInt(queryParams.get("applicationId")));
-		}
-		if (method == "PUT"){
-			return putApplication(Integer.parseInt(queryParams.get("applicationId")));
-		}
-		if (method == "DELETE"){
-			return deleteApplication(Integer.parseInt(queryParams.get("applicationId")));
-		}
+		
 		return "[]";
     }
 	// ANTON: CREATES TABLE
