@@ -20,7 +20,7 @@ class interviewAndOfferQueries {
 	}
 
 	protected String getAllOffers(int accountId) throws SQLException{
-		PreparedStatement ps = con.prepareStatement("SELECT O.status, O.type, O.offerId, C.name, C.accountId, P.position, P.postId " +
+		PreparedStatement ps = con.prepareStatement("SELECT O.status, O.startDate, O.expiryDate, O.offerId, C.name, C.accountId, P.position, P.postId " +
 				"FROM offer O, company C, posting P " +
 				"WHERE O.accountId = ?");
 		ps.setInt(1, accountId);
@@ -29,7 +29,7 @@ class interviewAndOfferQueries {
 
 	String handleOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException{
 		if (method == "GET") {
-			return getOffer(queryParams.get("accountId"));
+			return getOffer(queryParams.get("offerId"));
 		}
 		return "[]";
 	}
@@ -59,21 +59,7 @@ class interviewAndOfferQueries {
 		return getRecordsAsJSON(ps);
 	}
 
-	String handleInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException{
-		if (method == "GET") {
-			return getInterview(queryParams.get("accountId"));
-		}
-		return "[]";
-	}
-
-	private String getInterview(int applicantId) throws SQLException{
-		PreparedStatement ps = con.prepareStatement(
-				"SELECT status, date, time, address " +
-						"FROM interview " +
-						"WHERE applicantId = ?");
-		ps.setInt(1, applicantId);
-		return getRecordsAsJSON(ps);
-	}
+//removed handler for singular interview because all interview data is fetched during getAllInterviews
 
 	private String getCompanyInfo(int companyId) throws SQLException{
 		PreparedStatement ps = con.prepareStatement(

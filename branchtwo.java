@@ -1104,7 +1104,8 @@ public class branchtwo implements ActionListener
                     response = intAndOff.handleAllInterviews(queryParams, urlPath, method);
                 break;
                 case "interview":
-                    response = intAndOff.handleInterview(queryParams, urlPath, method);
+                	//not sure if we even need this case since the data should be fetched in previous page
+                    response = intAndOff.handleAllInterviews(queryParams, urlPath, method);
                 break;
                 case "allOffers":
                     response = intAndOff.handleAllOffers(queryParams, urlPath, method);
