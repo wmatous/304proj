@@ -52,5 +52,14 @@
 		ps.addBatch();
 		return getRecordsAsJSON(ps);
 	}
-
+/* 		//APPLICATION Insertion statement example
+		ps = con.prepareStatement("INSERT INTO Application (ApplicationID, CoverLetter , Resume, ApplicantID, PostingID )VALUES (?, ? , ?, ?,? ); ");
+		ps.setInt(1, 1);
+		ps.setString(2, "Cover 1");
+		ps.setString(3, "Resume 1");
+		ps.setInt(4, 1);
+		ps.setInt(5, `1);
+		ps.addBatch();
+		//
+*/
     
