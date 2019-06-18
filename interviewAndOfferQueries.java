@@ -1,5 +1,9 @@
+import java.io.*;
+import java.net.*;
 import java.util.*;
 import java.sql.*;
+import oracle.jdbc.driver.OracleDriver;
+import javax.json.stream.*;
 
 class interviewAndOfferQueries {
 	private Connection con;

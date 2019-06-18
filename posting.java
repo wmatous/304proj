@@ -1,5 +1,9 @@
+import java.io.*;
+import java.net.*;
 import java.util.*;
 import java.sql.*;
+import oracle.jdbc.driver.OracleDriver;
+import javax.json.stream.*;
 
 class posting {
   private Connection con;
@@ -10,7 +14,7 @@ class posting {
      /*
      creates a new job posting
      */
-     
+     /*
     private void createPosting()
     {
     int                postingId;
@@ -116,6 +120,7 @@ class posting {
         }
     }
     }
+    */
 
     /*
      * deletes a job posting
@@ -183,7 +188,7 @@ class posting {
      */ 
     String getPostingSkills(int postingId)
     {
-        PreparedStatement ps = con.createStatement("SELECT skillName FROM Involves WHERE postingId = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT skillName FROM Involves WHERE postingId = ?");
         ps.setInt(1, postingId);
         return getRecordsAsJSON(ps);
       
@@ -191,7 +196,7 @@ class posting {
 
     String getPostingCityAndAddress(int postingId)
     {
-        PreparedStatement ps = con.createStatement("SELECT cityName, state FROM PostalCode WHERE postalCode IN (SELECT postalCode FROM Posting WHERE postingId = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT cityName, state FROM PostalCode WHERE postalCode IN (SELECT postalCode FROM Posting WHERE postingId = ?");
         ps.setInt(1, postingId);
         // no idea if i can do it this way
         return getRecordsAsJSON(ps);
@@ -202,7 +207,7 @@ class posting {
      */ 
     String getAllPostingsInvolvingSkill(String skillName)
     {
-        PreparedStatement ps = con.createStatement("SELECT postingId FROM Involves, Posting WHERE skillName = ? AND Involves.postingId = Posting.postingId");
+        PreparedStatement ps = con.prepareStatement("SELECT postingId FROM Involves, Posting WHERE skillName = ? AND Involves.postingId = Posting.postingId");
         ps.setString(2, skillName);
         return getRecordsAsJSON(ps);
     }
@@ -212,7 +217,7 @@ class posting {
     */
     String getAllPostings()
     {
-        PreparedStatement ps = con.createStatement("SELECT * FROM Posting, PostalCode, Involves WHERE Posting.postalCode = PostalCode.postalCode AND Involves.postingId = Posting.postingId");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting, PostalCode, Involves WHERE Posting.postalCode = PostalCode.postalCode AND Involves.postingId = Posting.postingId");
         return getRecordsAsJSON(ps);
         // natural join would probably be easier?
         // still need to get all the things here too
@@ -225,7 +230,7 @@ class posting {
 
     String getPostingsByCityName(String cityName)
     {
-        PreparedStatement ps = con.createStatement("SELECT * FROM Posting, PostalCode WHERE PostalCode.cityName = ? AND Posting.postalCode = PostalCode.postalCode");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting, PostalCode WHERE PostalCode.cityName = ? AND Posting.postalCode = PostalCode.postalCode");
         ps.setString(2, cityName);
         return getRecordsAsJSON(ps);
 
@@ -237,7 +242,7 @@ class posting {
 
     String getPostingsByState(String state)
     {
-        PreparedStatement ps = con.createStatement("SELECT * FROM Posting, PostalCode WHERE PostalCode.state = ? AND Posting.postalCode = PostalCode.postalCode");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting, PostalCode WHERE PostalCode.state = ? AND Posting.postalCode = PostalCode.postalCode");
         ps.setString(3, state);
         return getRecordsAsJSON(ps);
     }
@@ -248,7 +253,7 @@ class posting {
     */
     private String getAllRecommendedPostings() {
         // ! should this be in account view or posting view??
-
+        return "";
     }
 
 
@@ -258,7 +263,7 @@ class posting {
      */ 
     int updatePosting(int postingId, String title, String active, Date startDate, String address, String postalCode, String description, int accountId)
     {
-        PreparedStatement ps = con.createStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ?, accountId = ? WHERE postingId = ?");
+        PreparedStatement ps = con.prepareStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ?, accountId = ? WHERE postingId = ?");
         // !!! can we update accountId like this?
         ps.setString(2, title);
         ps.setString(3, active);

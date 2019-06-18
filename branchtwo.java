@@ -280,7 +280,7 @@ public class branchtwo implements ActionListener
      */ 
     private String getAccountEndorsements(int accountId)
     {
-		PreparedStatement ps = con.createStatement("SELECT COUNT(*) as count FROM Endorses WHERE endorsedId = ?");
+		PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) as count FROM Endorses WHERE endorsedId = ?");
 		ps.setInt(1, accountId);
 		return getRecordsAsJSON(ps);
 	  
@@ -291,7 +291,7 @@ public class branchtwo implements ActionListener
      */ 
     private String getAccountSkills(int accountId)
     {
-		PreparedStatement ps = con.createStatement("SELECT name FROM ExperiencedAt WHERE accountId = ?");
+		PreparedStatement ps = con.prepareStatement("SELECT name FROM ExperiencedAt WHERE accountId = ?");
 		ps.setInt(1, accountId);
 		return getRecordsAsJSON(ps);
 	  
@@ -302,7 +302,7 @@ public class branchtwo implements ActionListener
      */ 
     private String getAccount(int accountId)
     {
-		PreparedStatement ps = con.createStatement("SELECT * FROM Account WHERE accountId = ?");
+		PreparedStatement ps = con.prepareStatement("SELECT * FROM Account WHERE accountId = ?");
 		ps.setInt(1, accountId);
 		return getRecordsAsJSON(ps);
 	  
@@ -314,7 +314,7 @@ public class branchtwo implements ActionListener
     private int updateAccount(int accountId, String name, String email, String postalCode)
     {
 		// create postalcode?
-		PreparedStatement ps = con.createStatement("UPDATE TABLE Account SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
+		PreparedStatement ps = con.prepareStatement("UPDATE TABLE Account SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
 		ps.setString(1, name);
 		ps.setString(2, email);
 		ps.setString(3, postalCode);
@@ -1554,7 +1554,7 @@ public class branchtwo implements ActionListener
 	   
 	try
 	{
-	  stmt = con.createStatement();
+	  stmt = con.prepareStatement();
 
 	  rs = stmt.executeQuery("SELECT * FROM branch");
 
