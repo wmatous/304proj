@@ -1,16 +1,18 @@
-populateSinglePostingView = function (posting) {
+populateSinglePostingView = function (postings) {
+    var posting = postings[0];
 
-    //var posting = postings[0];
-    document.getElementById('postingId').value = posting.postingId;
-    document.getElementById('title').value = posting.title;
-    document.getElementById('active').value = posting.active;
-    document.getElementById('startDate').value = posting.startDate;
-    document.getElementById('address').value = posting.address;
-    document.getElementById('postalCode').value = posting.postalCode;
-    document.getElementById('cityName').value = posting.cityName;
-    document.getElementById('state').value = posting.state;
-    document.getElementById('description').value = posting.description;
-    document.getElementById('skills').value = posting.skills;
+    document.getElementById('postingId').value += posting.postingId;
+    document.getElementById('title').value += posting.title;
+    document.getElementById('active').value += posting.active;
+    document.getElementById('startDate').value += posting.startDate;
+    document.getElementById('address').value += posting.address;
+    document.getElementById('postalCode').value += posting.postalCode;
+
+    document.getElementById('description').value += posting.description;
+
+    // !! also not sure about these as they are not in posting table
+    document.getElementById('cityName').value += posting.cityName;
+    document.getElementById('state').value += posting.state;
 };
 
 updatePosting = function () {
@@ -41,44 +43,28 @@ updatePosting = function () {
     .catch((err) => console.error(err));
 };
 
+//searchPostings
+
 getPosting = function (postingId) {
     let urlPath = 'http://localhost:6789/posting/' + postingId;
     fetch(urlPath)
     .then((res) => res.json())
     .then(function(data) {
         console.log(data);
-        populatePostingView(data);
+        populateSinglePostingView(data);
     })
     .catch((err) => console.error(err));
 };
 
+
 populateSkills = function (skills) {
-    let innerHTML = '<h1>Skills</h1>';
+    let innerHTML;
     for (let i = 0; i < skills.length; i++) {
-        innerHTML += "<span class='skillBox'>"+skills[i].name+"</span>";
+        innerHTML += skills[i].name;
     }
-    document.getElementById('skills').innerHTML = innerHTML;
+    document.getElementById('skills').value = innerHTML;
 };
 
-populatePostingView = function(postings){
-    let innerHTML; //= "<div class=tbody id=tableBody>";
-    for (let i = 0; i < postings.length; i++) {
-        innerHTML += "<tr>"+"<div id="+i">"+"<th scope='row'>"+i+"</th>"+
-        "<td>"+postings[i].postingId+"</td>"+
-        "<td>"+postings[i].title+"</td>"+
-        "<td>"+postings[i].active+"</td>"+
-        "<td>"+postings[i].startDate+"</td>"+
-        "<td>"+postings[i].address+"</td>"+
-        "<td>"+postings[i].postalCode+"</td>"+
-        "<td>"+postings[i].cityName+"</td>"+
-        "<td>"+postings[i].state+"</td>"+
-        "<td>"+postings[i].description+"</td>"+
-        "<td>"+posting[i].skills+"</td>";
-
-        innerHTML += "</div>" + "</tr>";
-    }
-    document.getElementById('tableBody').innerHTML = innerHTML;
-};
 
 getSkills = function(postingId){
     let urlPath = 'http://localhost:6789/postingSkill/'+postingId;
@@ -91,9 +77,21 @@ getSkills = function(postingId){
     .catch((err) => console.error(err));
 };
 
+// getLocation = function(postingId){
+//     let urlPath = 'http://localhost:6789/skill/'+postingId;
+//     fetch(urlPath)
+//     .then((res) => res.json())
+//     .then(function(data){
+//         console.log(data);
+//         populateSkills(data);
+//     })
+//     .catch((err) => console.error(err));
+// };
+
 window.onload = function(){
     var url = new URL(window.location.href);
     var postingId = url.searchParams.get("postingId");
+    var accountId = url.searchParams.get("accountId");
     getPosting(postingId);
     getSkills(postingId);
 }

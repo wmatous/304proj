@@ -8,7 +8,7 @@
 		<!--Bootstrap CSS -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-		<title>Create Posting</title>
+		<title>Search Postings</title>
 
 		<style>
 		.jumbotron {
@@ -22,13 +22,13 @@
 <body>
 	<div class="container-fluid">
 		<div class="page-header">
-			<h1>Create a Job Posting</h1>
+			<h1>Search for Job Postings</h1>
 		</div>
 
 		<div class="row">
 			<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
 				<div class="jumbotron">
-					<p class="lead">Add information about the postiion here! </p>
+					<p class="lead">Search job postings by: </p>
 					<hr class="my-4">
 					<table class='table'>
 						<input hidden='true' 
@@ -49,21 +49,6 @@
 						</tr>
 						<tr >
 							<td>
-								Active:
-							</td>
-							<td>
-								<input class="radio-inline" type ='radio' name="active" checked
-								id = 'active'
-								data-fieldid ='active' 
-								/> Yes
-								<input class="radio-inline" type ='radio' name="active"
-								id = 'active'
-								data-fieldid ='active' 
-								/> No
-							</td>
-						</tr>
-						<tr >
-							<td>
 								Start Date:
 							</td>
 							<td>
@@ -74,30 +59,6 @@
 								/>
 							</td>
 						</tr>
-						<tr > 
-							<td>
-								Address:
-							</td>
-							<td>
-								<input type ='text' 
-								id = 'address'
-								data-fieldid ='address' 
-								style="width:250px"
-								/>
-							</td>
-							<tr > 
-								<td>
-									Postal Code:
-								</td>
-								<td>
-									<input type ='text' 
-									id = 'postalCode'
-									data-fieldid ='postalCode' 
-									style="width:250px"
-									/>
-								</td>
-							</tr>
-
 							<tr > 
 								<td>
 									City Name:
@@ -130,14 +91,6 @@
 									<textarea name="textarea" id="skills" style="width:250px; height: 100px"></textarea>
 								</td>
 							</tr>
-							<tr> 
-								<td>
-									Description:
-								</td>
-								<td>
-									<textarea name="textarea" id="description" style="width:250px; height: 150px"></textarea>
-								</td>
-							</tr>
 						</tr>
 					</table>
 				</div>
@@ -146,7 +99,7 @@
 		<div>
 			<div class="btn-group btn-group-lg" role="button" style="padding-bottom: 20px">
 				<button type="submit" class="btn btn-success btn-lg" role="button">
-					Submit Job Posting
+					Search Job Postings
 				</button>
 			</div>
 		</div>
