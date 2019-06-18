@@ -11,19 +11,25 @@
     <title>View Job Postings</title>
 
     <style>
-        .jumbotron {
-            background-color: #FFE4B5;
-            color: black;
-            padding: 0px;
-            width: 100%;
-            overflow-y: scroll;
-        }
-        a:link, a:visited a:link:active, a:visited:active {
-            color: black;
-            text-decoration: none;
-            cursor: auto;
-        }
-    </style>
+    .jumbotron {
+        background-color: #FFE4B5;
+        color: black;
+        padding: 0px;
+        width: 100%;
+        overflow-y: scroll;
+    }
+    a:link {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    a:visited {
+        color: purple;
+        text-decoration: none
+        cursor: pointer;
+    }
+</style>
 </head>
 
 <body>
@@ -31,51 +37,53 @@
         <div class="page-header">
             <h1>View Job Postings</h1>
         </div>
-    <div class="container-fluid">
-        <div class="jumbotron">
-        <table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">PostingID</th>
-      <th scope="col">Job Title</th>
-      <th scope="col">Active</th>
-      <th scope="col">StartDate</th>
-      <th scope="col">Address</th>
-      <th scope="col">PostalCode</th>
-      <th scope="col">City</th>
-      <th scope="col">State</th>
-      <th scope="col">Description</th>
-      <th scope="col">Skills</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-    <div id="Row1"> 
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+        <div class="container-fluid">
+            <div class="jumbotron">
+                <table class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col" width="3%">ID</th>
+                      <th scope="col" width="7%">Title</th>
+                      <th scope="col" width="5%">Active</th>
+                      <th scope="col" width="7%">StartDate</th>
+                      <th scope="col" width="7%">Address</th>
+                      <th scope="col" width="5%">PostalCode</th>
+                      <th scope="col" width="7%">City</th>
+                      <th scope="col" width="7%" >State</th>
+                      <th colspan="2" width="15%">Description</th>
+                      <th scope="col" width="15%">Skills</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <div class=
+                <tr>
+                    <div id="Row1"> 
+                      <th scope="row">1</th>
+                      <td>title</td>
+                      <td>yes</td>
+                      <td>..</td>
+                  </div>
+              </tr>
+              <tr>
+                  <th scope="row">2</th>
+                  <td><a href="sampleUrl">Job title</a></td>
+                  <td>Tfds</td>
+                  <td>asdfl</td>
+              </tr>
+              <tr>
+                  <th scope="row">3</th>
+                  <td>Liasdfy</td>
+                  <td>the</td>
+                  <td>fd</td>
+              </tr>
+          </tbody>
+      </table>
   </div>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
-<!-- </div> -->
 
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html> 
