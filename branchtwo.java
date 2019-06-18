@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 /*
  * This class implements a graphical login window and a simple text
  * interface for interacting with the branch table 
@@ -27,6 +26,7 @@ public class branchtwo implements ActionListener
 	ServerSocket welcomeSocket;
 
     private Connection con;
+    private interviewAndOfferQueries intAndOff = new interviewAndOfferQueries(con);
 
     // user is allowed 3 login attempts
     private int loginAttempts = 0;
@@ -357,7 +357,7 @@ public class branchtwo implements ActionListener
 	/*
      * takes preparedstatement select query and executes query, returning JSON string
      */ 
-    private String getRecordsAsJSON(PreparedStatement ps)
+    String getRecordsAsJSON(PreparedStatement ps)
     {
 	  
 	try
@@ -504,7 +504,7 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 
-		System.out.println("Add Table ExperiencedAt? y/n ");
+		System.out.println("Add Table Endorses? y/n ");
 		choice = in.readLine();
 		if (choice == "y"){
 			ps = con.prepareStatement("CREATE TABLE "+
@@ -520,8 +520,32 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 
-		
+		System.out.println("Add Table Interview? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE "+
+					"Interview "+
+					"(applicantId int, status char(20), date date, time time, address char(20), "+
+					"PRIMARY KEY (applicantId, date, time),  "+
+					"FOREIGN KEY applicantId REFERENCES Application ON DELETE CASCADE)");
 
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+
+		System.out.println("Add Table Offer? y/n ");
+		choice = in.readLine();
+		if (choice == "y"){
+			ps = con.prepareStatement("CREATE TABLE "+
+					"Offer "+
+					"(offerId int PRIMARY KEY, status char(20), type char(20), hours int, compensation real, " +
+					"terminating char(20), startDate date, endDate date, expiryDate date, accountId int, postingId int, "+
+					"FOREIGN KEY accountId REFERENCES Account ON DELETE CASCADE"+
+					"FOREIGN KEY postingId REFERENCES Posting ON DELETE CASCADE)");
+
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
 
 		ps = con.prepareStatement("");
 		ps.close();
@@ -801,6 +825,108 @@ public class branchtwo implements ActionListener
 		con.commit();
 		//
 
+		query = "INSERT INTO Offer (offerId, status, type, hours, compensation, terminating, startDate, endDate, " +
+				"expiryDate, accountId, postingId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		ps = con.prepareStatement(query);
+
+		//Junior Software Developer
+		ps.setInt(1, 0);
+		ps.setString(2, "Active");
+		ps.setString(3, "Full Time");
+		ps.setInt(4, 40);
+		ps.setFloat(5, 23.50f);
+		ps.setString(6, "false");
+		ps.setDate(7, java.sql.Date.valueOf("2019-09-04"));
+		ps.setNull(8, 0);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-04"));
+		ps.setInt(10, 1);
+		ps.setInt(11, 51);
+		ps.addBatch();
+
+		//Construction
+		ps.setInt(1, 1);
+		ps.setFloat(5, 28.00f);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-28"));
+		ps.setInt(10, 83);
+		ps.addBatch();
+
+		//Architect
+		ps.setInt(1, 2);
+		ps.setFloat(5, 32.13f);
+		ps.setString(6, "true");
+		ps.setDate(8, java.sql.Date.valueOf("2021-09-04"));
+		ps.setDate(9, java.sql.Date.valueOf("2019-07-22"));
+		ps.setInt(10, 96);
+		ps.addBatch();
+
+		//Lab Technician
+		ps.setInt(1, 3);
+		ps.setString(2, "Expired");
+		ps.setFloat(5, 18.50f);
+		ps.setString(6, "true");
+		ps.setDate(8, java.sql.Date.valueOf("2020-01-13"));
+		ps.setDate(9, java.sql.Date.valueOf("2019-06-17"));
+		ps.setInt(10, 45);
+		ps.addBatch();
+
+		//Nurse
+		ps.setInt(1, 4);
+		ps.setFloat(5, 26.45f);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-15"));
+		ps.setInt(10, 37);
+		ps.addBatch();
+
+		ps.executeBatch();
+		con.commit();
+		//
+
+//		"(applicantId int, status char(20), date date, time time, address char(20), "
+		query = "INSERT INTO Interview (applicantId, status , date, time, address) VALUES (?, ?, ?, ?, ?)";
+		ps = con.prepareStatement(query);
+
+		//Junior Software Developer
+		ps.setInt(1, 0);
+		ps.setString(2, "Active");
+		ps.setDate(3, java.sql.Date.valueOf("2019-07-01"));
+		ps.setTime(4, java.sql.time.valueOf("15:30:00"));
+		ps.setString(5, "187 Main Street");
+		ps.addBatch();
+
+		//Construction
+		ps.setInt(1, 1);
+		ps.setString(2, "Expired");
+		ps.setDate(3, java.sql.Date.valueOf("2019-06-05"));
+		ps.setTime(4, java.sql.time.valueOf("17:00:00"));
+		ps.setString(5, "1080 Hamilton St.");
+		ps.addBatch();
+
+		//Architect
+		ps.setInt(1, 2);
+		ps.setString(2, "Accepted");
+		ps.setDate(3, java.sql.Date.valueOf("2019-07-12"));
+		ps.setTime(4, java.sql.time.valueOf("11:15:00"));
+		ps.setString(5, "123 Granville St.");
+		ps.addBatch();
+
+		//Lab Technician
+		ps.setInt(1, 3);
+		ps.setString(2, "Accepted");
+		ps.setDate(3, java.sql.Date.valueOf("2019-04-17"));
+		ps.setTime(4, java.sql.time.valueOf("14:45:00"));
+		ps.setString(5, "955 Hornby St.");
+		ps.addBatch();
+
+		//Nurse
+		ps.setInt(1, 4);
+		ps.setString(2, "Declined");
+		ps.setDate(3, java.sql.Date.valueOf("2019-06-21"));
+		ps.setTime(4, java.sql.time.valueOf("8:00:00"));
+		ps.setString(5, "11 Hamilton St.");
+		ps.addBatch();
+
+		ps.executeBatch();
+		con.commit();
+
 		ps.close();
 	}
 	catch (SQLException ex)
@@ -834,6 +960,18 @@ public class branchtwo implements ActionListener
                 break;
                 case "skill":
 					response = handleSkill(queryParams, urlPath, method); // urlPath[1] will likely be null
+                break;
+                case "allInterviews":
+                    response = intAndOff.handleAllInterviews(queryParams, urlPath, method);
+                break;
+                case "interview":
+                    response = intAndOff.handleInterview(queryParams, urlPath, method);
+                break;
+                case "allOffers":
+                    response = intAndOff.handleAllOffers(queryParams, urlPath, method);
+                break;
+                case "offer":
+                    response = intAndOff.handleOffer(queryParams, urlPath, method);
                 break;
 
                 // add entries here for each database entity type
