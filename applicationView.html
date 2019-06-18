@@ -8,10 +8,10 @@
     submitForm = function () {
             // not sure about applicationID, account ID
 
-            const postingid = document.getElementById('PostingID').value;
+            const postingid = document.getElementById('PostingID').value; // need posting id from URL?
             const coverletter = document.getElementById('coverletter').value;
             const resume = document.getElementById('resume').value;
-            const accountId = url.searchParams.get("accountId");
+            const accountId = url.searchParams.get('accountId');
             const applicationId = postingid+accountId; // just a way to generate application ID
    
             let urlPath = 'http://localhost:6789/application/';
