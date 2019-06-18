@@ -311,7 +311,7 @@ public class branchtwo implements ActionListener
 	/*
      * updates account table for specified account
      */ 
-    private int updateAccount(int accountId, String name, String email, String postalCode)
+    private String updateAccount(int accountId, String name, String email, String postalCode)
     {
 		// create postalcode?
 		PreparedStatement ps = con.prepareStatement("UPDATE TABLE Account SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
@@ -325,7 +325,7 @@ public class branchtwo implements ActionListener
 	/*
 	* executes preparedstatement update
 	*/
-	public int executeUpdateStatement(PreparedStatement ps){
+	public String executeUpdateStatement(PreparedStatement ps){
 		try
 		{
 			// disable auto commit mode
@@ -373,10 +373,11 @@ public class branchtwo implements ActionListener
 		// get number of columns
 		int numCols = rsmd.getColumnCount();
 
+		ArrayList<String> fields = new ArrayList<String>();
 		// get column names;
 		for (int i = 0; i < numCols; i++)
 		{
-		fields.push(rsmd.getColumnName(i+1));    
+			fields.add(rsmd.getColumnName(i+1));    
 		}
 
 		StringWriter sw = new StringWriter();
@@ -1122,9 +1123,9 @@ public class branchtwo implements ActionListener
 
     private  String handleAccount(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
-			return getAccount(queryParams.get("accountId"));
+			return getAccount(Integer.parseInt(queryParams.get("accountId")));
 		} else if (method == "PUT") {
-			return updateAccount(queryParams.get("accountId"),
+			return updateAccount(Integer.parseInt(queryParams.get("accountId")),
 				queryParams.get("name"), 
 				queryParams.get("email"), 
 				queryParams.get("postalCode"));
@@ -1133,13 +1134,13 @@ public class branchtwo implements ActionListener
     }
     private  String handleEndorsement(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
-			return getAccountEndorsements(queryParams.get("accountId"));
+			return getAccountEndorsements(Integer.parseInt(queryParams.get("accountId")));
 		}
 		return "[]";
     }
     private  String handleSkill(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
-			return getAccountSkills(queryParams.get("accountId"));
+			return getAccountSkills(Integer.parseInt(queryParams.get("accountId")));
 		}
 		return "[]";
     }
