@@ -43,7 +43,23 @@ updatePosting = function () {
     .catch((err) => console.error(err));
 };
 
-//searchPostings
+searchPostings = function() {
+    const title = document.getElementById('title').value;
+    const startDate = document.getElementById('startDate').value;
+    const cityName = document.getElementById('cityName').value;
+    const state = document.getElementById('state').value;
+    const skills = document.getElementById('skills').value;
+
+    let urlPath = 'http://localhost:6789/searchPostings';
+    urlPath += ('/?title=' + title + '&startDate=' + startDate + '&cityName=' + cityName + '&state=' + state + '&skills=' + skills);
+
+    fetch(urlPath,
+        {method: 'GET'})
+    .then((res) => res.json())
+    .then((data) => console.log(data))
+    .catch((err) => console.error(err));
+
+}
 
 getPosting = function (postingId) {
     let urlPath = 'http://localhost:6789/posting/' + postingId;

@@ -966,6 +966,9 @@ public class branchtwo implements ActionListener
                 case "posting":
                 	response = posting.handlePosting(queryParams, urlPath, method);
                 break;
+                case "searchPostings":
+                	response = posting.handleSearchPostings(queryParams, urlPath, method);
+                break;
                 case "postingSkill":
                 	response = posting.handleInvolves(queryParams, urlPath, method);
                 break;
@@ -1019,7 +1022,17 @@ public class branchtwo implements ActionListener
     }
     private  String handlePostingSkill(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
-			return posting.getPostingInvolves(queryParams.get("postingId"), queryParams.get("skillName"));
+			return posting.getPostingSkills(Integer.parseInt(queryParams.get("postingId")));
+		}
+		return "[]";
+    }
+
+    private  String handleSearchPostings(Map<String, String> queryParams, String[] path, String method){
+		if (method == "GET"){
+			return posting.searchPostings(queryParams.get("title"),  
+				queryParams.get("cityName"), 
+				queryParams.get("state"), 
+				queryParams.get("skills"));
 		}
 		return "[]";
     }
