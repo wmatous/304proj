@@ -26,7 +26,7 @@
   // ANTON:
 	private  String handleApplication(Map<String, String> queryParams, String[] path, String method){
 		if (method == "POST"){
-			return postApplication(Integer.parseInt(queryParams.get("applicationId")));
+			return postApplication(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"), queryParams.get("resume") ,Integer.parseInt(queryParams.get("accountId")), Integer.parseInt(queryParams.get("PostingID")));
 		}
 		
 		return "[]";
