@@ -1107,7 +1107,8 @@ public class branchtwo implements ActionListener
                     response = intAndOff.handleAllInterviews(queryParams, urlPath, method);
                 break;
                 case "interview":
-                    response = intAndOff.handleInterview(queryParams, urlPath, method);
+                	//not sure if we even need this case since the data should be fetched in previous page
+                    response = intAndOff.handleAllInterviews(queryParams, urlPath, method);
                 break;
                 case "allOffers":
                     response = intAndOff.handleAllOffers(queryParams, urlPath, method);
@@ -1115,6 +1116,9 @@ public class branchtwo implements ActionListener
                 case "offer":
                     response = intAndOff.handleOffer(queryParams, urlPath, method);
                 break;
+		case "application":
+		    response = handleApplication(queryParams, urlPath, method);
+		break;
 
                 // add entries here for each database entity type
             }
@@ -1169,6 +1173,26 @@ public class branchtwo implements ActionListener
 		}
 		return "[]";
     }
+
+	// Anton 
+private String postApplicationTable(int applicationId, String coverletter, String resume, int applicantID, int posting){
+		PreparedStatement ps = con.prepareStatement("INSERT INTO Application (ApplicationID, CoverLetter , Resume, ApplicantID,PostingID )VALUES (?, ? , ?, ?,? ); ");
+		ps.setInt(1, accountId);
+		ps.setString(2, coverletter);
+		ps.setString(3, resume);
+		ps.setInt(4, applicantID);
+		ps.setInt(5, posting);
+		ps.addBatch();
+		return getRecordsAsJSON(ps);
+	}
+	private  String handleApplication(Map<String, String> queryParams, String[] path, String method){
+		if (method == "POST"){
+			return postApplication(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"), queryParams.get("resume") ,Integer.parseInt(queryParams.get("accountId")), Integer.parseInt(queryParams.get("PostingID")));
+		}
+		
+		return "[]";
+    }
+    
 
     
     private  Map<String, String> getQueryMap(String query)  

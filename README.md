@@ -55,3 +55,13 @@ but dont mix GET with anything else
 public int executeUpdateStatement(PreparedStatement ps)
 ```
 deals with all the exception handling etc - returns the number of db rows created/updated - for insert, alter, create, drop statements
+
+# jsongenerator
+json is included by default in enterprise edition java, not our standard edition. we have to add the classes similar to how we added database support. I have all my zip and jar files in the same directory as my java source files, and use the following  bashsrc lines
+```
+export ORACLE_HOME=~/javasrc/classes12.zip 
+export CLASSPATH=.:./hb15.zip:$ORACLE_HOME:$CLASSPATH
+
+export CLASSPATH=.:/usr/lib/oracle/12.2/client64/lib/ojdbc8.jar:$CLASSPATH
+export CLASSPATH=.:./javax.json-api-1.1.jar:$CLASSPATH
+```
