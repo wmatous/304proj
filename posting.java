@@ -25,15 +25,16 @@ class posting {
     String             description;
     int                accountId;
     String             skillName;
-    int                yearsExperience
+    int                yearsExperience;
     PreparedStatement  ps;
     PreparedStatement  ps2;
+    PreparedStatement  ps3;
       
     try
     {
       ps = con.prepareStatement("INSERT INTO Posting VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
       ps2 = con.prepareStatement("INSERT INTO PostalCode VALUES (?, ?, ?)");
-      ps3 = con.prepareStatement("INSERT INTO Involves VALUES (?, ?, ?")
+      ps3 = con.prepareStatement("INSERT INTO Involves VALUES (?, ?, ?");
       // !!! do we still need just a Skill table
     
       System.out.print("\nPosting ID: ");
@@ -167,20 +168,20 @@ class posting {
     /*
      * returns specified posting
      */ 
-    private String getPosting(int postingId)
+    String getPosting(int postingId)
     {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE postingId = ?");
         // !!! add postalCode to get city Name + state?
         // !!! add skill to get all that too?
         // or do i just use methods below to get all that
         ps.setInt(1, postingId);
-        return getRecordsasJSON(ps);
+        return getRecordsAsJSON(ps);
     }
 
     /*
      * retrieves skills for specified posting
      */ 
-    private String getPostingSkills(int postingId)
+    String getPostingSkills(int postingId)
     {
         PreparedStatement ps = con.createStatement("SELECT skillName FROM Involves WHERE postingId = ?");
         ps.setInt(1, postingId);
@@ -188,7 +189,7 @@ class posting {
       
     }
 
-    private String getPostingCityAndAddress(int postingId)
+    String getPostingCityAndAddress(int postingId)
     {
         PreparedStatement ps = con.createStatement("SELECT cityName, state FROM PostalCode WHERE postalCode IN (SELECT postalCode FROM Posting WHERE postingId = ?");
         ps.setInt(1, postingId);
@@ -199,7 +200,7 @@ class posting {
     /*
      * retrieves postings with specified skill
      */ 
-    private String getAllPostingsInvolvingSkill(String skillName)
+    String getAllPostingsInvolvingSkill(String skillName)
     {
         PreparedStatement ps = con.createStatement("SELECT postingId FROM Involves, Posting WHERE skillName = ? AND Involves.postingId = Posting.postingId");
         ps.setString(2, skillName);
@@ -209,7 +210,7 @@ class posting {
     /*
     * returns all postings in database
     */
-    private String getAllPostings()
+    String getAllPostings()
     {
         PreparedStatement ps = con.createStatement("SELECT * FROM Posting, PostalCode, Involves WHERE Posting.postalCode = PostalCode.postalCode AND Involves.postingId = Posting.postingId");
         return getRecordsAsJSON(ps);
@@ -222,7 +223,7 @@ class posting {
     * returns all postings in city
     */
 
-    private String getPostingsByCityName(String cityName)
+    String getPostingsByCityName(String cityName)
     {
         PreparedStatement ps = con.createStatement("SELECT * FROM Posting, PostalCode WHERE PostalCode.cityName = ? AND Posting.postalCode = PostalCode.postalCode");
         ps.setString(2, cityName);
@@ -234,7 +235,7 @@ class posting {
     * returns all postings in a state
     */
 
-    private String getPostingsByState(String state)
+    String getPostingsByState(String state)
     {
         PreparedStatement ps = con.createStatement("SELECT * FROM Posting, PostalCode WHERE PostalCode.state = ? AND Posting.postalCode = PostalCode.postalCode");
         ps.setString(3, state);
@@ -255,7 +256,7 @@ class posting {
     /*
      * updates posting table for specified posting
      */ 
-    private int updatePosting(int postingId, String title, String active, Date startDate, String address, String postalCode, String description, int accountId)
+    int updatePosting(int postingId, String title, String active, Date startDate, String address, String postalCode, String description, int accountId)
     {
         PreparedStatement ps = con.createStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ?, accountId = ? WHERE postingId = ?");
         // !!! can we update accountId like this?

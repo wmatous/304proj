@@ -27,6 +27,7 @@ public class branchtwo implements ActionListener
 	ServerSocket welcomeSocket;
 
     private Connection con;
+    private posting posting = new posting(con);
 
     // user is allowed 3 login attempts
     private int loginAttempts = 0;
@@ -357,7 +358,7 @@ public class branchtwo implements ActionListener
 	/*
      * takes preparedstatement select query and executes query, returning JSON string
      */ 
-    private String getRecordsAsJSON(PreparedStatement ps)
+    String getRecordsAsJSON(PreparedStatement ps)
     {
 	  
 	try
@@ -963,10 +964,10 @@ public class branchtwo implements ActionListener
 					response = handleSkill(queryParams, urlPath, method); // urlPath[1] will likely be null
                 break;
                 case "posting":
-                	response = handlePosting(queryParams, urlPath, method);
+                	response = posting.handlePosting(queryParams, urlPath, method);
                 break;
                 case "postingSkill":
-                	response = handleInvolves(queryParams, urlPath, method);
+                	response = posting.handleInvolves(queryParams, urlPath, method);
                 break;
 
                 // add entries here for each database entity type
@@ -1003,9 +1004,9 @@ public class branchtwo implements ActionListener
 
     private  String handlePosting(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
-			return getPosting(queryParams.get("postingId"));
+			return posting.getPosting(queryParams.get("postingId"));
 		} else if (method == "PUT") {
-			return updatePosting(queryParams.get("postingId"),
+			return posting.updatePosting(queryParams.get("postingId"),
 				queryParams.get("title"), 
 				queryParams.get("active"),
 				queryParams.get("startDate"), 
@@ -1018,7 +1019,7 @@ public class branchtwo implements ActionListener
     }
     private  String handlePostingSkill(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
-			return getPostingInvolves(queryParams.get("postingId"), queryParams.get("skillName"));
+			return posting.getPostingInvolves(queryParams.get("postingId"), queryParams.get("skillName"));
 		}
 		return "[]";
     }
