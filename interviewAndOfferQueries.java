@@ -1,9 +1,5 @@
-import java.io.*;
-import java.net.*;
 import java.util.*;
 import java.sql.*;
-import oracle.jdbc.driver.OracleDriver;
-import javax.json.stream.*;
 
 class interviewAndOfferQueries {
 	private Connection con;
@@ -12,70 +8,71 @@ class interviewAndOfferQueries {
 	this.con = c;
 	}
 
-	String handleAllOffers(Map<String, String> queryParams, String[] path, String method) throws SQLException{
+	PreparedStatement handleAllOffers(Map<String, String> queryParams, String[] path, String method) throws SQLException{
 		if (method == "GET") {
-			return getAllOffers(queryParams.get("accountId"));
+			return getAllOffers(Integer.parseInt(queryParams.get("accountId")));
 		}
-		return "[]";
+		return null;
 	}
 
-	protected String getAllOffers(int accountId) throws SQLException{
+	protected PreparedStatement getAllOffers(int accountId) throws SQLException{
 		PreparedStatement ps = con.prepareStatement("SELECT O.status, O.startDate, O.expiryDate, O.offerId, C.name, C.accountId, P.position, P.postId " +
 				"FROM offer O, company C, posting P " +
 				"WHERE O.accountId = ?");
 		ps.setInt(1, accountId);
-		return getRecordsAsJSON(ps);
+		return ps;
 	}
 
-	String handleOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException{
+	PreparedStatement handleOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException{
 		if (method == "GET") {
-			return getOffer(queryParams.get("offerId"));
+			return getOffer(Integer.parseInt(queryParams.get("offerId")));
 		}
-		return "[]";
+		return null;
 	}
 
-	private String getOffer(int offerId) throws SQLException{
+	private PreparedStatement getOffer(int offerId) throws SQLException{
 		PreparedStatement ps = con.prepareStatement(
 				"SELECT offerId, status, type, hours, compensation, terminating, startDate, endDate, expiryDate "+
 						"FROM offer "+
 						"WHERE offerId = ?");
 		ps.setInt(1, offerId);
-		return getRecordsAsJSON(ps);
+		return ps;
 	}
 
-	String handleAllInterviews(Map<String, String> queryParams, String[] path, String method) throws SQLException{
+	PreparedStatement handleAllInterviews(Map<String, String> queryParams, String[] path, String method) throws SQLException{
 		if (method == "GET") {
-			return getAllInterviews(queryParams.get("accountId"));
+			return getAllInterviews(Integer.parseInt(queryParams.get("accountId")));
 		}
-		return "[]";
+		return null;
 	}
 
-	private String getAllInterviews(int accountId) throws SQLException{
+	private PreparedStatement getAllInterviews(int accountId) throws SQLException{
 		PreparedStatement ps = con.prepareStatement(
 				"SELECT I.status, I.date, I.address, I.time, I.interviewId, C.name, C.accountId, P.position, P.postId " +
 						"FROM interview I, company C, posting P " +
 						"WHERE I.accountId = ?");
 		ps.setInt(1, accountId);
-		return getRecordsAsJSON(ps);
+		return ps;
 	}
 
-//removed handler for singular interview because all interview data is fetched during getAllInterviews
+//removed handler for singular interview because all interview data is fetched during getAllInterview
+//might not need these methods either
 
-	private String getCompanyInfo(int companyId) throws SQLException{
+	private PreparedStatement getCompanyInfo(int companyId) throws SQLException{
 		PreparedStatement ps = con.prepareStatement(
 		"SELECT name, size, industry, address, email"+
 		"FROM company "+
 		"WHERE accountId = ?");
 		ps.setInt(1,companyId);
-		return getRecordsAsJSON(ps);
+		return ps;
 		}
 
-	private String getPositionInfo(int postId) throws SQLException{
+	private PreparedStatement getPositionInfo(int postId) throws SQLException{
 		PreparedStatement ps = con.prepareStatement(
 		"SELECT postId, position, description" +
 		"FROM posting " +
 		"WHERE postId = ?");
 		ps.setInt(1, postId);
-		return getRecordsAsJSON(ps);
+		return ps;
 		}
 }

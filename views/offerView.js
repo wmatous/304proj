@@ -1,7 +1,6 @@
 populateOfferView = function(offerData){
     var offer = offerData[0];
     document.getElementById('o-status').innerHTML = `<h3> Status: ${offer.status}</h3>`;
-    document.getElementById('o-expiryDate').innerHTML = `<h3> Expires: ${offer.status}</h3>`;
     document.getElementById('o-details').innerHTML = `
         <h4>Details</h4>
           <p class="lead">Information about this job offer</p>
@@ -9,9 +8,7 @@ populateOfferView = function(offerData){
           OfferID: ${offer.offerId}
           <br> Employment Type: ${offer.type}
           <br> Start Date: ${offer.startDate}
-          <br> 
           ////iff there terminating = true display endDate else dont.
-          <br> Hours: ${offer.hours}
           <br> Monetary Compensation: $ ${offer.compensation} per hour
           <br> <br>
           <div class="btn-group btn-group-lg" role="button">
@@ -22,33 +19,13 @@ populateOfferView = function(offerData){
                   Decline
               </button>
           </div>`;
-    document.getElementById('companyInfo').innerHTML = `
-        <div class="jumbotron">
-            <h4> Company-Name-Here </h4>
-            <p class="lead">Information about your potential future employer.</p>
-            <hr class="my-4">
-            Number of Employees:
-            <br> Industry:
-            <br> Address:
-            <br> Email Address:
-        </div>`;
-    document.getElementById('jobInfo').innerHTML = `
-        <div class="jumbotron">
-            <h4> Position-Name-Here </h4>
-            <p class="lead">Information about your potential future employment.</p>
-            <hr class="my-4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                        Posting Identification Number:
-                        <br> Description:
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                        <a href="#" class="btn btn-outline-dark btn-lg" role="button">View Job Posting</a>
-                    </div>
-                </div>
-            </div>
-        </div>`;
+    document.getElementById('o-offerId').innerHTML = `<h3> Status: ${offer.status}</h3>`;
+    document.getElementById('o-hours').innerHTML = `<h3> Status: ${offer.status}</h3>`;
+    document.getElementById('o-compensation').innerHTML = `<h3> Status: ${offer.status}</h3>`;
+    document.getElementById('o-terminating').innerHTML = `<h3> Status: ${offer.status}</h3>`;
+    document.getElementById('o-startDate').innerHTML = `<h3> Status: ${offer.status}</h3>`;
+    document.getElementById('o-endDate').innerHTML = `<h3> Status: ${offer.status}</h3>`;
+    document.getElementById('o-expiryDate').innerHTML = `<h3> Expiry Date: ${offer.expiryDate}</h3>`;
 };
 
 getOffer = function(offerId){
