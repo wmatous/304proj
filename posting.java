@@ -7,6 +7,7 @@ class posting {
   posting(Connection c) {
     this.con = c;
   }
+
   SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
   PreparedStatement handlePosting(Map<String, String> queryParams, String[] path, String method) throws SQLException {
@@ -31,6 +32,37 @@ class posting {
     return null;
   }
 
+  PreparedStatement handleSearchPostings(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+    if (method == "GET"){
+      return searchPostings(queryParams.get("title"), queryParams.get("cityName"), queryParams.get("state"), queryParams.get("skills"));
+    }
+    return null;
+  }
+
+  PreparedStatement searchPostings(String title, String cityName, String state, String skills) throws SQLException {
+    PreparedStatement titlePS;
+    PreparedStatement cityNamePS;
+    PreparedStatement statePS;
+    PreparedStatement skillsPS;
+
+    if (title != null) {
+      titlePS = getPostingsByTitle(title);
+    }
+    if (cityName != null) {
+      cityNamePS = getPostingsByCityName(cityName);
+    }
+    if (state != null) {
+      statePS = getPostingsByState(state);
+    }
+    if (skills != null) {
+      skillsPS = getAllPostingsInvolvingSkill(skills);
+    }
+
+    PreparedStatement ps = con.prepareStatement("titlePS INTERSECT cityNamePS INTERSECT statePS INTERSECT skillsPS");
+    // i have no idea if i can actually do this
+    return ps;
+  }
+
 
     /*
      * returns specified posting
@@ -39,7 +71,6 @@ class posting {
       PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE postingId = ?");
         // !!! add postalCode to get city Name + state?
         // !!! add skill to get all that too?
-        // or do i just use methods below to get all that
       ps.setInt(1, postingId);
       return ps;
     }
@@ -64,9 +95,10 @@ class posting {
     /*
      * retrieves postings with specified skill
      */ 
+
     PreparedStatement getAllPostingsInvolvingSkill(String skillName) throws SQLException {
-      PreparedStatement ps = con.prepareStatement("SELECT postingId FROM Involves, Posting WHERE skillName = ? AND Involves.postingId = Posting.postingId");
-      ps.setString(1, skillName);
+      PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId FROM Involves I, Posting P WHERE I.skillName = ? AND I.postingId = P.postingId");
+      ps.setString(2, skillName);
       return ps;
     }
 
@@ -74,61 +106,54 @@ class posting {
     * returns all postings in database
     */
     PreparedStatement getAllPostings() throws SQLException {
-      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting, PostalCode, Involves WHERE Posting.postalCode = PostalCode.postalCode AND Involves.postingId = Posting.postingId");
+      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting P, PostalCode PC, Involves I WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
       return ps;
         // natural join would probably be easier?
         // still need to get all the things here too
-
     }
 
+    PreparedStatement getPostingsByTitle(String title) throws SQLException {
+      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE title like %title%");
+      ps.setString(2, title);
+      return ps;
+    }
 
     /*
     * returns all postings in city
-
-
-    String getPostingsByCityName(String cityName)
-    {
-      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting, PostalCode WHERE PostalCode.cityName = ? AND Posting.postalCode = PostalCode.postalCode");
+    */
+    PreparedStatement getPostingsByCityName(String cityName) throws SQLException {
+      PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId FROM Posting P, PostalCode PC WHERE PC.cityName = ? AND P.postalCode = PC.postalCode");
       ps.setString(2, cityName);
-      return getRecordsAsJSON(ps);
-
+      return ps;
     }
 
     /*
     * returns all postings in a state
-
-
-    String getPostingsByState(String state)
-    {
-      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting, PostalCode WHERE PostalCode.state = ? AND Posting.postalCode = PostalCode.postalCode");
+    */
+    PreparedStatement getPostingsByState(String state) throws SQLException {
+      PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId FROM Posting P, PostalCode PC WHERE PC.state = ? AND P.postalCode = PC.postalCode");
       ps.setString(3, state);
-      return getRecordsAsJSON(ps);
+      return ps;
     }
-
-
-    /*
-    * returns all recommended postings
-
-    private String getAllRecommendedPostings() {
-        // ! should this be in account view or posting view??
-      return "";
-    }
-
-*/
 
     /*
      * updates posting table for specified posting
      */ 
     PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String description) throws SQLException {
       PreparedStatement ps = con.prepareStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ? WHERE postingId = ?");
-        // !!! can we update accountId like this?
-
+      // do we need to be guarding against nulls here?
       ps.setString(2, title);
       ps.setString(3, active);
       ps.setDate(4, startDate);
       ps.setString(5, address);
       ps.setString(6, postalCode);
       ps.setString(7, description);
+
+      con.setAutoCommit(false);
+      ps.executeUpdate();
+      con.commit();
+      ps.close();
+
       return ps;
     }
 

@@ -711,7 +711,6 @@ public class branchtwo implements ActionListener
 		ps.executeBatch();
 		con.commit();
 		//
-
 		query = "INSERT INTO City (cityName, state, country, population) VALUES (?, ?, ?, ?)";
 		ps = con.prepareStatement(query); 
 		//
@@ -1020,7 +1019,7 @@ public class branchtwo implements ActionListener
 		ps = con.prepareStatement(query);
 		ps.setInt(1, 51);
 		ps.setString(2, "Junior Software Developer");
-		ps.setString(3, "true"); // string?
+		ps.setString(3, "true");
 		ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
 		ps.setString(5, "187 Main Street");
 		ps.setString(6, "94103");
@@ -1030,7 +1029,7 @@ public class branchtwo implements ActionListener
 
 		ps.setInt(1, 83);
 		ps.setString(2, "Construction");
-		ps.setString(3, "false"); // string?
+		ps.setString(3, "false");
 		ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
 		ps.setString(5, "1080 Hamilton St.");
 		ps.setString(6, "V6S1H7");
@@ -1041,7 +1040,7 @@ public class branchtwo implements ActionListener
 
 		ps.setInt(1, 96);
 		ps.setString(2, "Architect");
-		ps.setString(3, "true"); // string?
+		ps.setString(3, "true");
 		ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
 		ps.setString(5, "123 Granville St.");
 		ps.setString(6, "V6T1Z4");
@@ -1051,7 +1050,7 @@ public class branchtwo implements ActionListener
 
 		ps.setInt(1, 45);
 		ps.setString(2, "Lab technician");
-		ps.setString(3, "true"); // string?
+		ps.setString(3, "true");
 		ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
 		ps.setString(5, "955 Hornby St.");
 		ps.setString(6, "V6S1H7");
@@ -1061,7 +1060,7 @@ public class branchtwo implements ActionListener
 
 		ps.setInt(1, 37);
 		ps.setString(2, "Nurse");
-		ps.setString(3, "true"); // string?
+		ps.setString(3, "true");
 		ps.setDate(4, java.sql.Date.valueOf("2019-12-08"));
 		ps.setString(5, "11 Hamilton St.");
 		ps.setString(6, "V6T1Z4");
