@@ -602,15 +602,32 @@ public class branchtwo implements ActionListener
 			System.out.println(ps.executeUpdate());
 			con.commit();
 		}
+
+		System.out.println("Add Table application? y/n ");
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
+			ps = con.prepareStatement("create table Application("+
+				"applicationID integer primary key, "+
+				"coverLetter char(2000), "+
+				"resume char(2000), "+
+				"applicantId integer NOT NULL, "+
+				"postingID integer NOT NULL, "+
+				"foreign key (applicantId) references Account (accountId) on delete cascade,"+ 
+				"foreign key (postingID) references Posting (postingid) on delete cascade)");
+
+			System.out.println(ps.executeUpdate());
+			con.commit();
+		}
+
 		
 		System.out.println("Add Table Interview? y/n ");
 		choice = Integer.parseInt(in.readLine());
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Interview "+
-					"(applicantId int, status char(20), date date, time time, address char(20), "+
+					"(applicantId integer, status char(20), date date, time time, address char(20), "+
 					"PRIMARY KEY (applicantId, date, time),  "+
-					"FOREIGN KEY applicantId REFERENCES Application ON DELETE CASCADE)");
+					"FOREIGN KEY applicantId REFERENCES Account (accountId) ON DELETE CASCADE)");
 
 			System.out.println(ps.executeUpdate());
 			con.commit();
@@ -663,16 +680,7 @@ public class branchtwo implements ActionListener
 	    }
 	}
 	}
-	private void createApplicationTable(){
-	PreparedStatement ps = con.prepareStatement("create table Application(
-										ApplicationID integer primary key,
-										CoverLetter char(2000),
-										Resume char(2000),
-										ApplicantID integer NOT NULL,
-										PostingID integer NOT NULL,
-										foreign key(ApplicantID) references Account(AccountID) one delete cascade,
-										foreign key(PostingID) references Account(Posting) one delete cascade);");
-	}
+	
 	/*
      * populates tables
      */ 
