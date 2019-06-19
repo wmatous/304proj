@@ -411,7 +411,6 @@ public class branchtwo implements ActionListener
      */ 
     String getRecordsAsJSON(PreparedStatement ps)
     {
-	  
 	try
 	{
 		// disable auto commit mode
@@ -428,7 +427,7 @@ public class branchtwo implements ActionListener
 		// get column names;
 		for (int i = 0; i < numCols; i++)
 		{
-			fields.add(rsmd.getColumnName(i+1));    
+			fields.add(rsmd.getColumnName(i+1)); 
 		}
 
 		StringWriter sw = new StringWriter();
@@ -444,8 +443,8 @@ public class branchtwo implements ActionListener
 				gen.write(s, rs.getString(s));
 			}
 			gen.writeEnd();
-			
 		}
+		gen.writeEnd();
 		gen.close();
 
 		con.commit();
@@ -1160,8 +1159,8 @@ public class branchtwo implements ActionListener
 	private  String dispatch(Map<String, String> queryParams, String[] urlPath, String method){
     	try{
         String response= "";
-        if(urlPath.length != 0) { // urlPath[0] will be entity type eg account, skill, posting etc
-			switch (urlPath[0]) {
+        if(urlPath.length != 0) { // urlPath[1] will be entity type eg account, skill, posting etc
+			switch (urlPath[1]) {
 				case "account":
 					response = handleAccount(queryParams, urlPath, method); // urlPath[1] will likely be null
 					break;
@@ -1217,7 +1216,7 @@ public class branchtwo implements ActionListener
     }
 
     private  String handleAccount(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-		if (method == "GET"){
+		if (method.equals("GET")){
 			return getAccount(Integer.parseInt(queryParams.get("accountId")));
 		} else if (method == "PUT") {
 			return updateAccount(Integer.parseInt(queryParams.get("accountId")),
@@ -1406,26 +1405,35 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 		}
 
 	public int runServer(){
+		try
+	    {
+			welcomeSocket = new ServerSocket(6789);
+	    }
+	    catch (Exception ex)
+	    {
+		 System.out.println("Message: " + ex.getMessage());
+		 System.exit(0);
+	    }
 		while(true){
 		try{
-			welcomeSocket = new ServerSocket(6789);
-			Socket connectionSocket = welcomeSocket.accept();
-			BufferedReader inFromClient =
-				new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 			String urlPath;
 			String method = "";
 			URL requestURL;
 			String[] parsedPath = new String[]{""};
 			Map<String, String> urlParams = new HashMap<String, String>();
+			Socket connectionSocket = welcomeSocket.accept();
+			BufferedReader inFromClient =
+				new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+			while(!inFromClient.ready()){}
 			while (inFromClient.ready() && (inFromClient.read(clientSentence, 0, 10000) != -1)) {
 				urlPath = new String(clientSentence).split(" ", 3)[1];
 				method = new String(clientSentence).split(" ", 3)[0];
 				requestURL = new URL("http://localhost:6789"+urlPath);
 				parsedPath = requestURL.getPath().split("/");
 				urlParams = getQueryMap(requestURL.getQuery());
-				System.out.println(clientSentence);
 			}
+
 			
 			String response="";
 			try{
@@ -1434,6 +1442,7 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 				System.out.println(e);
 				response = "[]";
 			}
+			
 			PrintWriter pw = new PrintWriter(outToClient);
 					pw.print("HTTP/1.1 200 \r\n"); // Version & status code
 					pw.print("Content-Type: application/json\r\n"); // The type of data

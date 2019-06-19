@@ -84,3 +84,32 @@ export CLASSPATH=.:./javax.json-api-1.1.jar:$CLASSPATH
 6. java branchtwo
 
 if you entered your u/p in helpers, you dont need to enter them in the popup
+
+# the server is alive
+but at some cost
+
+make sure you have the javax.json-1.1.jar file
+
+add the following line to your ~/.bashrc and dont forget to ``` source ~/.bashrc ```
+```
+CLASSPATH=.:./javax.json-1.1.jar:$CLASSPATH
+```
+then compile and run branchtwo
+
+add tables to your database, when prompted for y/n just choose any number except 0 for yes
+
+you might get an error that indicates you dont have enough space - in this case choose option 5 and enter 0 for all of the prompts - 
+itll clean up tutorial tables afterwards
+then choose option 3 to populate the database 
+
+# known issues
+some of the insert statements are going to fail. mainly because of constraint violations due to FK referencing a nonexistent record
+
+i added print statements to debug this. if a failure occurs, comment out everything above the last print statement, fix whatever 
+the bug is, recompile and try again
+
+also it is likely that your requests will all fail because i used str1 == str2 instead of str1.equals(str2) in a bunch of places.
+ look for that first as it is almost certainly the cause.
+
+lastly, because we used char() instead of varchar() in our tables, all those fields come back a fixed size with a bunch of whitespace.
+we can trim the whitespace in js, or go back and fix the tables
