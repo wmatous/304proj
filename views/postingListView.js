@@ -60,4 +60,4 @@ window.onload = function () {
     var url = new URL(window.location.href);
     getAllPostings();
     getSkills();
-}
+};

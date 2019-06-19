@@ -29,9 +29,9 @@ public class branchtwo implements ActionListener {
     // command line reader 
     private BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-    char[] clientSentence = new char[10000];
+    private char[] clientSentence = new char[10000];
     String capitalizedSentence;
-    ServerSocket welcomeSocket;
+    private ServerSocket welcomeSocket;
 
     private Connection con;
     private posting posting = new posting(con);
@@ -174,7 +174,7 @@ public class branchtwo implements ActionListener {
         }
     }
 
-    public void dropTable(String tableName) {
+    private void dropTable(String tableName) {
         {
 
             PreparedStatement ps;
@@ -352,7 +352,7 @@ public class branchtwo implements ActionListener {
     /*
      * executes preparedstatement update
      */
-    public String executeUpdateStatement(PreparedStatement ps) {
+    private String executeUpdateStatement(PreparedStatement ps) {
         try {
             // disable auto commit mode
             con.setAutoCommit(false);
@@ -378,7 +378,7 @@ public class branchtwo implements ActionListener {
     /*
      * takes preparedstatement select query and executes query, returning JSON string
      */
-    String getRecordsAsJSON(PreparedStatement ps) {
+    private String getRecordsAsJSON(PreparedStatement ps) {
         try {
             // disable auto commit mode
             con.setAutoCommit(false);
@@ -390,7 +390,7 @@ public class branchtwo implements ActionListener {
             // get number of columns
             int numCols = rsmd.getColumnCount();
 
-            ArrayList<String> fields = new ArrayList<String>();
+            ArrayList<String> fields = new ArrayList<>();
             // get column names;
             for (int i = 0; i < numCols; i++) {
                 fields.add(rsmd.getColumnName(i + 1));
@@ -1204,7 +1204,7 @@ public class branchtwo implements ActionListener {
 
 
     private Map<String, String> getQueryMap(String query) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         if (query == null) {
             return map;
         }
@@ -1336,7 +1336,7 @@ public class branchtwo implements ActionListener {
         }
     }
 
-    public int runServer() {
+    private int runServer() {
         try {
             welcomeSocket = new ServerSocket(6789);
         } catch (Exception ex) {
@@ -1349,7 +1349,7 @@ public class branchtwo implements ActionListener {
                 String method = "";
                 URL requestURL;
                 String[] parsedPath = new String[]{""};
-                Map<String, String> urlParams = new HashMap<String, String>();
+                Map<String, String> urlParams = new HashMap<>();
                 Socket connectionSocket = welcomeSocket.accept();
                 BufferedReader inFromClient =
                         new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));

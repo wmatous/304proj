@@ -13,7 +13,7 @@ populateAccountView = function (accounts) {
         document.getElementById('age').value = account.age;
         document.getElementById('status').value = account.status;
     }
-}
+};
 
 updateAccount = function () {
     const name = document.getElementById('name').value;
@@ -42,7 +42,7 @@ updateAccount = function () {
         .then((res) => res.json())
         .then(data => console.log(data))
         .catch(err => console.error(err));
-}
+};
 
 getAccount = function (accountId) {
     let urlPath = 'http://localhost:6789/account/?accountId=' + accountId;
@@ -53,7 +53,7 @@ getAccount = function (accountId) {
             populateAccountView(data);
         })
         .catch(err => console.error(err));
-}
+};
 
 populateSkills = function (skills) {
     let innerHTML = `<h1>Skills</h1>`;
@@ -61,7 +61,7 @@ populateSkills = function (skills) {
         innerHTML += `<span class='skillBox'>${skills[i].name}</span>`;
     }
     document.getElementById('skills').innerHTML = innerHTML;
-}
+};
 
 getSkills = function (accountId) {
     let urlPath = 'http://localhost:6789/skill/?accountId=' + accountId;
@@ -73,11 +73,11 @@ getSkills = function (accountId) {
         })
         .catch(err => console.error(err));
 
-}
+};
 
 populateEndorsements = function (endorsements) {
     document.getElementById('endorseCount').innerHTML = "Endorsed by" + endorsements[0].count;
-}
+};
 
 getEndorsements = function (accountId) {
     let urlPath = 'http://localhost:6789/endorsement/?accountId=' + accountId;
@@ -88,10 +88,9 @@ getEndorsements = function (accountId) {
             populateEndorsements(data);
         })
         .catch(err => console.error(err));
-}
+};
 populateRecommended = function (recs) {
-    return;
-}
+};
 
 getRecommended = function (loggedInAccount) {
     let urlPath = 'http://localhost:6789/recommended/?accountId=' + loggedInAccount;
@@ -102,13 +101,13 @@ getRecommended = function (loggedInAccount) {
             populateRecommended(data);
         })
         .catch(err => console.error(err));
-}
+};
 
 getCookie = function (name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
-}
+};
 
 window.onload = function () {
     var url = new URL(window.location.href);
@@ -122,4 +121,4 @@ window.onload = function () {
         getRecommended(loggedInAccount);
     }
 
-}
+};

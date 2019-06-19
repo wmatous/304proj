@@ -19,7 +19,7 @@ getAllOffers = function (offerId) {
 //join removes commas between array elements
 function populateOfferTable(offerData) {
     document.getElementById("offerTable").innerHTML = `${offerData.map(offerTemplate).join('')}`;
-};
+}
 
 function offerTemplate(offer) {
     return `
@@ -35,7 +35,7 @@ function offerTemplate(offer) {
                 <td>${offer.expiryDate}</td>
             </div>
         </tr>`
-};
+}
 
 viewOffer = function (offerId) {
 //modify from offerView once its done

@@ -11,25 +11,24 @@ class interviewAndOfferQueries {
     }
 
     PreparedStatement handleAllOffers(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method == "GET") {
+        if (method.equals("GET")) {
             return getAllOffers(Integer.parseInt(queryParams.get("accountId")));
         }
         return null;
     }
 
-    protected PreparedStatement getAllOffers(int accountId) throws SQLException {
+    private PreparedStatement getAllOffers(int accountId) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT O.status, O.startDate, O.expiryDate, O.offerId, C.name, C.accountId, P.position, P.postId " +
                 "FROM offer O, company C, posting P " +
-                "WHERE  O.postingId = P.postingID AND P.accountId = C.accountID AND  O.accountId = ?");
+                "WHERE  O.postingId = P.postingID AND P.accountId = C.accountID AND O.accountId = ?");
         ps.setInt(1, accountId);
         return ps;
     }
 
     PreparedStatement handleAnOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method == "GET") {
+        if (method.equals("GET")) {
             return getAnOffer(Integer.parseInt(queryParams.get("offerId")));
-        }
-        if (method == "PUT") {
+        } else if (method.equals("PUT")) {
             return updateAnOffer(Integer.parseInt(queryParams.get("offerId")),
                     queryParams.get("status"));
         }
@@ -54,7 +53,7 @@ class interviewAndOfferQueries {
     }
 
     PreparedStatement handleAllInterviews(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method == "GET") {
+        if (method.equals("GET")) {
             return getAllInterviews(Integer.parseInt(queryParams.get("accountId")));
         }
         return null;
@@ -70,10 +69,9 @@ class interviewAndOfferQueries {
     }
 
     PreparedStatement handleAnInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method == "GET") {
+        if (method.equals("GET")) {
             return getAnInterview(Integer.parseInt(queryParams.get("applicantId")));
-        }
-        if (method == "PUT") {
+        } else if (method.equals("PUT")) {
             return updateAnInterview(Integer.parseInt(queryParams.get("applicantId")),
                     queryParams.get("status"));
         }

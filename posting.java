@@ -14,9 +14,9 @@ class posting {
     SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     PreparedStatement handlePosting(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method == "GET") {
+        if (method.equals("GET")) {
             return getPosting(Integer.parseInt(queryParams.get("postingId")));
-        } else if (method == "PUT") {
+        } else if (method.equals("PUT")) {
             return updatePosting(Integer.parseInt(queryParams.get("postingId")),
                     queryParams.get("title"),
                     queryParams.get("active"),
@@ -29,27 +29,27 @@ class posting {
     }
 
     PreparedStatement handlePostingSkill(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method == "GET") {
+        if (method.equals("GET")) {
             return getPostingSkills(Integer.parseInt(queryParams.get("postingId")));
         }
         return null;
     }
 
     PreparedStatement handleAllPostings(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method == "GET") {
+        if (method.equals("GET")) {
             return getAllPostings();
         }
         return null;
     }
 
     PreparedStatement handleSearchPostings(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method == "GET") {
+        if (method.equals("GET")) {
             return searchPostings(queryParams.get("title"), queryParams.get("cityName"), queryParams.get("state"), queryParams.get("skills"));
         }
         return null;
     }
 
-    PreparedStatement searchPostings(String title, String cityName, String state, String skills) throws SQLException {
+    private PreparedStatement searchPostings(String title, String cityName, String state, String skills) throws SQLException {
         PreparedStatement titlePS;
         PreparedStatement cityNamePS;
         PreparedStatement statePS;
@@ -76,7 +76,7 @@ class posting {
     /*
      * returns specified posting
      */
-    PreparedStatement getPosting(int postingId) throws SQLException {
+    private PreparedStatement getPosting(int postingId) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE postingId = ?");
         ps.setInt(1, postingId);
         return ps;
@@ -85,7 +85,7 @@ class posting {
     /*
      * retrieves skills for specified posting
      */
-    PreparedStatement getPostingSkills(int postingId) throws SQLException {
+    private PreparedStatement getPostingSkills(int postingId) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name FROM Involves WHERE postingId = ?");
         ps.setInt(1, postingId);
         return ps;
@@ -94,7 +94,7 @@ class posting {
 
     PreparedStatement getPostingCityAndAddress(int postingId) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT cityName, state FROM PostalCode " +
-                "WHERE postalCode IN (SELECT postalCode FROM Posting WHERE postingId = ?");
+                "WHERE postalCode IN (SELECT postalCode FROM Posting WHERE postingId = ?)");
         ps.setInt(1, postingId);
         // no idea if i can do it this way
         return ps;
@@ -103,7 +103,7 @@ class posting {
     /*
      * retrieves postings with specified skill
      */
-    PreparedStatement getAllPostingsInvolvingSkill(String skillName) throws SQLException {
+    private PreparedStatement getAllPostingsInvolvingSkill(String skillName) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId" +
                 "FROM Involves I, Posting P WHERE I.name = ? AND I.postingId = P.postingId");
         ps.setString(2, skillName);
@@ -113,7 +113,7 @@ class posting {
     /*
      * returns all postings in database
      */
-    PreparedStatement getAllPostings() throws SQLException {
+    private PreparedStatement getAllPostings() throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting P, PostalCode PC, Involves I " +
                 "WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
         return ps;
@@ -122,7 +122,7 @@ class posting {
     /*
      * returns a posting by title
      */
-    PreparedStatement getPostingsByTitle(String title) throws SQLException {
+    private PreparedStatement getPostingsByTitle(String title) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE title LIKE %title%");
         ps.setString(2, title);
         return ps;
@@ -131,7 +131,7 @@ class posting {
     /*
      * returns all postings in city
      */
-    PreparedStatement getPostingsByCityName(String cityName) throws SQLException {
+    private PreparedStatement getPostingsByCityName(String cityName) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId FROM Posting P, PostalCode PC WHERE PC.cityName = ? AND P.postalCode = PC.postalCode");
         ps.setString(1, cityName);
         return ps;
@@ -140,7 +140,7 @@ class posting {
     /*
      * returns all postings in a state
      */
-    PreparedStatement getPostingsByState(String state) throws SQLException {
+    private PreparedStatement getPostingsByState(String state) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId FROM Posting P, PostalCode PC WHERE PC.state = ? AND P.postalCode = PC.postalCode");
         ps.setString(1, state);
         return ps;
@@ -149,7 +149,7 @@ class posting {
     /*
      * updates posting table for specified posting
      */
-    PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String description) throws SQLException {
+    private PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String description) throws SQLException {
         PreparedStatement ps = con.prepareStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ? WHERE postingId = ?");
         // do we need to be guarding against nulls here?
         ps.setString(1, title);

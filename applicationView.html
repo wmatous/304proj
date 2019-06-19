@@ -4,7 +4,7 @@
     loadaccountid = function () {
         var url = new URL(location.href);
         var accountId = url.searchParams.get("accountId");
-    }
+    };
     submitForm = function () {
         // not sure about applicationID, account ID
 
@@ -14,7 +14,7 @@
         const accountId = url.searchParams.get("accountId");
         const applicationId = postingid + accountId; // just a way to generate application ID
 
-        let urlPath = 'http://localhost:6789/application/';
+        urlPath = 'http://localhost:6789/application/';
         urlPath = ('&accountId=' + accountId + '&PostingID=' + postingid + '&applicationId=' + applicationId +
             '&coverletter=' + coverletter + '&resume=' + resume); // pretty dumb way to pass texts like that
         // post coverletter
@@ -24,20 +24,20 @@
             .then((res) => res.json())
             .then(data => console.log(data))
             .catch(err => console.error(err));
-    }
+    };
 
     listApplications = function () {
         let appl = document.getElementById("applications");
         appl.style.visibility = "visible";
         const accountId = url.searchParams.get("accountId");
-        let urlPath = 'http://localhost:6789/application/';
+        urlPath = 'http://localhost:6789/application/';
         urlPath = ('&accountId=' + accountId);
         fetch(urlPath,
             {method: 'GET'})
             .then((res) => res.json())
             .then(data => append(data))
             .catch(err => console.error(err));
-    }
+    };
 
     function append(data) {
         var accumulator = document.getElementById("applications");
@@ -86,7 +86,7 @@
             <td>
                     <textarea name='coverletter'
                               id='coverletter'
-                              cols='20' rows='10'/></textarea>
+                              cols='20' rows='10'></textarea>
             </td>
         </tr>
         <tr>
@@ -96,7 +96,7 @@
             <td>
                     <textarea name='resume'
                               id='resume'
-                              cols='20' rows='10'/></textarea>
+                              cols='20' rows='10'></textarea>
             </td>
         </tr>
     </table>

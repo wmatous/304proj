@@ -47,7 +47,7 @@ public class javaserver {
                 String urlPath;
                 URL requestURL;
                 String[] parsedPath = new String[]{""};
-                Map<String, String> urlParams = new HashMap<String, String>();
+                Map<String, String> urlParams = new HashMap<>();
                 while (inFromClient.ready() && (inFromClient.read(clientSentence, 0, 10000) != -1)) {
                     urlPath = new String(clientSentence).split(" ", 3)[1];
 
@@ -105,7 +105,7 @@ public class javaserver {
 
 
     private static Map<String, String> getQueryMap(String query) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         if (query == null) {
             return map;
         }

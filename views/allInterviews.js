@@ -20,7 +20,7 @@ getAllInterviews = function (applicantId) {
 function populateInterviewTable(interviewData) {
     document.getElementById("interviewTable").innerHTML =
         `${interviewData.map(interviewTemplate).join('')}`;
-};
+}
 
 function interviewTemplate(interview) {
     return `
@@ -37,7 +37,7 @@ function interviewTemplate(interview) {
                 <td>${interview.address}</td>
             </div>
         </tr>`
-};
+}
 
 viewInterview = function (offerId) {
 //modify from offerView once its done
