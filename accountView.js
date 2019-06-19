@@ -64,7 +64,7 @@ populateSkills = function(skills){
 }
 
 getSkills = function(accountId){
-    let urlPath = 'http://localhost:6789/skill/'+accountId;
+    let urlPath = 'http://localhost:6789/skill/?accountId='+accountId;
     fetch(urlPath)
     .then((res) => res.json())
     .then(data => {
@@ -80,7 +80,7 @@ populateEndorsements = function(endorsements){
 }
 
 getEndorsements = function(accountId){
-    let urlPath = 'http://localhost:6789/endorsement/'+accountId;
+    let urlPath = 'http://localhost:6789/endorsement/?accountId='+accountId;
     fetch(urlPath)
     .then((res) => res.json())
     .then(data => {
@@ -88,8 +88,27 @@ getEndorsements = function(accountId){
         populateEndorsements(data);
     })
     .catch(err => console.error(err));
-
 }
+populateRecommended = function(recs){
+    return;
+}
+
+getRecommended = function(loggedInAccount){
+    let urlPath = 'http://localhost:6789/recommended/?accountId='+accountId;
+    fetch(urlPath)
+    .then((res) => res.json())
+    .then(data => {
+        console.log(data);
+        populateRecommended(data);
+    })
+    .catch(err => console.error(err));
+}
+
+getCookie = function(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+  }
 
 window.onload = function(){
     var url = new URL(window.location.href);
@@ -97,4 +116,10 @@ window.onload = function(){
     getAccount(accountId);
     getSkills(accountId);
     getEndorsements(accountId);
+    var loggedInAccount = getCookie('accountId');
+    if (loggedInAccount){
+        document.getElementById("saveButton").hidden = false;
+        getRecommended(loggedInAccount);
+    }
+
 }
