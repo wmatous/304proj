@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.sql.Date;
 import java.util.*;
 import java.sql.*;
 import oracle.jdbc.driver.OracleDriver;
@@ -1025,7 +1026,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 0);
 		ps.setString(2, "Active");
 		ps.setDate(3, java.sql.Date.valueOf("2019-07-01"));
-		ps.setTime(4, java.sql.time.valueOf("15:30:00"));
+		ps.setTime(4, java.sql.Time.valueOf("15:30:00"));
 		ps.setString(5, "187 Main Street");
 		ps.addBatch();
 
@@ -1033,7 +1034,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 1);
 		ps.setString(2, "Expired");
 		ps.setDate(3, java.sql.Date.valueOf("2019-06-05"));
-		ps.setTime(4, java.sql.time.valueOf("17:00:00"));
+		ps.setTime(4, java.sql.Time.valueOf("17:00:00"));
 		ps.setString(5, "1080 Hamilton St.");
 		ps.addBatch();
 
@@ -1041,7 +1042,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 2);
 		ps.setString(2, "Accepted");
 		ps.setDate(3, java.sql.Date.valueOf("2019-07-12"));
-		ps.setTime(4, java.sql.time.valueOf("11:15:00"));
+		ps.setTime(4, java.sql.Time.valueOf("11:15:00"));
 		ps.setString(5, "123 Granville St.");
 		ps.addBatch();
 
@@ -1049,7 +1050,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 3);
 		ps.setString(2, "Accepted");
 		ps.setDate(3, java.sql.Date.valueOf("2019-04-17"));
-		ps.setTime(4, java.sql.time.valueOf("14:45:00"));
+		ps.setTime(4, java.sql.Time.valueOf("14:45:00"));
 		ps.setString(5, "955 Hornby St.");
 		ps.addBatch();
 
@@ -1057,7 +1058,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 4);
 		ps.setString(2, "Declined");
 		ps.setDate(3, java.sql.Date.valueOf("2019-06-21"));
-		ps.setTime(4, java.sql.time.valueOf("8:00:00"));
+		ps.setTime(4, java.sql.Time.valueOf("8:00:00"));
 		ps.setString(5, "11 Hamilton St.");
 		ps.addBatch();
 
@@ -1104,17 +1105,17 @@ public class branchtwo implements ActionListener
                 case "postingSkill":
                 	response = posting.handleInvolves(queryParams, urlPath, method);
                 case "allInterviews":
-                    response = intAndOff.handleAllInterviews(queryParams, urlPath, method);
+                    response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
                 break;
                 case "interview":
                 	//not sure if we even need this case since the data should be fetched in previous page
-                    response = intAndOff.handleAllInterviews(queryParams, urlPath, method);
+                    response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
                 break;
                 case "allOffers":
-                    response = intAndOff.handleAllOffers(queryParams, urlPath, method);
+                    response = getRecordsAsJSON(intAndOff.handleAllOffers(queryParams, urlPath, method));
                 break;
                 case "offer":
-                    response = intAndOff.handleOffer(queryParams, urlPath, method);
+                    response = getRecordsAsJSON(intAndOff.handleOffer(queryParams, urlPath, method));
                 break;
 		case "application":
 		    response = handleApplication(queryParams, urlPath, method);
