@@ -595,7 +595,7 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 
-		ps = con.prepareStatement("");
+		ps = con.prepareStatement("CREATE TABLE test (name char(30) PRIMARY KEY)");
 		ps.close();
 		
 	}
