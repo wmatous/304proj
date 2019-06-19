@@ -6,12 +6,12 @@ getPosting = function (postingId) {
     .then((res) => res.json())
     .then(function(data) {
         console.log(data);
-        populatePostingView(data);
+        populateSinglePostingView(data);
     })
     .catch((err) => console.error(err));
 };
 
-populatePostingView = function (postings) {
+populateSinglePostingView = function (postings) {
     var posting = postings[0];
     document.getElementById('postingId').value = posting.postingId;
     document.getElementById('title').value = posting.title;
@@ -50,7 +50,26 @@ updatePosting = function() {
     .then((res) => res.json())
     .then((data) => console.log(data))
     .catch((err) => console.error(err));
-}
+};
+
+populateSkills = function (skills) {
+    let innerHTML = '<h1>Skills</h1>';
+    for (let i = 0; i < skills.length; i++) {
+        innerHTML += "<span>"+skills[i].name+"</span>";
+    }
+    document.getElementById('skills').innerHTML = innerHTML;
+};
+
+getSkills = function(postingId){
+    let urlPath = 'http://localhost:6789/postingSkill/'+postingId;
+    fetch(urlPath)
+    .then((res) => res.json())
+    .then(function(data){
+        console.log(data);
+        populateSkills(data);
+    })
+    .catch((err) => console.error(err));
+};
 
 searchPostings = function () {
     const title = document.getElementById('title').value;
@@ -66,11 +85,11 @@ searchPostings = function () {
     .then((res) => res.json())
     .then((data) => console.log(data))
     .catch((err) => console.error(err));
-}
+};
 
 
 window.onload = function(){
     var url = new URL(window.location.href);
     var postingId = url.searchParams.get("postingId");
     getPosting(postingId);
-}
+};
