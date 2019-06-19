@@ -27,6 +27,10 @@ class interviewAndOfferQueries {
 		if (method == "GET") {
 			return getAnOffer(Integer.parseInt(queryParams.get("offerId")));
 		}
+		if (method == "PUT"){
+			return updateAnOffer(Integer.parseInt(queryParams.get("offerId")),
+					queryParams.get("status"));
+		}
 		return null;
 	}
 
@@ -36,6 +40,14 @@ class interviewAndOfferQueries {
 						"FROM offer "+
 						"WHERE offerId = ?");
 		ps.setInt(1, offerId);
+		return ps;
+	}
+
+	private PreparedStatement updateAnOffer(int offerId, String status) throws SQLException {
+		PreparedStatement ps = con.prepareStatement(
+				"UPDATE TABLE Offer SET status = ? WHERE offerId = ?");
+		ps.setString(1, status);
+		ps.setInt(2, offerId);
 		return ps;
 	}
 
@@ -57,7 +69,11 @@ class interviewAndOfferQueries {
 
 	PreparedStatement handleAnInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method == "GET") {
-			return getAnInterview(Integer.parseInt(queryParams.get("applicationId")));
+			return getAnInterview(Integer.parseInt(queryParams.get("applicantId")));
+		}
+		if (method == "PUT"){
+			return updateAnInterview(Integer.parseInt(queryParams.get("applicantId")),
+					queryParams.get("status"));
 		}
 		return null;
 	}
@@ -68,6 +84,14 @@ class interviewAndOfferQueries {
 						"FROM interview I, company C, posting P " +
 						"WHERE I.applicationId = ?");
 		ps.setInt(1, applicationId);
+		return ps;
+	}
+
+	private PreparedStatement updateAnInterview(int applicantId, String status) throws SQLException {
+		PreparedStatement ps = con.prepareStatement(
+				"UPDATE TABLE Interview SET status = ? WHERE applicantId = ?");
+		ps.setString(1, status);
+		ps.setInt(2, applicantId);
 		return ps;
 	}
 
