@@ -782,13 +782,13 @@ public class branchtwo implements ActionListener {
             ps.setString(4, "94103");
             ps.addBatch();
             //
-            ps.setInt(1, 9);
+            ps.setInt(1, 10);
             ps.setString(2, "Airbnb");
             ps.setString(3, "info@airbnb.com");
             ps.setString(4, "V6B1C1");
             ps.addBatch();
             //
-            ps.setInt(1, 9);
+            ps.setInt(1, 11);
             ps.setString(2, "Zoom Carpets");
             ps.setString(3, "info@zoomcarpets.com");
             ps.setString(4, "V6S1H7");
@@ -1007,7 +1007,7 @@ public class branchtwo implements ActionListener {
             ps.setString(5, "11 Hamilton St.");
             ps.setString(6, "V6T1Z4");
             ps.setString(7, "Hospital is looking for more OR nurses, experience preferred.");
-            ps.setInt(8, 2);
+            ps.setInt(8, 5);
             ps.addBatch();
 
             ps.executeBatch();
