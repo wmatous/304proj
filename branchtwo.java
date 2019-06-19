@@ -709,6 +709,7 @@ public class branchtwo implements ActionListener
 		
 		ps.executeBatch();
 		con.commit();
+		System.out.println("CLs done");
 		//
 		query = "INSERT INTO City (cityName, state, country, population) VALUES (?, ?, ?, ?)";
 		ps = con.prepareStatement(query); 
@@ -738,6 +739,7 @@ public class branchtwo implements ActionListener
 		ps.executeBatch();
 		con.commit();
 		//
+		System.out.println("Cities done");
 
 		query = "INSERT INTO Account (accountId, name, email, postalCode) VALUES (?, ?, ?, ?)";
 		ps = con.prepareStatement(query);
@@ -811,6 +813,8 @@ public class branchtwo implements ActionListener
 		con.commit();
 		//
 
+		System.out.println("accounts done");
+
 		query = "INSERT INTO Skill (name) VALUES (?)";
 		ps = con.prepareStatement(query);
 		//
@@ -842,6 +846,8 @@ public class branchtwo implements ActionListener
 		
 		ps.executeBatch();
 		con.commit();
+
+		System.out.println("skills done");
 		//
 
 		query = "INSERT INTO ExperiencedAt (accountId, name) VALUES (?, ?)";
@@ -888,6 +894,8 @@ public class branchtwo implements ActionListener
 
 		ps.executeBatch();
 		con.commit();
+
+		System.out.println("expats done");
 		//
 
 		query = "INSERT INTO Endorses (endorserID, endorsedID) VALUES (?, ?)";
@@ -922,6 +930,8 @@ public class branchtwo implements ActionListener
 		ps.executeBatch();
 		con.commit();
 		//
+
+		System.out.println("endorse done");
 
 		query = "INSERT INTO Involves (postingId, skillName, yearsExperience) VALUES (?, ?, ?)";
 		ps = con.prepareStatement(query);
@@ -958,60 +968,7 @@ public class branchtwo implements ActionListener
 		ps.executeBatch();
 		con.commit();
 
-
-		query = "INSERT INTO Offer (offerId, status, type, hours, compensation, terminating, startDate, endDate, " +
-				"expiryDate, accountId, postingId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		ps = con.prepareStatement(query);
-
-		//Junior Software Developer
-		ps.setInt(1, 0);
-		ps.setString(2, "Active");
-		ps.setString(3, "Full Time");
-		ps.setInt(4, 40);
-		ps.setFloat(5, 23.50f);
-		ps.setString(6, "false");
-		ps.setDate(7, java.sql.Date.valueOf("2019-09-04"));
-		ps.setNull(8, 0);
-		ps.setDate(9, java.sql.Date.valueOf("2019-08-04"));
-		ps.setInt(10, 1);
-		ps.setInt(11, 51);
-		ps.addBatch();
-
-		//Construction
-		ps.setInt(1, 1);
-		ps.setFloat(5, 28.00f);
-		ps.setDate(9, java.sql.Date.valueOf("2019-08-28"));
-		ps.setInt(10, 83);
-		ps.addBatch();
-
-		//Architect
-		ps.setInt(1, 2);
-		ps.setFloat(5, 32.13f);
-		ps.setString(6, "true");
-		ps.setDate(8, java.sql.Date.valueOf("2021-09-04"));
-		ps.setDate(9, java.sql.Date.valueOf("2019-07-22"));
-		ps.setInt(10, 96);
-		ps.addBatch();
-
-		//Lab Technician
-		ps.setInt(1, 3);
-		ps.setString(2, "Expired");
-		ps.setFloat(5, 18.50f);
-		ps.setString(6, "true");
-		ps.setDate(8, java.sql.Date.valueOf("2020-01-13"));
-		ps.setDate(9, java.sql.Date.valueOf("2019-06-17"));
-		ps.setInt(10, 45);
-		ps.addBatch();
-
-		//Nurse
-		ps.setInt(1, 4);
-		ps.setFloat(5, 26.45f);
-		ps.setDate(9, java.sql.Date.valueOf("2019-08-15"));
-		ps.setInt(10, 37);
-		ps.addBatch();
-
-		ps.executeBatch();
-		con.commit();
+		System.out.println("involves done");
 
 
 		query = "INSERT INTO Posting (postingId, title, active, startDate, address, postalCode, description, accountId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -1069,6 +1026,68 @@ public class branchtwo implements ActionListener
 
 		ps.executeBatch();
 		con.commit();
+
+		System.out.println("postings done");
+
+
+		query = "INSERT INTO Offer (offerId, status, type, hours, compensation, terminating, startDate, endDate, " +
+				"expiryDate, accountId, postingId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		ps = con.prepareStatement(query);
+
+		//Junior Software Developer
+		ps.setInt(1, 0);
+		ps.setString(2, "Active");
+		ps.setString(3, "Full Time");
+		ps.setInt(4, 40);
+		ps.setFloat(5, 23.50f);
+		ps.setString(6, "false");
+		ps.setDate(7, java.sql.Date.valueOf("2019-09-04"));
+		ps.setNull(8, 0);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-04"));
+		ps.setInt(10, 1);
+		ps.setInt(11, 51);
+		ps.addBatch();
+
+		//Construction
+		ps.setInt(1, 1);
+		ps.setFloat(5, 28.00f);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-28"));
+		ps.setInt(10, 83);
+		ps.addBatch();
+
+		//Architect
+		ps.setInt(1, 2);
+		ps.setFloat(5, 32.13f);
+		ps.setString(6, "true");
+		ps.setDate(8, java.sql.Date.valueOf("2021-09-04"));
+		ps.setDate(9, java.sql.Date.valueOf("2019-07-22"));
+		ps.setInt(10, 96);
+		ps.addBatch();
+
+		//Lab Technician
+		ps.setInt(1, 3);
+		ps.setString(2, "Expired");
+		ps.setFloat(5, 18.50f);
+		ps.setString(6, "true");
+		ps.setDate(8, java.sql.Date.valueOf("2020-01-13"));
+		ps.setDate(9, java.sql.Date.valueOf("2019-06-17"));
+		ps.setInt(10, 45);
+		ps.addBatch();
+
+		//Nurse
+		ps.setInt(1, 4);
+		ps.setFloat(5, 26.45f);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-15"));
+		ps.setInt(10, 37);
+		ps.addBatch();
+
+		ps.executeBatch();
+		con.commit();
+
+		System.out.println("offers done");
+
+
+		
 		
 
 //		"(applicantId int, status char(20), date date, time time, address char(20), "
@@ -1117,6 +1136,8 @@ public class branchtwo implements ActionListener
 
 		ps.executeBatch();
 		con.commit();
+
+		System.out.println("interviews done");
 
 		ps.close();
 	}
