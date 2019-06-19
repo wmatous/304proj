@@ -18,19 +18,19 @@ class interviewAndOfferQueries {
 	protected PreparedStatement getAllOffers(int accountId) throws SQLException {
 		PreparedStatement ps = con.prepareStatement("SELECT O.status, O.startDate, O.expiryDate, O.offerId, C.name, C.accountId, P.position, P.postId " +
 				"FROM offer O, company C, posting P " +
-				"WHERE O.accountId = ?");
+				"WHERE  O.postingId = P.postingID AND P.accountId = C.accountID AND  O.accountId = ?");
 		ps.setInt(1, accountId);
 		return ps;
 	}
 
-	PreparedStatement handleOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+	PreparedStatement handleAnOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method == "GET") {
-			return getOffer(Integer.parseInt(queryParams.get("offerId")));
+			return getAnOffer(Integer.parseInt(queryParams.get("offerId")));
 		}
 		return null;
 	}
 
-	private PreparedStatement getOffer(int offerId) throws SQLException {
+	private PreparedStatement getAnOffer(int offerId) throws SQLException {
 		PreparedStatement ps = con.prepareStatement(
 				"SELECT offerId, status, type, hours, compensation, terminating, startDate, endDate, expiryDate "+
 						"FROM offer "+
@@ -46,12 +46,28 @@ class interviewAndOfferQueries {
 		return null;
 	}
 
-	private PreparedStatement getAllInterviews(int accountId) throws SQLException {
+	private PreparedStatement getAllInterviews(int applicantId) throws SQLException {
+		PreparedStatement ps = con.prepareStatement(
+				"SELECT I.status, I.date, I.address, I.time, I.interviewId, C.name, C.accountId, P.position, P.postId " +
+						"FROM interview I, company C, posting P, application A" +
+						"WHERE A.postingId = P.postingId AND I.applicantId = A.applicantId AND P.accountId = C.accountId AND A.applicantId = ?");
+		ps.setInt(1, applicantId);
+		return ps;
+	}
+
+	PreparedStatement handleAnInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+		if (method == "GET") {
+			return getAnInterview(Integer.parseInt(queryParams.get("applicationId")));
+		}
+		return null;
+	}
+
+	private PreparedStatement getAnInterview(int applicationId) throws SQLException {
 		PreparedStatement ps = con.prepareStatement(
 				"SELECT I.status, I.date, I.address, I.time, I.interviewId, C.name, C.accountId, P.position, P.postId " +
 						"FROM interview I, company C, posting P " +
-						"WHERE I.accountId = ?");
-		ps.setInt(1, accountId);
+						"WHERE I.applicationId = ?");
+		ps.setInt(1, applicationId);
 		return ps;
 	}
 

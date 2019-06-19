@@ -1,9 +1,32 @@
+acceptInterview = function(applicationId){
+
+};
+
+declineInterview = function(applicationId){
+
+};
+
+viewPost = function(postId){
+
+};
+
 populateInterviewView = function(interviewData){
     var interview = interviewData[0];
     document.getElementById('i-status').innerHTML = `<h3> Status: ${interview.status}</h3>`;
     document.getElementById('i-date').innerHTML = `<h3> Date: ${interview.date}</h3>`;
     document.getElementById('i-time').innerHTML = `<h3> Time: ${interview.time}</h3>`;
     document.getElementById('i-address').innerHTML = `<h3> Address: ${interview.address}</h3>`;
+    document.getElementById('viewButton').innerHTML = `
+       <br>
+       <a href="#" class="btn btn-outline-dark btn-md" onsubmit="viewPost(${interview.postId})" role="button">View Job Posting</a>`;
+    document.getElementById('adButtons').innerHTML = `
+       <button type="submit" class="btn btn-success btn-lg" onsubmit="acceptInterview(${interview.applicationId})" role="button">
+            Accept
+        </button>
+        <button type="submit" class="btn btn-danger btn-lg" onsubmit="declineInterview(${interview.applicationId})" role="button">
+            Decline
+        </button>`;
+
 };
 
 getInterview = function(applicantId){
