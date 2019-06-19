@@ -4,6 +4,7 @@ import java.util.*;
 import java.sql.*;
 import oracle.jdbc.driver.OracleDriver;
 import javax.json.stream.*;
+import javax.json.Json;
 
 import static helpers.DBVars.username;
 import static helpers.DBVars.password;
@@ -1116,9 +1117,9 @@ public class branchtwo implements ActionListener
                 case "offer":
                     response = intAndOff.handleOffer(queryParams, urlPath, method);
                 break;
-		case "application":
-		    response = handleApplication(queryParams, urlPath, method);
-		break;
+				case "application":
+					response = handleApplication(queryParams, urlPath, method);
+				break;
 
                 // add entries here for each database entity type
             }
