@@ -144,7 +144,7 @@ class posting {
     /*
      creates a new job posting
      */
-     /*
+     
     private void createPosting()
     {
     int                postingId;
@@ -250,7 +250,7 @@ class posting {
         }
     }
     }
-    */
+    
 
     /*
      * deletes a job posting
