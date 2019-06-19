@@ -279,6 +279,20 @@ public class branchtwo implements ActionListener
 	}
     }
 
+	/*
+     * retrieves recommended postings for account
+     */ 
+    private String getRecommendedPostings(int accountId)
+    {
+		PreparedStatement ps = con.prepareStatement("SELECT Involves.postingId "+
+		"FROM (((Account "+
+		"INNER JOIN ExperiencedAt ON ExperiencedAt.accountId = Account.accountId) "+
+		"INNER JOIN Skill ON Skill.name = ExperiencedAt.name) "+
+		"INNER JOIN Involves ON Involves.name = Skill.name ) WHERE Account.accountId = ?");
+		ps.setInt(1, accountId);
+		return getRecordsAsJSON(ps);
+	  
+	}
 
 	/*
      * retrieves endorsement count for account
@@ -1093,6 +1107,9 @@ public class branchtwo implements ActionListener
             switch(urlPath[0]){
                 case "account":
                     response = handleAccount(queryParams, urlPath, method); // urlPath[1] will likely be null
+				break;
+				case "recommended":
+                    response = handleRecommended(queryParams, urlPath, method); // urlPath[1] will likely be null
                 break;
                 case "endorsement":
 					response = handleEndorsement(queryParams, urlPath, method); // urlPath[1] will likely be null
@@ -1128,7 +1145,14 @@ public class branchtwo implements ActionListener
         return response;
     }
 
-    // add a handler method here for each type
+	// add a handler method here for each type
+	
+	private  String handleRecommended(Map<String, String> queryParams, String[] path, String method){
+		if (method == "GET"){
+			return getRecommendedPostings(Integer.parseInt(queryParams.get("accountId")));
+		}
+		return "[]";
+    }
 
     private  String handleAccount(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
@@ -1339,49 +1363,51 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 		}
 
 	public int runServer(){
-	try{
-		welcomeSocket = new ServerSocket(6789);
-		Socket connectionSocket = welcomeSocket.accept();
-		BufferedReader inFromClient =
-			new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-		DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-		String urlPath;
-		String method;
-		URL requestURL;
-		String[] parsedPath = new String[]{""};
-		Map<String, String> urlParams = new HashMap<String, String>();
-		while (inFromClient.ready() && (inFromClient.read(clientSentence, 0, 10000) != -1)) {
-			urlPath = new String(clientSentence).split(" ", 3)[1];
-			method = new String(clientSentence).split(" ", 3)[0];
-			requestURL = new URL("http://localhost:6789"+urlPath);
-			parsedPath = requestURL.getPath().split("/");
-			urlParams = getQueryMap(requestURL.getQuery());
-			System.out.println(clientSentence);
-		}
-		
-		String response="";
+		while(true){
 		try{
-			response = dispatch(urlParams, parsedPath, method);
-		} catch (Exception e){
-			System.out.println(e);
-			response = "[]";
-		}
-		PrintWriter pw = new PrintWriter(outToClient);
-				pw.print("HTTP/1.1 200 \r\n"); // Version & status code
-				pw.print("Content-Type: application/json\r\n"); // The type of data
-				pw.print("Access-Control-Allow-Origin: *\r\n");
-				pw.print("X-Content-Type-Options: nosniff\r\n");
-				pw.print("Access-Control-Allow-Headers: *\r\n");
-				pw.print("Allow: OPTIONS, GET, HEAD, POST\r\n");
-				pw.print("Connection: close\r\n"); // Will close stream
-				pw.print("\r\n"); // End of headers
-				pw.println(response);
-				pw.flush();
-				pw.close();
-		// fetch('http://localhost:6789/path/?params').then((res) => res.json()).then(data => console.log(data)).catch(err => console.error(err));
-		}catch(Exception e){
-			System.out.println(e);
-			return 1;
+			welcomeSocket = new ServerSocket(6789);
+			Socket connectionSocket = welcomeSocket.accept();
+			BufferedReader inFromClient =
+				new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+			String urlPath;
+			String method = "";
+			URL requestURL;
+			String[] parsedPath = new String[]{""};
+			Map<String, String> urlParams = new HashMap<String, String>();
+			while (inFromClient.ready() && (inFromClient.read(clientSentence, 0, 10000) != -1)) {
+				urlPath = new String(clientSentence).split(" ", 3)[1];
+				method = new String(clientSentence).split(" ", 3)[0];
+				requestURL = new URL("http://localhost:6789"+urlPath);
+				parsedPath = requestURL.getPath().split("/");
+				urlParams = getQueryMap(requestURL.getQuery());
+				System.out.println(clientSentence);
+			}
+			
+			String response="";
+			try{
+				response = dispatch(urlParams, parsedPath, method);
+			} catch (Exception e){
+				System.out.println(e);
+				response = "[]";
+			}
+			PrintWriter pw = new PrintWriter(outToClient);
+					pw.print("HTTP/1.1 200 \r\n"); // Version & status code
+					pw.print("Content-Type: application/json\r\n"); // The type of data
+					pw.print("Access-Control-Allow-Origin: *\r\n");
+					pw.print("X-Content-Type-Options: nosniff\r\n");
+					pw.print("Access-Control-Allow-Headers: *\r\n");
+					pw.print("Allow: OPTIONS, GET, HEAD, POST\r\n");
+					pw.print("Connection: close\r\n"); // Will close stream
+					pw.print("\r\n"); // End of headers
+					pw.println(response);
+					pw.flush();
+					pw.close();
+			// fetch('http://localhost:6789/path/?params').then((res) => res.json()).then(data => console.log(data)).catch(err => console.error(err));
+			}catch(Exception e){
+				System.out.println(e);
+				return 1;
+			}
 		}
 	}
 
