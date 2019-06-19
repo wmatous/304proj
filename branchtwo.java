@@ -6,14 +6,14 @@ import java.util.*;
 import java.sql.*;
 import oracle.jdbc.driver.OracleDriver;
 
-import javax.json.Json;
-import javax.json.stream.*;
+import javax.json.*;
 
 import static helpers.DBVars.username;
 import static helpers.DBVars.password;
 
 
 // for the login window
+import javax.json.stream.JsonGenerator;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -285,8 +285,7 @@ public class branchtwo implements ActionListener
 	/*
      * retrieves recommended postings for account
      */ 
-    private String getRecommendedPostings(int accountId)
-    {
+    private String getRecommendedPostings(int accountId) throws SQLException {
 		PreparedStatement ps = con.prepareStatement("SELECT Involves.postingId "+
 		"FROM (((Account "+
 		"INNER JOIN ExperiencedAt ON ExperiencedAt.accountId = Account.accountId) "+
@@ -300,8 +299,7 @@ public class branchtwo implements ActionListener
 	/*
      * retrieves endorsement count for account
      */ 
-    private String getAccountEndorsements(int accountId)
-    {
+    private String getAccountEndorsements(int accountId) throws SQLException {
 		PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) as count FROM Endorses WHERE endorsedId = ?");
 		ps.setInt(1, accountId);
 		return getRecordsAsJSON(ps);
@@ -311,8 +309,7 @@ public class branchtwo implements ActionListener
 	/*
      * retrieves skills for account
      */ 
-    private String getAccountSkills(int accountId)
-    {
+    private String getAccountSkills(int accountId) throws SQLException {
 		PreparedStatement ps = con.prepareStatement("SELECT name FROM ExperiencedAt WHERE accountId = ?");
 		ps.setInt(1, accountId);
 		return getRecordsAsJSON(ps);
@@ -322,8 +319,7 @@ public class branchtwo implements ActionListener
 	/*
      * retrieves specified account
      */ 
-    private String getAccount(int accountId)
-    {
+    private String getAccount(int accountId) throws SQLException {
 		PreparedStatement ps = con.prepareStatement("SELECT * FROM Account WHERE accountId = ?");
 		ps.setInt(1, accountId);
 		return getRecordsAsJSON(ps);
@@ -333,8 +329,7 @@ public class branchtwo implements ActionListener
 	/*
      * updates account table for specified account
      */ 
-    private String updateAccount(int accountId, String name, String email, String postalCode)
-    {
+    private String updateAccount(int accountId, String name, String email, String postalCode) throws SQLException {
 		// create postalcode?
 		PreparedStatement ps = con.prepareStatement("UPDATE TABLE Account SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
 		ps.setString(1, name);
@@ -600,7 +595,7 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 
-		ps = con.prepareStatement("");
+		ps = con.prepareStatement("CREATE TABLE test (name char(30) PRIMARY KEY)");
 		ps.close();
 		
 	}
@@ -633,7 +628,16 @@ public class branchtwo implements ActionListener
 	    }
 	}
 	}
-
+	private void createApplicationTable(){
+	PreparedStatement ps = con.prepareStatement("create table Application(
+										ApplicationID integer primary key,
+										CoverLetter char(2000),
+										Resume char(2000),
+										ApplicantID integer NOT NULL,
+										PostingID integer NOT NULL,
+										foreign key(ApplicantID) references Account(AccountID) one delete cascade,
+										foreign key(PostingID) references Account(Posting) one delete cascade);");
+	}
 	/*
      * populates tables
      */ 
@@ -1091,63 +1095,66 @@ public class branchtwo implements ActionListener
 	}
 
 	private  String dispatch(Map<String, String> queryParams, String[] urlPath, String method){
+    	try{
         String response= "";
-        if(urlPath.length != 0){ // urlPath[0] will be entity type eg account, skill, posting etc
-            switch(urlPath[0]){
-                case "account":
-                    response = handleAccount(queryParams, urlPath, method); // urlPath[1] will likely be null
-				break;
+        if(urlPath.length != 0) { // urlPath[0] will be entity type eg account, skill, posting etc
+			switch (urlPath[0]) {
+				case "account":
+					response = handleAccount(queryParams, urlPath, method); // urlPath[1] will likely be null
+					break;
 				case "recommended":
-                    response = handleRecommended(queryParams, urlPath, method); // urlPath[1] will likely be null
-                break;
-                case "endorsement":
+					response = handleRecommended(queryParams, urlPath, method); // urlPath[1] will likely be null
+					break;
+				case "endorsement":
 					response = handleEndorsement(queryParams, urlPath, method); // urlPath[1] will likely be null
-                break;
-                case "skill":
+					break;
+				case "skill":
 					response = handleSkill(queryParams, urlPath, method); // urlPath[1] will likely be null
-                break;
-                case "posting":
-                	response = getRecordsAsJSON(posting.handlePosting(queryParams, urlPath, method));
-                break;
-                case "postingSkill":
-                	response = getRecordsAsJSON(posting.handlePostingSkill(queryParams, urlPath, method)); 
-                break;
-                case "searchPostings":
-                	response = getRecordsAsJSON(posting.handleSearchPostings(queryParams, urlPath, method)); 
-                break;
-                case "allInterviews":
-                    response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
-                break;
-                case "interview":
-                	//not sure if we even need this case since the data should be fetched in previous page
-                    response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
-                break;
-                case "allOffers":
-                    response = getRecordsAsJSON(intAndOff.handleAllOffers(queryParams, urlPath, method));
-                break;
-                case "offer":
-                    response = getRecordsAsJSON(intAndOff.handleOffer(queryParams, urlPath, method));
-                break;
+					break;
+				case "posting":
+					response = getRecordsAsJSON(posting.handlePosting(queryParams, urlPath, method));
+					break;
+				case "postingSkill":
+					response = getRecordsAsJSON(posting.handlePostingSkill(queryParams, urlPath, method));
+					break;
+				case "allInterviews":
+					response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
+					break;
+				case "interview":
+					//not sure if we even need this case since the data should be fetched in previous page
+					response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
+					break;
+				case "allOffers":
+					response = getRecordsAsJSON(intAndOff.handleAllOffers(queryParams, urlPath, method));
+					break;
+				case "offer":
+					response = getRecordsAsJSON(intAndOff.handleOffer(queryParams, urlPath, method));
+					break;
 				case "application":
 					response = handleApplication(queryParams, urlPath, method);
-				break;
+					break;
 
-                // add entries here for each database entity type
-            }
+				// add entries here for each database entity type
+			}
+		}
+			return response;
         }
-        return response;
+        catch(Exception e){
+			System.out.println(e);
+		}
+        return "[]";
     }
 
 	// add a handler method here for each type
 	
-	private  String handleRecommended(Map<String, String> queryParams, String[] path, String method){
+	private  String handleRecommended(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method == "GET"){
 			return getRecommendedPostings(Integer.parseInt(queryParams.get("accountId")));
 		}
 		return "[]";
     }
 
-    private  String handleAccount(Map<String, String> queryParams, String[] path, String method){
+    private  String handleAccount(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method == "GET"){
 			return getAccount(Integer.parseInt(queryParams.get("accountId")));
 		} else if (method == "PUT") {
@@ -1158,13 +1165,13 @@ public class branchtwo implements ActionListener
 		}
 		return "[]";
     }
-    private  String handleEndorsement(Map<String, String> queryParams, String[] path, String method){
+    private  String handleEndorsement(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method == "GET"){
 			return getAccountEndorsements(Integer.parseInt(queryParams.get("accountId")));
 		}
 		return "[]";
     }
-    private  String handleSkill(Map<String, String> queryParams, String[] path, String method){
+    private  String handleSkill(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method == "GET"){
 			return getAccountSkills(Integer.parseInt(queryParams.get("accountId")));
 		}
@@ -1172,7 +1179,7 @@ public class branchtwo implements ActionListener
     }
 
 	// Anton 
-private String postApplicationTable(int applicationId, String coverletter, String resume, int applicantID, int posting){
+private String postApplicationTable(int applicationId, String coverletter, String resume, int applicantID, int posting) throws SQLException {
 		PreparedStatement ps = con.prepareStatement("INSERT INTO Application (ApplicationID, CoverLetter , Resume, ApplicantID,PostingID )VALUES (?, ? , ?, ?,? ); ");
 		ps.setInt(1, applicationId);
 		ps.setString(2, coverletter);
@@ -1181,9 +1188,9 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 		ps.setInt(5, posting);
 		return getRecordsAsJSON(ps);
 	}
-	private  String handleApplication(Map<String, String> queryParams, String[] path, String method){
+	private  String handleApplication(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method == "POST"){
-			return postApplication(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"), queryParams.get("resume") ,Integer.parseInt(queryParams.get("accountId")), Integer.parseInt(queryParams.get("PostingID")));
+			return postApplicationTable(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"), queryParams.get("resume") ,Integer.parseInt(queryParams.get("accountId")), Integer.parseInt(queryParams.get("PostingID")));
 		}
 		
 		return "[]";
@@ -1380,278 +1387,8 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 				return 1;
 			}
 		}
-		return 0;
 	}
 
-
-    /*
-     * inserts a branch
-     
-    private void insertBranch()
-    {
-	int                bid;
-	String             bname;
-	String             baddr;
-	String             bcity;
-	int                bphone;
-	PreparedStatement  ps;
-	  
-	try
-	{
-	  ps = con.prepareStatement("INSERT INTO branch VALUES (?,?,?,?,?)");
-	
-	  System.out.print("\nBranch ID: ");
-	  bid = Integer.parseInt(in.readLine());
-	  ps.setInt(1, bid);
-
-	  System.out.print("\nBranch Name: ");
-	  bname = in.readLine();
-	  ps.setString(2, bname);
-
-	  System.out.print("\nBranch Address: ");
-	  baddr = in.readLine();
-	  
-	  if (baddr.length() == 0)
-          {
-	      ps.setString(3, null);
-	  }
-	  else
-	  {
-	      ps.setString(3, baddr);
-	  }
-	 
-	  System.out.print("\nBranch City: ");
-	  bcity = in.readLine();
-	  ps.setString(4, bcity);
-
-	  System.out.print("\nBranch Phone: ");
-	  String phoneTemp = in.readLine();
-	  if (phoneTemp.length() == 0)
-	  {
-	      ps.setNull(5, java.sql.Types.INTEGER);
-	  }
-	  else
-	  {
-	      bphone = Integer.parseInt(phoneTemp);
-	      ps.setInt(5, bphone);
-	  }
-
-	  ps.executeUpdate();
-
-	  // commit work 
-	  con.commit();
-
-	  ps.close();
-	}
-	catch (IOException e)
-	{
-	    System.out.println("IOException!");
-	}
-	catch (SQLException ex)
-	{
-	    System.out.println("Message: " + ex.getMessage());
-	    try 
-	    {
-		// undo the insert
-		con.rollback();	
-	    }
-	    catch (SQLException ex2)
-	    {
-		System.out.println("Message: " + ex2.getMessage());
-		System.exit(-1);
-	    }
-	}
-    } */
-
-
-    /*
-     * deletes a branch
-      
-    private void deleteBranch()
-    {
-	int                bid;
-	PreparedStatement  ps;
-	  
-	try
-	{
-	  ps = con.prepareStatement("DELETE FROM branch WHERE branch_id = ?");
-	
-	  System.out.print("\nBranch ID: ");
-	  bid = Integer.parseInt(in.readLine());
-	  ps.setInt(1, bid);
-
-	  int rowCount = ps.executeUpdate();
-
-	  if (rowCount == 0)
-	  {
-	      System.out.println("\nBranch " + bid + " does not exist!");
-	  }
-
-	  con.commit();
-
-	  ps.close();
-	}
-	catch (IOException e)
-	{
-	    System.out.println("IOException!");
-	}
-	catch (SQLException ex)
-	{
-	    System.out.println("Message: " + ex.getMessage());
-
-            try 
-	    {
-		con.rollback();	
-	    }
-	    catch (SQLException ex2)
-	    {
-		System.out.println("Message: " + ex2.getMessage());
-		System.exit(-1);
-	    }
-	}
-	}
-	*/
-    
-
-    /*
-     * updates the name of a branch
-     
-    private void updateBranch()
-    {
-	int                bid;
-	String             bname;
-	PreparedStatement  ps;
-	  
-	try
-	{
-	  ps = con.prepareStatement("UPDATE branch SET branch_name = ? WHERE branch_id = ?");
-	
-	  System.out.print("\nBranch ID: ");
-	  bid = Integer.parseInt(in.readLine());
-	  ps.setInt(2, bid);
-
-	  System.out.print("\nBranch Name: ");
-	  bname = in.readLine();
-	  ps.setString(1, bname);
-
-	  int rowCount = ps.executeUpdate();
-	  if (rowCount == 0)
-	  {
-	      System.out.println("\nBranch " + bid + " does not exist!");
-	  }
-
-	  con.commit();
-
-	  ps.close();
-	}
-	catch (IOException e)
-	{
-	    System.out.println("IOException!");
-	}
-	catch (SQLException ex)
-	{
-	    System.out.println("Message: " + ex.getMessage());
-	    
-	    try 
-	    {
-		con.rollback();	
-	    }
-	    catch (SQLException ex2)
-	    {
-		System.out.println("Message: " + ex2.getMessage());
-		System.exit(-1);
-	    }
-	}	
-	}
-	*/
-
-    
-    /*
-     * display information about branches
-     
-    private void showBranch()
-    {
-	String     bid;
-	String     bname;
-	String     baddr;
-	String     bcity;
-	String     bphone;
-	Statement  stmt;
-	ResultSet  rs;
-	   
-	try
-	{
-	  stmt = con.prepareStatement();
-
-	  rs = stmt.executeQuery("SELECT * FROM branch");
-
-	  // get info on ResultSet
-	  ResultSetMetaData rsmd = rs.getMetaData();
-
-	  // get number of columns
-	  int numCols = rsmd.getColumnCount();
-
-	  System.out.println(" ");
-	  
-	  // display column names;
-	  for (int i = 0; i < numCols; i++)
-	  {
-	      // get column name and print it
-
-	      System.out.printf("%-15s", rsmd.getColumnName(i+1));    
-	  }
-
-	  System.out.println(" ");
-
-	  while(rs.next())
-	  {
-	      // for display purposes get everything from Oracle 
-	      // as a string
-
-	      // simplified output formatting; truncation may occur
-
-	      bid = rs.getString("branch_id");
-	      System.out.printf("%-10.10s", bid);
-
-	      bname = rs.getString("branch_name");
-	      System.out.printf("%-20.20s", bname);
-
-	      baddr = rs.getString("branch_addr");
-	      if (rs.wasNull())
-	      {
-	    	  System.out.printf("%-20.20s", " ");
-              }
-	      else
-	      {
-	    	  System.out.printf("%-20.20s", baddr);
-	      }
-
-	      bcity = rs.getString("branch_city");
-	      System.out.printf("%-15.15s", bcity);
-
-	      bphone = rs.getString("branch_phone");
-	      if (rs.wasNull())
-	      {
-	    	  System.out.printf("%-15.15s\n", " ");
-              }
-	      else
-	      {
-	    	  System.out.printf("%-15.15s\n", bphone);
-	      }      
-	  }
- 
-	  // close the statement; 
-	  // the ResultSet will also be closed
-	  stmt.close();
-	}
-	catch (SQLException ex)
-	{
-	    System.out.println("Message: " + ex.getMessage());
-	}	
-	}
-	*/
-    
- 
     public static void main(String args[])
     {
 		branchtwo b = new branchtwo();
