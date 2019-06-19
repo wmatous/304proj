@@ -974,9 +974,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 51);
 		ps.setString(2, "Junior Software Developer");
 		ps.setString(3, "true"); // string?
-		//java.sql.Date sqlDate := new java.sql.Date(2019-);
-		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-		ps.setDate(4, new Date(2019, 7, 7));
+		ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
 		ps.setString(5, "187 Main Street");
 		ps.setString(6, "94103");
 		ps.setString(7, "Seeking full time agile software developer with experience in Java.");
@@ -986,9 +984,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 83);
 		ps.setString(2, "Construction");
 		ps.setString(3, "false"); // string?
-		//java.sql.Date sqlDate := new java.sql.Date(2019-);
-		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-		ps.setDate(4, new Date(2019, 8, 5));
+		ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
 		ps.setString(5, "1080 Hamilton St.");
 		ps.setString(6, "V6S1H7");
 		ps.setString(7, "Looking for a construction worker to start in the fall doing physical labor.");
@@ -999,9 +995,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 96);
 		ps.setString(2, "Architect");
 		ps.setString(3, "true"); // string?
-		//java.sql.Date sqlDate := new java.sql.Date(2019-);
-		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-		ps.setDate(4, new Date(2019, 7, 5));
+		ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
 		ps.setString(5, "123 Granville St.");
 		ps.setString(6, "V6T1Z4");
 		ps.setString(7, "Small firm looking to hire experienced architect.");
@@ -1011,9 +1005,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 45);
 		ps.setString(2, "Lab technician");
 		ps.setString(3, "true"); // string?
-		//java.sql.Date sqlDate := new java.sql.Date(2019-);
-		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-		ps.setDate(4, new Date(2019, 10, 5));
+		ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
 		ps.setString(5, "955 Hornby St.");
 		ps.setString(6, "V6S1H7");
 		ps.setString(7, "Medical lab needs technician to analyze results and draw blood.");
@@ -1023,9 +1015,7 @@ public class branchtwo implements ActionListener
 		ps.setInt(1, 37);
 		ps.setString(2, "Nurse");
 		ps.setString(3, "true"); // string?
-		//java.sql.Date sqlDate := new java.sql.Date(2019-);
-		//ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-		ps.setDate(4, new Date(2019, 12, 8));
+		ps.setDate(4, java.sql.Date.valueOf("2019-12-08"));
 		ps.setString(5, "11 Hamilton St.");
 		ps.setString(6, "V6T1Z4");
 		ps.setString(7, "Hospital is looking for more OR nurses, experience preferred.");
@@ -1035,7 +1025,6 @@ public class branchtwo implements ActionListener
 		ps.executeBatch();
 		con.commit();
 		
-		//
 
 //		"(applicantId int, status char(20), date date, time time, address char(20), "
 		query = "INSERT INTO Interview (applicantId, status , date, time, address) VALUES (?, ?, ?, ?, ?)";
@@ -1119,10 +1108,11 @@ public class branchtwo implements ActionListener
 					response = handleSkill(queryParams, urlPath, method); // urlPath[1] will likely be null
                 break;
                 case "posting":
-                	response = posting.handlePosting(queryParams, urlPath, method);
+                	response = getRecordsAsJSON(posting.handlePosting(queryParams, urlPath, method));
                 break;
                 case "postingSkill":
-                	response = posting.handleInvolves(queryParams, urlPath, method);
+                	response = getRecordsAsJSON(posting.handlePostingSkill(queryParams, urlPath, method)); 
+                break;
                 case "allInterviews":
                     response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
                 break;
@@ -1175,29 +1165,6 @@ public class branchtwo implements ActionListener
     private  String handleSkill(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
 			return getAccountSkills(Integer.parseInt(queryParams.get("accountId")));
-		}
-		return "[]";
-    }
-//YYYY-MM-DD
-
-    private  String handlePosting(Map<String, String> queryParams, String[] path, String method){
-		if (method == "GET"){
-			return posting.getPosting(Integer.parseInt(queryParams.get("postingId")));
-		} else if (method == "PUT") {
-			return posting.updatePosting(Integer.parseInt(queryParams.get("postingId")),
-				queryParams.get("title"), 
-				queryParams.get("active"),
-				sqlDateFormat.parse(queryParams.get("startDate")),
-				queryParams.get("address"), 
-				queryParams.get("postalCode"), 
-				queryParams.get("description"),
-				Integer.parseInt(queryParams.get("accountId")));
-		}
-		return "[]";
-    }
-    private  String handlePostingSkill(Map<String, String> queryParams, String[] path, String method){
-		if (method == "GET"){
-			return posting.getPostingInvolves(queryParams.get("postingId"), queryParams.get("skillName"));
 		}
 		return "[]";
     }
