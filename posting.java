@@ -1,8 +1,5 @@
-import java.io.*;
-import java.net.*;
 import java.util.*;
 import java.sql.*;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 class posting {
@@ -12,7 +9,7 @@ class posting {
   }
   SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-  PreparedStatement handlePosting(Map<String, String> queryParams, String[] path, String method){
+  PreparedStatement handlePosting(Map<String, String> queryParams, String[] path, String method) throws SQLException {
     if (method == "GET"){
       return getPosting(Integer.parseInt(queryParams.get("postingId")));
     } else if (method == "PUT") {
@@ -27,7 +24,7 @@ class posting {
     return null;
   }
 
-  PreparedStatement handlePostingSkill(Map<String, String> queryParams, String[] path, String method){
+  PreparedStatement handlePostingSkill(Map<String, String> queryParams, String[] path, String method) throws SQLException {
     if (method == "GET"){
       return getPostingSkills(Integer.parseInt(queryParams.get("postingId")));
     }
@@ -38,8 +35,7 @@ class posting {
     /*
      * returns specified posting
      */ 
-    PreparedStatement getPosting(int postingId)
-    {
+    PreparedStatement getPosting(int postingId) throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE postingId = ?");
         // !!! add postalCode to get city Name + state?
         // !!! add skill to get all that too?
@@ -51,16 +47,14 @@ class posting {
     /*
      * retrieves skills for specified posting
      */ 
-    PreparedStatement getPostingSkills(int postingId)
-    {
+    PreparedStatement getPostingSkills(int postingId) throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT skillName FROM Involves WHERE postingId = ?");
       ps.setInt(1, postingId);
       return ps;
       
     }
 
-    PreparedStatement getPostingCityAndAddress(int postingId)
-    {
+    PreparedStatement getPostingCityAndAddress(int postingId) throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT cityName, state FROM PostalCode WHERE postalCode IN (SELECT postalCode FROM Posting WHERE postingId = ?");
       ps.setInt(1, postingId);
         // no idea if i can do it this way
@@ -70,18 +64,16 @@ class posting {
     /*
      * retrieves postings with specified skill
      */ 
-    PreparedStatement getAllPostingsInvolvingSkill(String skillName)
-    {
+    PreparedStatement getAllPostingsInvolvingSkill(String skillName) throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT postingId FROM Involves, Posting WHERE skillName = ? AND Involves.postingId = Posting.postingId");
-      ps.setString(2, skillName);
+      ps.setString(1, skillName);
       return ps;
     }
 
     /*
     * returns all postings in database
     */
-    PreparedStatement getAllPostings()
-    {
+    PreparedStatement getAllPostings() throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting, PostalCode, Involves WHERE Posting.postalCode = PostalCode.postalCode AND Involves.postingId = Posting.postingId");
       return ps;
         // natural join would probably be easier?
@@ -127,8 +119,7 @@ class posting {
     /*
      * updates posting table for specified posting
      */ 
-    PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String description)
-    {
+    PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String description) throws SQLException {
       PreparedStatement ps = con.prepareStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ? WHERE postingId = ?");
         // !!! can we update accountId like this?
 
