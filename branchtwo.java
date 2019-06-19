@@ -1184,41 +1184,6 @@ public class branchtwo implements ActionListener {
         return "[]";
     }
 
-<<<<<<< HEAD
-	// Anton 
-private String postApplicationTable(int applicationId, String coverletter, String resume, int applicantID, int posting) throws SQLException {
-		PreparedStatement ps = con.prepareStatement("INSERT INTO Application (ApplicationID, CoverLetter , Resume, ApplicantID,PostingID )VALUES (?, ? , ?, ?,? ); ");
-		ps.setInt(1, applicationId);
-		ps.setString(2, coverletter);
-		ps.setString(3, resume);
-		ps.setInt(4, applicantID);
-		ps.setInt(5, posting);
-		return getRecordsAsJSON(ps);
-	}
-	private  String handleApplication(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-		if (method == "POST"){
-			return postApplicationTable(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"), queryParams.get("resume") ,Integer.parseInt(queryParams.get("accountId")), Integer.parseInt(queryParams.get("PostingID")));
-		}
-		if (method == "GET"){
-			return getApplicationTable(Integer.parseInt(queryParams.get("applicationId")));
-		}
-		
-		return "[]";
-    }
-    	private String getApplicationTable(int applicationId){
-		PreparedStatement ps = con.prepareStatement("select (*) from Application where applicationID = ?;");
-		ps.setInt(1, applicationId);
-		return getRecordsAsJSON(ps);
-	}
-    
-
-    
-    private  Map<String, String> getQueryMap(String query)  
-{  
-    Map<String, String> map = new HashMap<String, String>(); 
-    if (query == null){
-        return map;
-=======
     // Anton
     private String postApplicationTable(int applicationId, String coverletter, String resume, int applicantID, int posting) throws SQLException {
         PreparedStatement ps = con.prepareStatement("INSERT INTO Application (ApplicationID, CoverLetter , " +
@@ -1241,7 +1206,6 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
         }
 
         return "[]";
->>>>>>> 5c24339c0b100bce2453d1ae81941d58389c15e9
     }
 
     private String getApplicationTable(int applicationId) throws SQLException {
