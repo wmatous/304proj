@@ -1,11 +1,13 @@
 import java.io.*;
 import java.net.*;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.*;
 import oracle.jdbc.driver.OracleDriver;
-import javax.json.stream.*;
+
 import javax.json.Json;
+import javax.json.stream.*;
 
 import static helpers.DBVars.username;
 import static helpers.DBVars.password;
@@ -33,6 +35,7 @@ public class branchtwo implements ActionListener
     private Connection con;
     private posting posting = new posting(con);
     private interviewAndOfferQueries intAndOff = new interviewAndOfferQueries(con);
+	SimpleDateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     // user is allowed 3 login attempts
     private int loginAttempts = 0;
@@ -423,6 +426,7 @@ public class branchtwo implements ActionListener
 		System.exit(-1);
 	    }
 	}
+	return "[]";
 	}
 	
 
@@ -1083,9 +1087,6 @@ public class branchtwo implements ActionListener
 	    }
 	}
 	}
-	
-
-
 
 	private  String dispatch(Map<String, String> queryParams, String[] urlPath, String method){
         String response= "";
@@ -1153,19 +1154,20 @@ public class branchtwo implements ActionListener
 		}
 		return "[]";
     }
+//YYYY-MM-DD
 
     private  String handlePosting(Map<String, String> queryParams, String[] path, String method){
 		if (method == "GET"){
-			return posting.getPosting(queryParams.get("postingId"));
+			return posting.getPosting(Integer.parseInt(queryParams.get("postingId")));
 		} else if (method == "PUT") {
-			return posting.updatePosting(queryParams.get("postingId"),
+			return posting.updatePosting(Integer.parseInt(queryParams.get("postingId")),
 				queryParams.get("title"), 
 				queryParams.get("active"),
-				queryParams.get("startDate"), 
+				sqlDateFormat.parse(queryParams.get("startDate")),
 				queryParams.get("address"), 
 				queryParams.get("postalCode"), 
-				queryParams.get("description"), 
-				queryParams.get("accountId"));
+				queryParams.get("description"),
+				Integer.parseInt(queryParams.get("accountId")));
 		}
 		return "[]";
     }
@@ -1179,7 +1181,7 @@ public class branchtwo implements ActionListener
 	// Anton 
 private String postApplicationTable(int applicationId, String coverletter, String resume, int applicantID, int posting){
 		PreparedStatement ps = con.prepareStatement("INSERT INTO Application (ApplicationID, CoverLetter , Resume, ApplicantID,PostingID )VALUES (?, ? , ?, ?,? ); ");
-		ps.setInt(1, accountId);
+		ps.setInt(1, applicationId);
 		ps.setString(2, coverletter);
 		ps.setString(3, resume);
 		ps.setInt(4, applicantID);
@@ -1383,6 +1385,7 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 			System.out.println(e);
 			return 1;
 		}
+		return 0;
 	}
 
 
