@@ -1229,9 +1229,17 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 		if (method == "POST"){
 			return postApplicationTable(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"), queryParams.get("resume") ,Integer.parseInt(queryParams.get("accountId")), Integer.parseInt(queryParams.get("PostingID")));
 		}
+		if (method == "GET"){
+			return getApplication(Integer.parseInt(queryParams.get("applicationId")));
+		}
 		
 		return "[]";
     }
+    	private String getApplicationTable(int applicationId){
+		reparedStatement ps = con.prepareStatement("select (*) from Application where applicationID = ?;");
+		ps.setInt(1, accountId);
+		return getRecordsAsJSON(ps);
+	}
     
 
     
