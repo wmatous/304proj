@@ -28,15 +28,9 @@ populateOfferView = function(offerData){
               displayEndDate(${offer.endDate});
           } </script>
           <br> Monetary Compensation: $ ${offer.compensation} per hour
-          <br> <br>
-          <div class="btn-group btn-group-lg" role="button">
-              <button id="acceptOffer" type="submit" onsubmit="acceptOffer(${offer.offerId})" class="btn btn-success btn-lg" role="button">
-                  Accept
-              </button>
-              <button id="declineOffer" type="submit" onsubmit="declineOffer(${offer.offerId})" class="btn btn-danger btn-lg" role="button">
-                  Decline
-              </button>
-          </div>`;
+          <script> if ($(offer.status) != "accepted" && (offer.status) != "declined") {
+              displayButtons(${offer.offerId});
+          } </script>`;
     document.getElementById('companyInfo').innerHTML = `
         <div class="jumbotron">
             <h4> Company-Name-Here </h4>
@@ -85,9 +79,23 @@ declineOffer = function(offerId){
 };
 
 viewPost = function(postId){
-
+    //need some way to pass postId to page so that it loads correct data
+    //need some way to parse cwl login id so that window.location points to current users public_html folder.
+    //window.location = "https://www.students.cs.ubc.ca/VARIABLE_FOR_CWL_LOGIN_HERE/postingView.html"
 };
 
 displayEndDate = function(endDate){
     `<br> End Date: ${endDate}`
+};
+
+displayButtons = function(offerId){
+    `<br> <br>
+          <div class="btn-group btn-group-lg" role="button">
+              <button id="acceptOffer" type="submit" onsubmit="acceptOffer(${offerId})" class="btn btn-success btn-lg" role="button">
+                  Accept
+              </button>
+              <button id="declineOffer" type="submit" onsubmit="declineOffer(${offerId})" class="btn btn-danger btn-lg" role="button">
+                  Decline
+              </button>
+          </div>`
 };

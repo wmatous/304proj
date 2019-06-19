@@ -24,13 +24,9 @@ populateInterviewView = function(interviewData){
        <br>
        <a href="#" class="btn btn-outline-dark btn-md" onsubmit="viewPost(${interview.postId})" role="button">View Job Posting</a>`;
     document.getElementById('adButtons').innerHTML = `
-       <button type="submit" class="btn btn-success btn-lg" onsubmit="acceptInterview(${interview.applicantId})" role="button">
-            Accept
-        </button>
-        <button type="submit" class="btn btn-danger btn-lg" onsubmit="declineInterview(${interview.applicantId})" role="button">
-            Decline
-        </button>`;
-
+        <script> if ($(interview.status) != "accepted" && (offer.status) != "declined") {
+                    displayButtons(${interview.applicantId});
+                    } </script>`;
 };
 
 acceptInterview = function(applicantId){
@@ -51,6 +47,15 @@ declineInterview = function(applicantId){
         .catch(err => console.error(err));
 };
 
-viewPost = function(postId){
+displayButtons = function(applicantId){
+`    <button type="submit" class="btn btn-success btn-lg" onsubmit="acceptInterview(${applicantId})" role="button">
+     Accept
+     </button>
+     <button type="submit" class="btn btn-danger btn-lg" onsubmit="declineInterview(${applicantId})" role="button">
+     Decline
+     </button>`
+};
 
+viewPost = function(postId){
+//copy from offerView once its done
 };

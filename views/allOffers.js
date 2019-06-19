@@ -27,6 +27,8 @@ function offerTemplate(offer){
         <tr class="offerTableRow">
             <div>
                 <th scope="row">${offer.offerId}</th>
+                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewOffer(${offer.offerId})"
+                role="button">View</button></td>
                 <td>${offer.company}</td>
                 <td>${offer.position}</td>
                 <td>${offer.status}</td>
@@ -34,4 +36,8 @@ function offerTemplate(offer){
                 <td>${offer.expiryDate}</td>
             </div>
         </tr>`
+};
+
+viewOffer = function(offerId){
+//modify from offerView once its done
 };

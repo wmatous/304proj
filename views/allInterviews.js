@@ -27,6 +27,8 @@ function interviewTemplate(interview){
         <tr class="interviewTableRow">
             <div>
                 <th scope="row">${interview.id}</th>
+                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewInterview(${interview.applicantId})"
+                role="button">View</button></td>
                 <td>${interview.company}</td>
                 <td>${interview.position}</td>
                 <td>${interview.status}</td>
@@ -35,4 +37,8 @@ function interviewTemplate(interview){
                 <td>${interview.address}</td>
             </div>
         </tr>`
+};
+
+viewInterview = function(offerId){
+//modify from offerView once its done
 };
