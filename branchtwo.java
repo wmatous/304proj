@@ -265,6 +265,12 @@ public class branchtwo implements ActionListener {
             if (choice != 0) {
                 dropTable(tableName);
             }
+            tableName = "Application";
+            System.out.println("Drop Table? y/n " + tableName);
+            choice = Integer.parseInt(in.readLine());
+            if (choice != 0) {
+                dropTable(tableName);
+            }
             tableName = "Interview";
             System.out.println("Drop Table? y/n " + tableName);
             choice = Integer.parseInt(in.readLine());
@@ -340,7 +346,7 @@ public class branchtwo implements ActionListener {
      */
     private String updateAccount(int accountId, String name, String email, String postalCode) throws SQLException {
         // create postalcode?
-        PreparedStatement ps = con.prepareStatement("UPDATE TABLE Account SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
+        PreparedStatement ps = con.prepareStatement("UPDATE TABLE (Account) SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
         ps.setString(1, name);
         ps.setString(2, email);
         ps.setString(3, postalCode);
@@ -439,7 +445,7 @@ public class branchtwo implements ActionListener {
     {
 	
 	PreparedStatement  ps;
-	  
+
 	try
 	{
 		// disable auto commit mode
@@ -559,7 +565,7 @@ public class branchtwo implements ActionListener {
 			con.commit();
 		}
 
-		System.out.println("Add Table application? y/n ");
+		System.out.println("Add Table Application? y/n ");
 		choice = Integer.parseInt(in.readLine());
 		if (choice !=0){
 			ps = con.prepareStatement("create table Application("+
@@ -580,7 +586,7 @@ public class branchtwo implements ActionListener {
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Interview "+
-					"(PRIMARY KEY applicantId integer, status varchar(20), intDate date, address varchar(20), "+
+					"(applicantId integer PRIMARY KEY, status varchar(20), intDate date, address varchar(20), "+
 					"FOREIGN KEY (applicantId) REFERENCES Account (accountId) ON DELETE CASCADE)");
 			System.out.println(ps.executeUpdate());
 			con.commit();
@@ -782,13 +788,13 @@ public class branchtwo implements ActionListener {
             ps.setString(4, "94103");
             ps.addBatch();
             //
-            ps.setInt(1, 9);
+            ps.setInt(1, 10);
             ps.setString(2, "Airbnb");
             ps.setString(3, "info@airbnb.com");
             ps.setString(4, "V6B1C1");
             ps.addBatch();
             //
-            ps.setInt(1, 9);
+            ps.setInt(1, 11);
             ps.setString(2, "Zoom Carpets");
             ps.setString(3, "info@zoomcarpets.com");
             ps.setString(4, "V6S1H7");
@@ -799,6 +805,63 @@ public class branchtwo implements ActionListener {
             //
 
             System.out.println("accounts done");
+
+            query = "INSERT INTO Posting (postingId, title, active, startDate, address, postalCode, description, accountId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            ps = con.prepareStatement(query);
+            ps.setInt(1, 51);
+            ps.setString(2, "Junior Software Developer");
+            ps.setString(3, "true");
+            ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+            ps.setString(5, "187 Main Street");
+            ps.setString(6, "94103");
+            ps.setString(7, "Seeking full time agile software developer with experience in Java.");
+            ps.setInt(8, 1);
+            ps.addBatch();
+
+            ps.setInt(1, 83);
+            ps.setString(2, "Construction");
+            ps.setString(3, "false");
+            ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+            ps.setString(5, "1080 Hamilton St.");
+            ps.setString(6, "V6S1H7");
+            ps.setString(7, "Looking for a construction worker to start in the fall doing physical labor.");
+            ps.setInt(8, 2);
+
+            ps.addBatch();
+
+            ps.setInt(1, 96);
+            ps.setString(2, "Architect");
+            ps.setString(3, "true");
+            ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+            ps.setString(5, "123 Granville St.");
+            ps.setString(6, "V6T1Z4");
+            ps.setString(7, "Small firm looking to hire experienced architect.");
+            ps.setInt(8, 3);
+            ps.addBatch();
+
+            ps.setInt(1, 45);
+            ps.setString(2, "Lab technician");
+            ps.setString(3, "true");
+            ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
+            ps.setString(5, "955 Hornby St.");
+            ps.setString(6, "V6S1H7");
+            ps.setString(7, "Medical lab needs technician to analyze results and draw blood.");
+            ps.setInt(8, 4);
+            ps.addBatch();
+
+            ps.setInt(1, 37);
+            ps.setString(2, "Nurse");
+            ps.setString(3, "true");
+            ps.setDate(4, java.sql.Date.valueOf("2019-12-08"));
+            ps.setString(5, "11 Hamilton St.");
+            ps.setString(6, "V6T1Z4");
+            ps.setString(7, "Hospital is looking for more OR nurses, experience preferred.");
+            ps.setInt(8, 2);
+            ps.addBatch();
+
+            ps.executeBatch();
+
+            System.out.println("postings done");
 
             query = "INSERT INTO Skill (name) VALUES (?)";
             ps = con.prepareStatement(query);
@@ -841,13 +904,13 @@ public class branchtwo implements ActionListener {
             ps.setString(2, "javascript");
             ps.addBatch();
             //
-            ps.setString(2, "java");
+            ps.setString(2, "database");
             ps.addBatch();
             //
             ps.setInt(1, 2);
             ps.setString(2, "javascript");
             ps.addBatch();
-            ps.setString(2, "java");
+            ps.setString(2, "database");
             ps.addBatch();
             ps.setString(2, "server");
             ps.addBatch();
@@ -918,7 +981,7 @@ public class branchtwo implements ActionListener {
 
             System.out.println("endorse done");
 
-            query = "INSERT INTO Involves (postingId, skillName, yearsExperience) VALUES (?, ?, ?)";
+            query = "INSERT INTO Involves (postingId, name, yearsExperience) VALUES (?, ?, ?)";
             ps = con.prepareStatement(query);
             ps.setInt(1, 51);
             ps.setString(2, "javascript");
@@ -926,7 +989,7 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.setInt(1, 51);
-            ps.setString(2, "java");
+            ps.setString(2, "mockups");
             ps.setInt(3, 3);
             ps.addBatch();
 
@@ -957,66 +1020,8 @@ public class branchtwo implements ActionListener {
             System.out.println("involves done");
 
 
-            query = "INSERT INTO Posting (postingId, title, active, startDate, address, postalCode, description, accountId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            ps = con.prepareStatement(query);
-            ps.setInt(1, 51);
-            ps.setString(2, "Junior Software Developer");
-            ps.setString(3, "true");
-            ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-            ps.setString(5, "187 Main Street");
-            ps.setString(6, "94103");
-            ps.setString(7, "Seeking full time agile software developer with experience in Java.");
-            ps.setInt(8, 1);
-            ps.addBatch();
 
-            ps.setInt(1, 83);
-            ps.setString(2, "Construction");
-            ps.setString(3, "false");
-            ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-            ps.setString(5, "1080 Hamilton St.");
-            ps.setString(6, "V6S1H7");
-            ps.setString(7, "Looking for a construction worker to start in the fall doing physical labor.");
-            ps.setInt(8, 2);
-
-            ps.addBatch();
-
-            ps.setInt(1, 96);
-            ps.setString(2, "Architect");
-            ps.setString(3, "true");
-            ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-            ps.setString(5, "123 Granville St.");
-            ps.setString(6, "V6T1Z4");
-            ps.setString(7, "Small firm looking to hire experienced architect.");
-            ps.setInt(8, 3);
-            ps.addBatch();
-
-            ps.setInt(1, 45);
-            ps.setString(2, "Lab technician");
-            ps.setString(3, "true");
-            ps.setDate(4, java.sql.Date.valueOf("2019-09-04"));
-            ps.setString(5, "955 Hornby St.");
-            ps.setString(6, "V6S1H7");
-            ps.setString(7, "Medical lab needs technician to analyze results and draw blood.");
-            ps.setInt(8, 4);
-            ps.addBatch();
-
-            ps.setInt(1, 37);
-            ps.setString(2, "Nurse");
-            ps.setString(3, "true");
-            ps.setDate(4, java.sql.Date.valueOf("2019-12-08"));
-            ps.setString(5, "11 Hamilton St.");
-            ps.setString(6, "V6T1Z4");
-            ps.setString(7, "Hospital is looking for more OR nurses, experience preferred.");
-            ps.setInt(8, 2);
-            ps.addBatch();
-
-            ps.executeBatch();
-            
-
-            System.out.println("postings done");
-
-
-            query = "INSERT INTO Offer (offerId, status, type, hours, compensation, terminating, startDate, endDate, " +
+            query = "INSERT INTO Offer (offerId, status, offerType, hours, compensation, terminating, startDate, endDate, " +
                     "expiryDate, accountId, postingId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             ps = con.prepareStatement(query);
 
@@ -1038,7 +1043,7 @@ public class branchtwo implements ActionListener {
             ps.setInt(1, 1);
             ps.setFloat(5, 28.00f);
             ps.setDate(9, java.sql.Date.valueOf("2019-08-28"));
-            ps.setInt(10, 83);
+            ps.setInt(11, 83);
             ps.addBatch();
 
             //Architect
@@ -1047,7 +1052,7 @@ public class branchtwo implements ActionListener {
             ps.setString(6, "true");
             ps.setDate(8, java.sql.Date.valueOf("2021-09-04"));
             ps.setDate(9, java.sql.Date.valueOf("2019-07-22"));
-            ps.setInt(10, 96);
+            ps.setInt(11, 96);
             ps.addBatch();
 
             //Lab Technician
@@ -1057,28 +1062,28 @@ public class branchtwo implements ActionListener {
             ps.setString(6, "true");
             ps.setDate(8, java.sql.Date.valueOf("2020-01-13"));
             ps.setDate(9, java.sql.Date.valueOf("2019-06-17"));
-            ps.setInt(10, 45);
+            ps.setInt(11, 45);
             ps.addBatch();
 
             //Nurse
             ps.setInt(1, 4);
             ps.setFloat(5, 26.45f);
             ps.setDate(9, java.sql.Date.valueOf("2019-08-15"));
-            ps.setInt(10, 37);
+            ps.setInt(11, 37);
             ps.addBatch();
 
             ps.executeBatch();
-            
+
 
             System.out.println("offers done");
 
 
 //		"(applicantId int, status char(20), date date, time time, address char(20), "
-            query = "INSERT INTO Interview (applicantId, status , intDate, address) VALUES (?, ?, ?, ?, ?)";
+            query = "INSERT INTO Interview (applicantId, status , intDate, address) VALUES (?, ?, ?, ?)";
             ps = con.prepareStatement(query);
 
             //Junior Software Developer
-            ps.setInt(1, 0);
+            ps.setInt(1, 1);
             ps.setString(2, "Active");
             ps.setDate(3, java.sql.Date.valueOf("2019-07-01"));
             ps.setString(4, "187 Main Street");
@@ -1115,9 +1120,6 @@ public class branchtwo implements ActionListener {
             ps.executeBatch();
 
             System.out.println("interviews done");
-
-
-
 
             con.commit();
 
