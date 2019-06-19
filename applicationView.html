@@ -14,7 +14,7 @@
             const coverletter = document.getElementById('coverletter').value;
             const resume = document.getElementById('resume').value;
             const accountId = url.searchParams.get('accountId');
-            const applicationId = postingid+accountId; // just a way to generate application ID
+            const applicationId = 100*postingid+accountId; // just a way to generate application ID
    
             let urlPath = 'http://localhost:6789/application/';
             urlPath = ('&accountId=' + accountId +  '&PostingID=' + postingid +  '&applicationId=' + applicationId +
