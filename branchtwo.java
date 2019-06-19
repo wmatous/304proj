@@ -195,9 +195,8 @@ public class branchtwo implements ActionListener
 		{
 			// disable auto commit mode
 			con.setAutoCommit(false);
-	
-			ps = con.prepareStatement("DROP TABLE ? ");
-			ps.setString(1,tableName);
+			// may have to include schema eg ORA_WMATOUS.tableName
+			ps = con.prepareStatement("DROP TABLE "+ tableName+"  CASCADE CONSTRAINTS PURGE ");
 			ps.executeUpdate();
 			
 			con.commit();
@@ -625,9 +624,9 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Interview "+
-					"(applicantId integer, status char(20), date date, time time, address char(20), "+
-					"PRIMARY KEY (applicantId, date, time),  "+
-					"FOREIGN KEY applicantId REFERENCES Account (accountId) ON DELETE CASCADE)");
+					"( applicantId integer, status char(20), intDate date, address char(20), "+
+					"PRIMARY KEY ( applicantId, intDate),  "+
+					"FOREIGN KEY (applicantId) REFERENCES Account (accountId) ON DELETE CASCADE)");
 
 			System.out.println(ps.executeUpdate());
 			con.commit();
@@ -638,10 +637,10 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Offer "+
-					"(offerId int PRIMARY KEY, status char(20), type char(20), hours int, compensation real, " +
+					"( offerId int PRIMARY KEY, status char(20), offerType char(20), hours int, compensation real, " +
 					"terminating char(20), startDate date, endDate date, expiryDate date, accountId int, postingId int, "+
-					"FOREIGN KEY accountId REFERENCES Account ON DELETE CASCADE"+
-					"FOREIGN KEY postingId REFERENCES Posting ON DELETE CASCADE)");
+					"FOREIGN KEY (accountId) REFERENCES Account (accountId) ON DELETE CASCADE,"+
+					"FOREIGN KEY (postingId) REFERENCES Posting (postingId) ON DELETE CASCADE)");
 
 			System.out.println(ps.executeUpdate());
 			con.commit();
