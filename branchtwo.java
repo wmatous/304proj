@@ -1441,11 +1441,17 @@ public class branchtwo implements ActionListener {
 
     private int runServer() {
     	try {
-    		welcomeSocket = new ServerSocket(6789);
-    	} catch (Exception ex) {
+
+			System.out.print("choose a port number \n>> ");
+    			choice = Integer.parseInt(in.readLine());
+			welcomeSocket = new ServerSocket(choice);
+		catch (IOException e) {
+			System.out.println("IOException!");
+		}
+    	catch (Exception ex) {
     		System.out.println("Message: " + ex.getMessage());
     		System.exit(0);
-    	}
+    	} 
     	while (true) {
     		try {
     			String urlPath;
