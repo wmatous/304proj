@@ -1,11 +1,11 @@
-window.onload = function(){
+window.onload = function () {
     var url = new URL(window.location.href);
     var offerId = url.searchParams.get("offerId");
     getOffer(offerId);
 };
 
-getOffer = function(offerId){
-    let urlPath = 'http://localhost:6789/offer/'+offerId;
+getOffer = function (offerId) {
+    let urlPath = 'http://localhost:6789/offer/' + offerId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
@@ -14,7 +14,7 @@ getOffer = function(offerId){
         .catch(err => console.error(err));
 };
 
-populateOfferView = function(offerData){
+populateOfferView = function (offerData) {
     var offer = offerData[0];
     document.getElementById('o-status').innerHTML = `<h3> Status: ${offer.status}</h3>`;
     document.getElementById('o-details').innerHTML = `
@@ -60,35 +60,35 @@ populateOfferView = function(offerData){
         </div>`;
 };
 
-acceptOffer = function(offerId){
+acceptOffer = function (offerId) {
     let urlPath = 'http://localhost:6789/offer';
-    urlPath += ('/?offerId='+offerId+'&status='+"accepted");
+    urlPath += ('/?offerId=' + offerId + '&status=' + "accepted");
     fetch(urlPath,
-        {method:'PUT'})
+        {method: 'PUT'})
         .then((res) => res.json())
         .catch(err => console.error(err));
 };
 
-declineOffer = function(offerId){
+declineOffer = function (offerId) {
     let urlPath = 'http://localhost:6789/offer';
-    urlPath += ('/?offerId='+offerId+'&status='+"declined");
+    urlPath += ('/?offerId=' + offerId + '&status=' + "declined");
     fetch(urlPath,
-        {method:'PUT'})
+        {method: 'PUT'})
         .then((res) => res.json())
         .catch(err => console.error(err));
 };
 
-viewPost = function(postId){
+viewPost = function (postId) {
     //need some way to pass postId to page so that it loads correct data
     //need some way to parse cwl login id so that window.location points to current users public_html folder.
     //window.location = "https://www.students.cs.ubc.ca/VARIABLE_FOR_CWL_LOGIN_HERE/postingView.html"
 };
 
-displayEndDate = function(endDate){
+displayEndDate = function (endDate) {
     `<br> End Date: ${endDate}`
 };
 
-displayButtons = function(offerId){
+displayButtons = function (offerId) {
     `<br> <br>
           <div class="btn-group btn-group-lg" role="button">
               <button id="acceptOffer" type="submit" onsubmit="acceptOffer(${offerId})" class="btn btn-success btn-lg" role="button">

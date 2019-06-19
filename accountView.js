@@ -1,10 +1,10 @@
-populateAccountView = function(accounts){
+populateAccountView = function (accounts) {
     var account = accounts[0];
     document.getElementById('name').value = account.name;
     document.getElementById('email').value = account.email;
     document.getElementById('accountId').value = account.accountId;
     document.getElementById('postalCode').value = account.postalCode;
-    if (account.size){
+    if (account.size) {
         document.getElementById('companyView').style.visibility = 'visible';
         document.getElementById('size').value = account.size;
         document.getElementById('industry').value = account.industry;
@@ -15,13 +15,13 @@ populateAccountView = function(accounts){
     }
 }
 
-updateAccount = function(){
+updateAccount = function () {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const postalCode = document.getElementById('postalCode').value;
     const accountId = document.getElementById('accountId').value;
     let cmpSize, cmpIndustry, indStatus, indAge;
-    if (document.getElementById('companyView')){
+    if (document.getElementById('companyView')) {
         cmpSize = document.getElementById('cmpSize').value;
         cmpIndustry = document.getElementById('cmpIndustry').value;
     } else {
@@ -30,94 +30,94 @@ updateAccount = function(){
     }
 
     let urlPath = 'http://localhost:6789/account';
-    urlPath += ('/?name='+name+'&email='+email+'&postalCode='+postalCode +'&accountId='+accountId);
-    if (cmpSize){
-        urlPath+= ('&size='+cmpSize+'&industry='+cmpIndustry);
+    urlPath += ('/?name=' + name + '&email=' + email + '&postalCode=' + postalCode + '&accountId=' + accountId);
+    if (cmpSize) {
+        urlPath += ('&size=' + cmpSize + '&industry=' + cmpIndustry);
     } else {
-        urlPath+= ('&status='+indStatus+'&age='+indAge);
+        urlPath += ('&status=' + indStatus + '&age=' + indAge);
     }
 
-    fetch(urlPath, 
-        {method:'PUT'})
-    .then((res) => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.error(err));
+    fetch(urlPath,
+        {method: 'PUT'})
+        .then((res) => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
 }
 
-getAccount = function(accountId){
-    let urlPath = 'http://localhost:6789/account/?accountId='+accountId;
+getAccount = function (accountId) {
+    let urlPath = 'http://localhost:6789/account/?accountId=' + accountId;
     fetch(urlPath)
-    .then((res) => res.json())
-    .then(data => {
-        console.log(data);
-        populateAccountView(data);
-    })
-    .catch(err => console.error(err));
+        .then((res) => res.json())
+        .then(data => {
+            console.log(data);
+            populateAccountView(data);
+        })
+        .catch(err => console.error(err));
 }
 
-populateSkills = function(skills){
+populateSkills = function (skills) {
     let innerHTML = `<h1>Skills</h1>`;
-    for (let i = 0; i < skills.length; i++){
+    for (let i = 0; i < skills.length; i++) {
         innerHTML += `<span class='skillBox'>${skills[i].name}</span>`;
     }
     document.getElementById('skills').innerHTML = innerHTML;
 }
 
-getSkills = function(accountId){
-    let urlPath = 'http://localhost:6789/skill/?accountId='+accountId;
+getSkills = function (accountId) {
+    let urlPath = 'http://localhost:6789/skill/?accountId=' + accountId;
     fetch(urlPath)
-    .then((res) => res.json())
-    .then(data => {
-        console.log(data);
-        populateSkills(data);
-    })
-    .catch(err => console.error(err));
+        .then((res) => res.json())
+        .then(data => {
+            console.log(data);
+            populateSkills(data);
+        })
+        .catch(err => console.error(err));
 
 }
 
-populateEndorsements = function(endorsements){
+populateEndorsements = function (endorsements) {
     document.getElementById('endorseCount').innerHTML = "Endorsed by" + endorsements[0].count;
 }
 
-getEndorsements = function(accountId){
-    let urlPath = 'http://localhost:6789/endorsement/?accountId='+accountId;
+getEndorsements = function (accountId) {
+    let urlPath = 'http://localhost:6789/endorsement/?accountId=' + accountId;
     fetch(urlPath)
-    .then((res) => res.json())
-    .then(data => {
-        console.log(data);
-        populateEndorsements(data);
-    })
-    .catch(err => console.error(err));
+        .then((res) => res.json())
+        .then(data => {
+            console.log(data);
+            populateEndorsements(data);
+        })
+        .catch(err => console.error(err));
 }
-populateRecommended = function(recs){
+populateRecommended = function (recs) {
     return;
 }
 
-getRecommended = function(loggedInAccount){
-    let urlPath = 'http://localhost:6789/recommended/?accountId='+loggedInAccount;
+getRecommended = function (loggedInAccount) {
+    let urlPath = 'http://localhost:6789/recommended/?accountId=' + loggedInAccount;
     fetch(urlPath)
-    .then((res) => res.json())
-    .then(data => {
-        console.log(data);
-        populateRecommended(data);
-    })
-    .catch(err => console.error(err));
+        .then((res) => res.json())
+        .then(data => {
+            console.log(data);
+            populateRecommended(data);
+        })
+        .catch(err => console.error(err));
 }
 
-getCookie = function(name) {
+getCookie = function (name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
-  }
+}
 
-window.onload = function(){
+window.onload = function () {
     var url = new URL(window.location.href);
     var accountId = url.searchParams.get("accountId");
     getAccount(accountId);
     getSkills(accountId);
     getEndorsements(accountId);
     var loggedInAccount = getCookie('accountId');
-    if (loggedInAccount == accountId){
+    if (loggedInAccount == accountId) {
         document.getElementById("saveButton").hidden = false;
         getRecommended(loggedInAccount);
     }

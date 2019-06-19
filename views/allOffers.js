@@ -1,11 +1,11 @@
-window.onload = function(){
+window.onload = function () {
     var url = new URL(window.location.href);
     var offerId = url.searchParams.get("offerId");
     getAllOffers(offerId);
 };
 
-getAllOffers = function(offerId){
-    let urlPath = 'http://localhost:6789/offers/'+offerId;
+getAllOffers = function (offerId) {
+    let urlPath = 'http://localhost:6789/offers/' + offerId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
@@ -21,7 +21,7 @@ function populateOfferTable(offerData) {
     document.getElementById("offerTable").innerHTML = `${offerData.map(offerTemplate).join('')}`;
 };
 
-function offerTemplate(offer){
+function offerTemplate(offer) {
     return `
         <tr class="offerTableRow">
             <div>
@@ -37,6 +37,6 @@ function offerTemplate(offer){
         </tr>`
 };
 
-viewOffer = function(offerId){
+viewOffer = function (offerId) {
 //modify from offerView once its done
 };

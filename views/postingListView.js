@@ -4,15 +4,15 @@ getAllPostings = function () {
     // or do i need to combine with search here
     let urlPath = 'http://localhost:6789/allPostings/';
     fetch(urlPath)
-    .then((res) => res.json())
-    .then(function(data) {
-        console.log(data);
-        populatePostingTable(data);
-    })
-    .catch((err) => console.error(err));
+        .then((res) => res.json())
+        .then(function (data) {
+            console.log(data);
+            populatePostingTable(data);
+        })
+        .catch((err) => console.error(err));
 };
 
-function postingTemplate(posting){
+function postingTemplate(posting) {
     return `
         <tr class="postingTableRow">
             <div>
@@ -40,23 +40,23 @@ function populatePostingTable(postingData) {
 populateSkills = function (skills) {
     let innerHTML = '<h1>Skills</h1>';
     for (let i = 0; i < skills.length; i++) {
-        innerHTML += "<span>"+skills[i].name+"</span>";
+        innerHTML += "<span>" + skills[i].name + "</span>";
     }
     document.getElementById('skills').innerHTML = innerHTML;
 };
 
-getSkills = function(postingId){
-    let urlPath = 'http://localhost:6789/postingSkill/'+postingId;
+getSkills = function (postingId) {
+    let urlPath = 'http://localhost:6789/postingSkill/' + postingId;
     fetch(urlPath)
-    .then((res) => res.json())
-    .then(function(data){
-        console.log(data);
-        populateSkills(data);
-    })
-    .catch((err) => console.error(err));
+        .then((res) => res.json())
+        .then(function (data) {
+            console.log(data);
+            populateSkills(data);
+        })
+        .catch((err) => console.error(err));
 };
 
-window.onload = function(){
+window.onload = function () {
     var url = new URL(window.location.href);
     getAllPostings();
     getSkills();
