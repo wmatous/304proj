@@ -4,7 +4,6 @@ window.onload = function(){
     getAllOffers(offerId);
 };
 
-
 getAllOffers = function(offerId){
     let urlPath = 'http://localhost:6789/offers/'+offerId;
     fetch(urlPath)
