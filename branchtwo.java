@@ -196,7 +196,7 @@ public class branchtwo implements ActionListener
 			// disable auto commit mode
 			con.setAutoCommit(false);
 	
-			ps = con.prepareStatement("DROP TABLE ?");
+			ps = con.prepareStatement("DROP TABLE ? ");
 			ps.setString(1,tableName);
 			ps.executeUpdate();
 			
@@ -231,26 +231,75 @@ public class branchtwo implements ActionListener
 	  
 	try
 	{
-		// disable auto commit mode
-		con.setAutoCommit(false);
-
-		ps = con.prepareStatement("select table_name from user_tables");
-		ResultSet rs = ps.executeQuery();
-		String s;
-		while(rs.next())
-		{
-			s = rs.getString("table_name");
-			System.out.println("Drop Table? y/n " + s);
-			String choice = in.readLine();
-			if (choice == "y"){
-				dropTable(s);
-			}
-			
+		
+		String tableName = "CountryLanguage";
+		System.out.println("Drop Table? y/n " + tableName);
+		Integer choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "City";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "PostalCode";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "Account";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "Skill";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "Posting";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "ExperiencedAt";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "Endorses";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "Involves";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "Interview";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
+		}
+		tableName = "Offer";
+		System.out.println("Drop Table? y/n " + tableName);
+		 choice = Integer.parseInt(in.readLine());
+		if (choice != 0){
+			dropTable(tableName);
 		}
 		
-	  con.commit();
-
-	  ps.close();
+		
 	}
 	catch (IOException e)
 		{
@@ -266,20 +315,6 @@ public class branchtwo implements ActionListener
 			 System.out.println("Message: " + ex.getMessage());
 			}
 		}
-	catch (SQLException ex)
-	{
-	    System.out.println("Message: " + ex.getMessage());
-
-            try 
-	    {
-		con.rollback();	
-	    }
-	    catch (SQLException ex2)
-	    {
-		System.out.println("Message: " + ex2.getMessage());
-		System.exit(-1);
-	    }
-	}
     }
 
 	/*
@@ -455,8 +490,8 @@ public class branchtwo implements ActionListener
 		con.setAutoCommit(false);
 	  
 		System.out.println("Add Table CountryLanguage? y/n ");
-		String choice = in.readLine();
-		if (choice == "y"){
+		Integer choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 			"CountryLanguage "+
 			"(country char(30) PRIMARY KEY,"+
@@ -466,8 +501,8 @@ public class branchtwo implements ActionListener
 		}
 
 		System.out.println("Add Table City? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE City "+
 			"(cityName char(30), state char(30), country char(30), population int,"+
 			"PRIMARY KEY (cityName, state),"+
@@ -476,8 +511,8 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 		System.out.println("Add Table PostalCode? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 			"PostalCode "+
 			"(postalCode char(10), cityName char(30) not null, state char(30) not null, "+
@@ -489,8 +524,8 @@ public class branchtwo implements ActionListener
 		}
 		
 		System.out.println("Add Table Account? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE Account "+
 			"(accountId int, name char(30), email char(30), postalCode char(10) not null, "+
 			"PRIMARY KEY (accountId),"+
@@ -501,8 +536,8 @@ public class branchtwo implements ActionListener
 		}
 
 		System.out.println("Add Table Skill? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE Skill "+
 			"(name char(30) PRIMARY KEY)");
 
@@ -511,21 +546,21 @@ public class branchtwo implements ActionListener
 		}
 
 		System.out.println("Add Table Posting? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE Posting "+
 			"(postingId int, title char(30) not null, active char(10), startDate date, address char(30), postalCode char(10) not null, description char(200), accountId int, "+
 			"PRIMARY KEY (postingId),"+
 			"FOREIGN KEY (accountId) references Account(accountId),"+
-			"FOREIGN KEY (postalCode) references PostalCode(postalCode)");
+			"FOREIGN KEY (postalCode) references PostalCode(postalCode))");
 
 			System.out.println(ps.executeUpdate());
 			con.commit();
 		}
 
 		System.out.println("Add Table ExperiencedAt? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE ExperiencedAt ("+
 				"accountId integer, "+
 				"name char(30), "+
@@ -538,8 +573,8 @@ public class branchtwo implements ActionListener
 		}
 
 		System.out.println("Add Table Endorses? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 				"Endorses "+
 				"(endorserID int, endorsedID int,  "+
@@ -554,12 +589,12 @@ public class branchtwo implements ActionListener
 		}
 
 		System.out.println("Add Table Involves? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE Involves"+
-				"(postingId int, skillName char(30), yearsExperience int,  "+
-				"PRIMARY KEY (postingId, skillName),  "+
-				"FOREIGN KEY (skillName) REFERENCES Skill(skillName)  "+
+				"(postingId int, name char(30), yearsExperience int,  "+
+				"PRIMARY KEY (postingId, name),  "+
+				"FOREIGN KEY (name) REFERENCES Skill(name)  "+
 				"ON DELETE CASCADE,  "+
 				"FOREIGN KEY (postingId) REFERENCES Posting(postingId)  "+
 				"ON DELETE CASCADE)");
@@ -569,8 +604,8 @@ public class branchtwo implements ActionListener
 		}
 		
 		System.out.println("Add Table Interview? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Interview "+
 					"(applicantId int, status char(20), date date, time time, address char(20), "+
@@ -582,8 +617,8 @@ public class branchtwo implements ActionListener
 		}
 
 		System.out.println("Add Table Offer? y/n ");
-		choice = in.readLine();
-		if (choice == "y"){
+		choice = Integer.parseInt(in.readLine());
+		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Offer "+
 					"(offerId int PRIMARY KEY, status char(20), type char(20), hours int, compensation real, " +
@@ -1291,7 +1326,9 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 			System.out.print("2.  create job site tables\n");
 			System.out.print("3.  populate job site tables\n");
 			System.out.print("4.  Run the server\n");
-			System.out.print("5.  Quit\n>> ");
+			System.out.print("5.  Delete tables\n");
+			
+			System.out.print("6.  Quit\n>> ");
 	
 			choice = Integer.parseInt(in.readLine());
 			
@@ -1303,7 +1340,8 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 			   case 2:  createTablesJobSite(); break;
 			   case 3:  populateTablesJobSite(); break;
 			   case 4:  runServer(); break;
-			   case 5:  quit = true;
+			   case 5:  clearAllTables(); break;
+			   case 6:  quit = true;
 			}
 			}
 	
