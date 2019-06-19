@@ -195,9 +195,8 @@ public class branchtwo implements ActionListener
 		{
 			// disable auto commit mode
 			con.setAutoCommit(false);
-	
-			ps = con.prepareStatement("DROP TABLE ? ");
-			ps.setString(1,tableName);
+			// may have to include schema eg ORA_WMATOUS.tableName
+			ps = con.prepareStatement("DROP TABLE "+ tableName+"  CASCADE CONSTRAINTS PURGE ");
 			ps.executeUpdate();
 			
 			con.commit();
@@ -370,6 +369,7 @@ public class branchtwo implements ActionListener
 		ps.setString(1, name);
 		ps.setString(2, email);
 		ps.setString(3, postalCode);
+		ps.setInt(4, accountId);
 		return executeUpdateStatement(ps);
 	}
 
@@ -624,10 +624,8 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Interview "+
-					"(applicantId integer, status char(20), date date, time time, address char(20), "+
-					"PRIMARY KEY (applicantId, date, time),  "+
-					"FOREIGN KEY applicantId REFERENCES Account (accountId) ON DELETE CASCADE)");
-
+					"(PRIMARY KEY applicantId integer, status char(20), intDate date, address char(20), "+
+					"FOREIGN KEY (applicantId) REFERENCES Account (accountId) ON DELETE CASCADE)");
 			System.out.println(ps.executeUpdate());
 			con.commit();
 		}
@@ -637,10 +635,10 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Offer "+
-					"(offerId int PRIMARY KEY, status char(20), type char(20), hours int, compensation real, " +
+					"( offerId int PRIMARY KEY, status char(20), offerType char(20), hours int, compensation real, " +
 					"terminating char(20), startDate date, endDate date, expiryDate date, accountId int, postingId int, "+
-					"FOREIGN KEY accountId REFERENCES Account ON DELETE CASCADE"+
-					"FOREIGN KEY postingId REFERENCES Posting ON DELETE CASCADE)");
+					"FOREIGN KEY (accountId) REFERENCES Account (accountId) ON DELETE CASCADE,"+
+					"FOREIGN KEY (postingId) REFERENCES Posting (postingId) ON DELETE CASCADE)");
 
 			System.out.println(ps.executeUpdate());
 			con.commit();
@@ -959,7 +957,7 @@ public class branchtwo implements ActionListener
 		con.commit();
 
 
-		query = "INSERT INTO Offer (offerId, status, type, hours, compensation, terminating, startDate, endDate, " +
+		query = "INSERT INTO Offer (offerId, status, offerType, hours, compensation, terminating, startDate, endDate, " +
 				"expiryDate, accountId, postingId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		ps = con.prepareStatement(query);
 
@@ -1072,47 +1070,42 @@ public class branchtwo implements ActionListener
 		
 
 //		"(applicantId int, status char(20), date date, time time, address char(20), "
-		query = "INSERT INTO Interview (applicantId, status , date, time, address) VALUES (?, ?, ?, ?, ?)";
+		query = "INSERT INTO Interview (applicantId, status , intDate, address) VALUES (?, ?, ?, ?, ?)";
 		ps = con.prepareStatement(query);
 
 		//Junior Software Developer
 		ps.setInt(1, 0);
 		ps.setString(2, "Active");
 		ps.setDate(3, java.sql.Date.valueOf("2019-07-01"));
-		ps.setTime(4, java.sql.Time.valueOf("15:30:00"));
-		ps.setString(5, "187 Main Street");
+		ps.setString(4, "187 Main Street");
 		ps.addBatch();
 
 		//Construction
 		ps.setInt(1, 1);
 		ps.setString(2, "Expired");
 		ps.setDate(3, java.sql.Date.valueOf("2019-06-05"));
-		ps.setTime(4, java.sql.Time.valueOf("17:00:00"));
-		ps.setString(5, "1080 Hamilton St.");
+		ps.setString(4, "1080 Hamilton St.");
 		ps.addBatch();
 
 		//Architect
 		ps.setInt(1, 2);
 		ps.setString(2, "Accepted");
 		ps.setDate(3, java.sql.Date.valueOf("2019-07-12"));
-		ps.setTime(4, java.sql.Time.valueOf("11:15:00"));
-		ps.setString(5, "123 Granville St.");
+		ps.setString(4, "123 Granville St.");
 		ps.addBatch();
 
 		//Lab Technician
 		ps.setInt(1, 3);
 		ps.setString(2, "Accepted");
 		ps.setDate(3, java.sql.Date.valueOf("2019-04-17"));
-		ps.setTime(4, java.sql.Time.valueOf("14:45:00"));
-		ps.setString(5, "955 Hornby St.");
+		ps.setString(4, "955 Hornby St.");
 		ps.addBatch();
 
 		//Nurse
 		ps.setInt(1, 4);
 		ps.setString(2, "Declined");
 		ps.setDate(3, java.sql.Date.valueOf("2019-06-21"));
-		ps.setTime(4, java.sql.Time.valueOf("8:00:00"));
-		ps.setString(5, "11 Hamilton St.");
+		ps.setString(4, "11 Hamilton St.");
 		ps.addBatch();
 
 		ps.executeBatch();
@@ -1166,14 +1159,13 @@ public class branchtwo implements ActionListener
 					response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
 					break;
 				case "interview":
-					//not sure if we even need this case since the data should be fetched in previous page
-					response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
+					response = getRecordsAsJSON(intAndOff.handleAnInterview(queryParams, urlPath, method));
 					break;
 				case "allOffers":
 					response = getRecordsAsJSON(intAndOff.handleAllOffers(queryParams, urlPath, method));
 					break;
 				case "offer":
-					response = getRecordsAsJSON(intAndOff.handleOffer(queryParams, urlPath, method));
+					response = getRecordsAsJSON(intAndOff.handleAnOffer(queryParams, urlPath, method));
 					break;
 				case "application":
 					response = handleApplication(queryParams, urlPath, method);

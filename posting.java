@@ -83,7 +83,7 @@ class posting {
      * retrieves skills for specified posting
      */ 
     PreparedStatement getPostingSkills(int postingId) throws SQLException {
-      PreparedStatement ps = con.prepareStatement("SELECT skillName FROM Involves WHERE postingId = ?");
+      PreparedStatement ps = con.prepareStatement("SELECT name FROM Involves WHERE postingId = ?");
       ps.setInt(1, postingId);
       return ps;
       
@@ -102,7 +102,7 @@ class posting {
      */ 
     PreparedStatement getAllPostingsInvolvingSkill(String skillName) throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId" + 
-        "FROM Involves I, Posting P WHERE I.skillName = ? AND I.postingId = P.postingId");
+        "FROM Involves I, Posting P WHERE I.name = ? AND I.postingId = P.postingId");
       ps.setString(2, skillName);
       return ps;
     }
@@ -130,7 +130,7 @@ class posting {
     */
     PreparedStatement getPostingsByCityName(String cityName) throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId FROM Posting P, PostalCode PC WHERE PC.cityName = ? AND P.postalCode = PC.postalCode");
-      ps.setString(2, cityName);
+      ps.setString(1, cityName);
       return ps;
     }
 
@@ -139,7 +139,7 @@ class posting {
     */
     PreparedStatement getPostingsByState(String state) throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId FROM Posting P, PostalCode PC WHERE PC.state = ? AND P.postalCode = PC.postalCode");
-      ps.setString(3, state);
+      ps.setString(1, state);
       return ps;
     }
 
@@ -149,12 +149,12 @@ class posting {
     PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String description) throws SQLException {
       PreparedStatement ps = con.prepareStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ? WHERE postingId = ?");
       // do we need to be guarding against nulls here?
-      ps.setString(2, title);
-      ps.setString(3, active);
-      ps.setDate(4, startDate);
-      ps.setString(5, address);
-      ps.setString(6, postalCode);
-      ps.setString(7, description);
+      ps.setString(1, title);
+      ps.setString(2, active);
+      ps.setDate(3, startDate);
+      ps.setString(4, address);
+      ps.setString(5, postalCode);
+      ps.setString(6, description);
 
       con.setAutoCommit(false);
       ps.executeUpdate();

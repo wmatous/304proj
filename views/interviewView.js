@@ -1,9 +1,7 @@
-populateInterviewView = function(interviewData){
-    var interview = interviewData[0];
-    document.getElementById('i-status').innerHTML = `<h3> Status: ${interview.status}</h3>`;
-    document.getElementById('i-date').innerHTML = `<h3> Date: ${interview.date}</h3>`;
-    document.getElementById('i-time').innerHTML = `<h3> Time: ${interview.time}</h3>`;
-    document.getElementById('i-address').innerHTML = `<h3> Address: ${interview.address}</h3>`;
+window.onload = function(){
+    var url = new URL(window.location.href);
+    var applicantId = url.searchParams.get("applicantId");
+    getInterview(applicantId);
 };
 
 getInterview = function(applicantId){
@@ -11,37 +9,48 @@ getInterview = function(applicantId){
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
-            populateInterviewTable(data);
             populateInterviewView(data);
         })
         .catch(err => console.error(err));
 };
 
-function interviewTemplate(interview){
-    return `
-        <tr class="interviewTableRow">
-            <div>
-                <th scope="row">${interview.id}</th>
-                <td>${interview.company}</td>
-                <td>${interview.position}</td>
-                <td>${interview.status}</td>
-                <td>${interview.date}</td>
-                <td>${interview.time}</td>
-                <td>${interview.address}</td>
-            </div>
-        </tr>`
-}
+populateInterviewView = function(interviewData){
+    var interview = interviewData[0];
+    document.getElementById('i-status').innerHTML = `<h3> Status: ${interview.status}</h3>`;
+    document.getElementById('i-date').innerHTML = `<h3> Date: ${interview.date}</h3>`;
+    document.getElementById('i-time').innerHTML = `<h3> Time: ${interview.time}</h3>`;
+    document.getElementById('i-address').innerHTML = `<h3> Address: ${interview.address}</h3>`;
+    document.getElementById('viewButton').innerHTML = `
+       <br>
+       <a href="#" class="btn btn-outline-dark btn-md" onsubmit="viewPost(${interview.postId})" role="button">View Job Posting</a>`;
+    document.getElementById('adButtons').innerHTML = `
+       <button type="submit" class="btn btn-success btn-lg" onsubmit="acceptInterview(${interview.applicantId})" role="button">
+            Accept
+        </button>
+        <button type="submit" class="btn btn-danger btn-lg" onsubmit="declineInterview(${interview.applicantId})" role="button">
+            Decline
+        </button>`;
 
-//interviewData is array of interview json objects
-//map iterates through and calls interviewTemplate on each one
-//join removes commas between array elements
-function populateInterviewTable(interviewData){
-    document.getElementById("interviewTable").innerHTML =
-        `${interviewData.map(interviewTemplate).join('')}`;
-}
+};
 
-window.onload = function(){
-    var url = new URL(window.location.href);
-    var applicantId = url.searchParams.get("applicantId");
-    getInterview(applicantId);
+acceptInterview = function(applicantId){
+    let urlPath = 'http://localhost:6789/interview';
+    urlPath += ('/?applicantId='+applicantId+'&status='+"accepted");
+    fetch(urlPath,
+        {method:'PUT'})
+        .then((res) => res.json())
+        .catch(err => console.error(err));
+};
+
+declineInterview = function(applicantId){
+    let urlPath = 'http://localhost:6789/interview';
+    urlPath += ('/?applicantId='+applicantId+'&status='+"declined");
+    fetch(urlPath,
+        {method:'PUT'})
+        .then((res) => res.json())
+        .catch(err => console.error(err));
+};
+
+viewPost = function(postId){
+
 };
