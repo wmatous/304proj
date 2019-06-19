@@ -624,14 +624,9 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Interview "+
-<<<<<<< HEAD
 					"( applicantId integer, status char(20), intDate date, address char(20), "+
 					"PRIMARY KEY ( applicantId, intDate),  "+
 					"FOREIGN KEY (applicantId) REFERENCES Account (accountId) ON DELETE CASCADE)");
-=======
-					"(PRIMARY KEY applicantId integer, status char(20), date date, time time, address char(20), "+
-					"FOREIGN KEY applicantId REFERENCES Account (accountId) ON DELETE CASCADE)");
->>>>>>> 9b9c1c19e818dc125a13a3b14874e89d1a1fcde3
 
 			System.out.println(ps.executeUpdate());
 			con.commit();
