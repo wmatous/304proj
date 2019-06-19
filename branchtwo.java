@@ -412,7 +412,6 @@ public class branchtwo implements ActionListener
      */ 
     String getRecordsAsJSON(PreparedStatement ps)
     {
-	  
 	try
 	{
 		// disable auto commit mode
@@ -429,7 +428,7 @@ public class branchtwo implements ActionListener
 		// get column names;
 		for (int i = 0; i < numCols; i++)
 		{
-			fields.add(rsmd.getColumnName(i+1));    
+			fields.add(rsmd.getColumnName(i+1)); 
 		}
 
 		StringWriter sw = new StringWriter();
@@ -445,8 +444,8 @@ public class branchtwo implements ActionListener
 				gen.write(s, rs.getString(s));
 			}
 			gen.writeEnd();
-			
 		}
+		gen.writeEnd();
 		gen.close();
 
 		con.commit();
@@ -707,6 +706,7 @@ public class branchtwo implements ActionListener
 		
 		ps.executeBatch();
 		con.commit();
+		System.out.println("CLs done");
 		//
 		query = "INSERT INTO City (cityName, state, country, population) VALUES (?, ?, ?, ?)";
 		ps = con.prepareStatement(query); 
@@ -736,6 +736,7 @@ public class branchtwo implements ActionListener
 		ps.executeBatch();
 		con.commit();
 		//
+		System.out.println("Cities done");
 
 		query = "INSERT INTO Account (accountId, name, email, postalCode) VALUES (?, ?, ?, ?)";
 		ps = con.prepareStatement(query);
@@ -809,6 +810,8 @@ public class branchtwo implements ActionListener
 		con.commit();
 		//
 
+		System.out.println("accounts done");
+
 		query = "INSERT INTO Skill (name) VALUES (?)";
 		ps = con.prepareStatement(query);
 		//
@@ -840,6 +843,8 @@ public class branchtwo implements ActionListener
 		
 		ps.executeBatch();
 		con.commit();
+
+		System.out.println("skills done");
 		//
 
 		query = "INSERT INTO ExperiencedAt (accountId, name) VALUES (?, ?)";
@@ -886,6 +891,8 @@ public class branchtwo implements ActionListener
 
 		ps.executeBatch();
 		con.commit();
+
+		System.out.println("expats done");
 		//
 
 		query = "INSERT INTO Endorses (endorserID, endorsedID) VALUES (?, ?)";
@@ -920,6 +927,8 @@ public class branchtwo implements ActionListener
 		ps.executeBatch();
 		con.commit();
 		//
+
+		System.out.println("endorse done");
 
 		query = "INSERT INTO Involves (postingId, skillName, yearsExperience) VALUES (?, ?, ?)";
 		ps = con.prepareStatement(query);
@@ -957,59 +966,8 @@ public class branchtwo implements ActionListener
 		con.commit();
 
 
-		query = "INSERT INTO Offer (offerId, status, offerType, hours, compensation, terminating, startDate, endDate, " +
-				"expiryDate, accountId, postingId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		ps = con.prepareStatement(query);
-
-		//Junior Software Developer
-		ps.setInt(1, 0);
-		ps.setString(2, "Active");
-		ps.setString(3, "Full Time");
-		ps.setInt(4, 40);
-		ps.setFloat(5, 23.50f);
-		ps.setString(6, "false");
-		ps.setDate(7, java.sql.Date.valueOf("2019-09-04"));
-		ps.setNull(8, 0);
-		ps.setDate(9, java.sql.Date.valueOf("2019-08-04"));
-		ps.setInt(10, 1);
-		ps.setInt(11, 51);
-		ps.addBatch();
-
-		//Construction
-		ps.setInt(1, 1);
-		ps.setFloat(5, 28.00f);
-		ps.setDate(9, java.sql.Date.valueOf("2019-08-28"));
-		ps.setInt(10, 83);
-		ps.addBatch();
-
-		//Architect
-		ps.setInt(1, 2);
-		ps.setFloat(5, 32.13f);
-		ps.setString(6, "true");
-		ps.setDate(8, java.sql.Date.valueOf("2021-09-04"));
-		ps.setDate(9, java.sql.Date.valueOf("2019-07-22"));
-		ps.setInt(10, 96);
-		ps.addBatch();
-
-		//Lab Technician
-		ps.setInt(1, 3);
-		ps.setString(2, "Expired");
-		ps.setFloat(5, 18.50f);
-		ps.setString(6, "true");
-		ps.setDate(8, java.sql.Date.valueOf("2020-01-13"));
-		ps.setDate(9, java.sql.Date.valueOf("2019-06-17"));
-		ps.setInt(10, 45);
-		ps.addBatch();
-
-		//Nurse
-		ps.setInt(1, 4);
-		ps.setFloat(5, 26.45f);
-		ps.setDate(9, java.sql.Date.valueOf("2019-08-15"));
-		ps.setInt(10, 37);
-		ps.addBatch();
-
-		ps.executeBatch();
-		con.commit();
+		
+		System.out.println("involves done");
 
 
 		query = "INSERT INTO Posting (postingId, title, active, startDate, address, postalCode, description, accountId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -1067,6 +1025,68 @@ public class branchtwo implements ActionListener
 
 		ps.executeBatch();
 		con.commit();
+
+		System.out.println("postings done");
+
+
+		query = "INSERT INTO Offer (offerId, status, type, hours, compensation, terminating, startDate, endDate, " +
+				"expiryDate, accountId, postingId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		ps = con.prepareStatement(query);
+
+		//Junior Software Developer
+		ps.setInt(1, 0);
+		ps.setString(2, "Active");
+		ps.setString(3, "Full Time");
+		ps.setInt(4, 40);
+		ps.setFloat(5, 23.50f);
+		ps.setString(6, "false");
+		ps.setDate(7, java.sql.Date.valueOf("2019-09-04"));
+		ps.setNull(8, 0);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-04"));
+		ps.setInt(10, 1);
+		ps.setInt(11, 51);
+		ps.addBatch();
+
+		//Construction
+		ps.setInt(1, 1);
+		ps.setFloat(5, 28.00f);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-28"));
+		ps.setInt(10, 83);
+		ps.addBatch();
+
+		//Architect
+		ps.setInt(1, 2);
+		ps.setFloat(5, 32.13f);
+		ps.setString(6, "true");
+		ps.setDate(8, java.sql.Date.valueOf("2021-09-04"));
+		ps.setDate(9, java.sql.Date.valueOf("2019-07-22"));
+		ps.setInt(10, 96);
+		ps.addBatch();
+
+		//Lab Technician
+		ps.setInt(1, 3);
+		ps.setString(2, "Expired");
+		ps.setFloat(5, 18.50f);
+		ps.setString(6, "true");
+		ps.setDate(8, java.sql.Date.valueOf("2020-01-13"));
+		ps.setDate(9, java.sql.Date.valueOf("2019-06-17"));
+		ps.setInt(10, 45);
+		ps.addBatch();
+
+		//Nurse
+		ps.setInt(1, 4);
+		ps.setFloat(5, 26.45f);
+		ps.setDate(9, java.sql.Date.valueOf("2019-08-15"));
+		ps.setInt(10, 37);
+		ps.addBatch();
+
+		ps.executeBatch();
+		con.commit();
+
+		System.out.println("offers done");
+
+
+		
 		
 
 //		"(applicantId int, status char(20), date date, time time, address char(20), "
@@ -1111,6 +1131,8 @@ public class branchtwo implements ActionListener
 		ps.executeBatch();
 		con.commit();
 
+		System.out.println("interviews done");
+
 		ps.close();
 	}
 	catch (SQLException ex)
@@ -1132,8 +1154,8 @@ public class branchtwo implements ActionListener
 	private  String dispatch(Map<String, String> queryParams, String[] urlPath, String method){
     	try{
         String response= "";
-        if(urlPath.length != 0) { // urlPath[0] will be entity type eg account, skill, posting etc
-			switch (urlPath[0]) {
+        if(urlPath.length != 0) { // urlPath[1] will be entity type eg account, skill, posting etc
+			switch (urlPath[1]) {
 				case "account":
 					response = handleAccount(queryParams, urlPath, method); // urlPath[1] will likely be null
 					break;
@@ -1192,7 +1214,7 @@ public class branchtwo implements ActionListener
     }
 
     private  String handleAccount(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-		if (method == "GET"){
+		if (method.equals("GET")){
 			return getAccount(Integer.parseInt(queryParams.get("accountId")));
 		} else if (method == "PUT") {
 			return updateAccount(Integer.parseInt(queryParams.get("accountId")),
@@ -1389,26 +1411,35 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 		}
 
 	public int runServer(){
+		try
+	    {
+			welcomeSocket = new ServerSocket(6789);
+	    }
+	    catch (Exception ex)
+	    {
+		 System.out.println("Message: " + ex.getMessage());
+		 System.exit(0);
+	    }
 		while(true){
 		try{
-			welcomeSocket = new ServerSocket(6789);
-			Socket connectionSocket = welcomeSocket.accept();
-			BufferedReader inFromClient =
-				new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 			String urlPath;
 			String method = "";
 			URL requestURL;
 			String[] parsedPath = new String[]{""};
 			Map<String, String> urlParams = new HashMap<String, String>();
+			Socket connectionSocket = welcomeSocket.accept();
+			BufferedReader inFromClient =
+				new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+			while(!inFromClient.ready()){}
 			while (inFromClient.ready() && (inFromClient.read(clientSentence, 0, 10000) != -1)) {
 				urlPath = new String(clientSentence).split(" ", 3)[1];
 				method = new String(clientSentence).split(" ", 3)[0];
 				requestURL = new URL("http://localhost:6789"+urlPath);
 				parsedPath = requestURL.getPath().split("/");
 				urlParams = getQueryMap(requestURL.getQuery());
-				System.out.println(clientSentence);
 			}
+
 			
 			String response="";
 			try{
@@ -1417,6 +1448,7 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 				System.out.println(e);
 				response = "[]";
 			}
+			
 			PrintWriter pw = new PrintWriter(outToClient);
 					pw.print("HTTP/1.1 200 \r\n"); // Version & status code
 					pw.print("Content-Type: application/json\r\n"); // The type of data
