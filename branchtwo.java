@@ -660,7 +660,7 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.executeBatch();
-            con.commit();
+            
             System.out.println("CLs done");
             //
             query = "INSERT INTO City (cityName, state, country, population) VALUES (?, ?, ?, ?)";
@@ -689,7 +689,7 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.executeBatch();
-            con.commit();
+            
             //
             System.out.println("Cities done");
 
@@ -762,7 +762,7 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.executeBatch();
-            con.commit();
+        
             //
 
             System.out.println("accounts done");
@@ -797,7 +797,7 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.executeBatch();
-            con.commit();
+            
 
             System.out.println("skills done");
             //
@@ -845,7 +845,7 @@ public class branchtwo implements ActionListener {
             //
 
             ps.executeBatch();
-            con.commit();
+            
 
             System.out.println("expats done");
             //
@@ -880,7 +880,7 @@ public class branchtwo implements ActionListener {
             //
 
             ps.executeBatch();
-            con.commit();
+            
             //
 
             System.out.println("endorse done");
@@ -918,7 +918,7 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.executeBatch();
-            con.commit();
+            
 
 
             System.out.println("involves done");
@@ -978,7 +978,7 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.executeBatch();
-            con.commit();
+            
 
             System.out.println("postings done");
 
@@ -1035,7 +1035,7 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.executeBatch();
-            con.commit();
+            
 
             System.out.println("offers done");
 
@@ -1080,9 +1080,14 @@ public class branchtwo implements ActionListener {
             ps.addBatch();
 
             ps.executeBatch();
-            con.commit();
 
             System.out.println("interviews done");
+
+
+
+
+            con.commit();
+
 
             ps.close();
         } catch (SQLException ex) {
