@@ -1,43 +1,44 @@
 <body onload="loadaccountid()">
 
-    <script>
+<script>
     loadaccountid = function () {
         var url = new URL(location.href);
         var accountId = url.searchParams.get("accountId");
-    }
+    };
     submitForm = function () {
-            // not sure about applicationID, account ID
+        // not sure about applicationID, account ID
 
-            const postingid = document.getElementById('PostingID').value;
-            const coverletter = document.getElementById('coverletter').value;
-            const resume = document.getElementById('resume').value;
-            const accountId = url.searchParams.get("accountId");
-            const applicationId = postingid+accountId; // just a way to generate application ID
+        const postingid = document.getElementById('PostingID').value;
+        const coverletter = document.getElementById('coverletter').value;
+        const resume = document.getElementById('resume').value;
+        const accountId = url.searchParams.get("accountId");
+        const applicationId = postingid + accountId; // just a way to generate application ID
 
-            let urlPath = 'http://localhost:6789/application/';
-            urlPath = ('&accountId=' + accountId +  '&PostingID=' + postingid +  '&applicationId=' + applicationId +
-                '&coverletter=' + coverletter + '&resume=' + resume); // pretty dumb way to pass texts like that
-            // post coverletter
-            // post resume
-            fetch(urlPath,
-                        { method: 'POST' })
-                    .then((res) => res.json())
-                    .then(data => console.log(data))
-                    .catch(err => console.error(err));
-    }
+        urlPath = 'http://localhost:6789/application/';
+        urlPath = ('&accountId=' + accountId + '&PostingID=' + postingid + '&applicationId=' + applicationId +
+            '&coverletter=' + coverletter + '&resume=' + resume); // pretty dumb way to pass texts like that
+        // post coverletter
+        // post resume
+        fetch(urlPath,
+            {method: 'POST'})
+            .then((res) => res.json())
+            .then(data => console.log(data))
+            .catch(err => console.error(err));
+    };
 
     listApplications = function () {
         let appl = document.getElementById("applications");
         appl.style.visibility = "visible";
         const accountId = url.searchParams.get("accountId");
-        let urlPath = 'http://localhost:6789/application/';
+        urlPath = 'http://localhost:6789/application/';
         urlPath = ('&accountId=' + accountId);
         fetch(urlPath,
-                        { method: 'GET' })
-                    .then((res) =>  res.json())
-                    .then(data => append(data))
-                    .catch(err => console.error(err));
-    }
+            {method: 'GET'})
+            .then((res) => res.json())
+            .then(data => append(data))
+            .catch(err => console.error(err));
+    };
+
     function append(data) {
         var accumulator = document.getElementById("applications");
         for (var i = 0; i < data.length; i++) {
@@ -51,67 +52,65 @@
         }
     }
 
-    </script>
-    <style>
+</script>
+<style>
 
-        input {
-            border: 0;
-            outline: 0;
-            background: rgb(187, 187, 187);
-        }
+    input {
+        border: 0;
+        outline: 0;
+        background: rgb(187, 187, 187);
+    }
 
-        .applicationBox {
-            background: rgb(206, 206, 206);
-        }
-    </style>
-
-
+    .applicationBox {
+        background: rgb(206, 206, 206);
+    }
+</style>
 
 
-    <div>
-        <table class='applicationBox'>
-            <tr>
-                <td>
-                    PostingID:
-                </td>
-                <td>
-                    <input type='number'
-                           id='PostingID'
-                           data-fieldid='PostingID' />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    CoverLetter:
-                </td>
-                <td>
+<div>
+    <table class='applicationBox'>
+        <tr>
+            <td>
+                PostingID:
+            </td>
+            <td>
+                <input type='number'
+                       id='PostingID'
+                       data-fieldid='PostingID'/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                CoverLetter:
+            </td>
+            <td>
                     <textarea name='coverletter'
                               id='coverletter'
-                              cols='20' rows='10' /></textarea>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Resume:
-                </td>
-                <td>
+                              cols='20' rows='10'></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Resume:
+            </td>
+            <td>
                     <textarea name='resume'
                               id='resume'
-                              cols='20' rows='10' /></textarea>
-                </td>
-            </tr>
-        </table>
-        <button onclick='submitForm()'> Save </button>
-        <button onclick='listApplications()'> See your applications </button>
-    </div>
-    <div id="applics" >
-        <table id='applications' style="visibility:hidden">
-            <tr>
-                <th>ApplicationID</th>
-                <th>CoverLetter</th>
-                <th>Resume</th>
-                <th>ApplicantID</th>
-                <th>PostingID</th>
-            </tr>
-        </table>
-    </div>
+                              cols='20' rows='10'></textarea>
+            </td>
+        </tr>
+    </table>
+    <button onclick='submitForm()'> Save</button>
+    <button onclick='listApplications()'> See your applications</button>
+</div>
+<div id="applics">
+    <table id='applications' style="visibility:hidden">
+        <tr>
+            <th>ApplicationID</th>
+            <th>CoverLetter</th>
+            <th>Resume</th>
+            <th>ApplicantID</th>
+            <th>PostingID</th>
+        </tr>
+    </table>
+</div>

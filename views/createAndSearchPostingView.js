@@ -3,12 +3,12 @@
 getPosting = function (postingId) {
     let urlPath = 'http://localhost:6789/posting/' + postingId;
     fetch(urlPath)
-    .then((res) => res.json())
-    .then(function(data) {
-        console.log(data);
-        populateSinglePostingView(data);
-    })
-    .catch((err) => console.error(err));
+        .then((res) => res.json())
+        .then(function (data) {
+            console.log(data);
+            populateSinglePostingView(data);
+        })
+        .catch((err) => console.error(err));
 };
 
 populateSinglePostingView = function (postings) {
@@ -25,7 +25,7 @@ populateSinglePostingView = function (postings) {
     document.getElementById('skills').value = posting.skills;
 };
 
-updatePosting = function() {
+updatePosting = function () {
     const postingId = document.getElementById('postingId').value;
     const title = document.getElementById('title').value;
     const active = document.getElementById('active').value;
@@ -47,28 +47,28 @@ updatePosting = function() {
 
     fetch(urlPath,
         {method: 'PUT'})
-    .then((res) => res.json())
-    .then((data) => console.log(data))
-    .catch((err) => console.error(err));
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.error(err));
 };
 
 populateSkills = function (skills) {
     let innerHTML = '<h1>Skills</h1>';
     for (let i = 0; i < skills.length; i++) {
-        innerHTML += "<span>"+skills[i].name+"</span>";
+        innerHTML += "<span>" + skills[i].name + "</span>";
     }
     document.getElementById('skills').innerHTML = innerHTML;
 };
 
-getSkills = function(postingId){
-    let urlPath = 'http://localhost:6789/postingSkill/'+postingId;
+getSkills = function (postingId) {
+    let urlPath = 'http://localhost:6789/postingSkill/' + postingId;
     fetch(urlPath)
-    .then((res) => res.json())
-    .then(function(data){
-        console.log(data);
-        populateSkills(data);
-    })
-    .catch((err) => console.error(err));
+        .then((res) => res.json())
+        .then(function (data) {
+            console.log(data);
+            populateSkills(data);
+        })
+        .catch((err) => console.error(err));
 };
 
 searchPostings = function () {
@@ -82,13 +82,13 @@ searchPostings = function () {
 
     fetch(urlPath,
         {method: 'GET'})
-    .then((res) => res.json())
-    .then((data) => console.log(data))
-    .catch((err) => console.error(err));
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .catch((err) => console.error(err));
 };
 
 
-window.onload = function(){
+window.onload = function () {
     var url = new URL(window.location.href);
     var postingId = url.searchParams.get("postingId");
     getPosting(postingId);

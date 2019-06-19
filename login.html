@@ -1,16 +1,16 @@
-    <script>
-        login = function(){
-            var accountId = document.getElementById('accountId').value;
-            
-            document.cookie = (' accountId='+accountId);
-            window.location = 'account/?accountId='+accountId;
-        }
-    </script>
-   
-    <div>
-        <h1> Enter Account Id</h1>
-        <input type='text'
-                id='accountId'/>
-                
-        <button onclick='login()'> log in </button>
-    </div>
+<script>
+    login = function () {
+        var accountId = document.getElementById('accountId').value;
+
+        document.cookie = (' accountId=' + accountId);
+        window.location = 'account/?accountId=' + accountId;
+    }
+</script>
+
+<div>
+    <h1> Enter Account Id</h1>
+    <input type='text'
+           id='accountId'/>
+
+    <button onclick='login()'> log in</button>
+</div>

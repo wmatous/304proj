@@ -1,120 +1,122 @@
-<script src='./accountView.js'> </script>
-        <style>
-            input {
-    border: 0;
-    outline: 0;
-    background:rgb(187, 187, 187);
-}
-.accountBox{
-    background: rgb(206, 206, 206);
-    border-radius: 3px;
-    padding:5px;
-    margin:3px;
-}
-.skillBox{
-    background: rgb(206, 206, 206);
-    border-radius: 3px;
-    padding:5px;
-    margin: 3px;
+<script src='./accountView.js'></script>
+<style>
+    input {
+        border: 0;
+        outline: 0;
+        background: rgb(187, 187, 187);
+    }
 
-}
-        </style>
+    .accountBox {
+        background: rgb(206, 206, 206);
+        border-radius: 3px;
+        padding: 5px;
+        margin: 3px;
+    }
 
-<div >
+    .skillBox {
+        background: rgb(206, 206, 206);
+        border-radius: 3px;
+        padding: 5px;
+        margin: 3px;
+
+    }
+</style>
+
+<div>
     <h1>Account Info</h1>
-    <table class = 'accountBox'>
-            <input hidden='true' 
-            id = 'accountId'
-              data-fieldid ='accountId' 
-               />
-          <tr > 
-              <td>
+    <table class='accountBox'>
+        <input hidden='true'
+               id='accountId'
+               data-fieldid='accountId'
+        />
+        <tr>
+            <td>
                 Name:
-              </td>
-              <td>
-          <input type ='text' 
-                id = 'name'
-                  data-fieldid ='name' 
-                   />
-              </td>
+            </td>
+            <td>
+                <input type='text'
+                       id='name'
+                       data-fieldid='name'
+                />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Email:
+            </td>
+            <td>
+                <input type='email'
+                       id='email'
+                       data-fieldid='email'
+                />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Postal Code:
+            </td>
+            <td>
+                <input type='text'
+                       id='postalCode'
+                       data-fieldid='postalCode'
+                />
+            </td>
+        </tr>
+        <div id='companyView' style='visibility: hidden'>
+            <tr>
+                <td>
+                    Size:
+                </td>
+                <td>
+                    <input type='number'
+                           id='cmpSize'
+                           data-fieldid='cmpSize'
+                    />
+                </td>
             </tr>
-          <tr >
+            <tr>
                 <td>
-                        Email:
+                    Industry:
                 </td>
-                    <td>
-            <input type ='email' 
-                id = 'email'
-                  data-fieldid ='email' 
-                   />
-                    </td>
-                </tr>
-          <tr >
                 <td>
-                        Postal Code:
+                    <input type='text'
+                           id='cmpIndustry'
+                           data-fieldid='cmpIndustry'
+                    />
                 </td>
-                    <td>
-              <input type ='text' 
-                id = 'postalCode'
-                  data-fieldid ='postalCode' 
-              />
-                    </td>
-                </tr>
-                <div id = 'companyView' style = 'visibility: hidden'>
-                        <tr > 
-                            <td>
-                                Size:
-                            </td>
-                            <td>
-                        <input type ='number' 
-                                id = 'cmpSize'
-                                data-fieldid ='cmpSize' 
-                                    />
-                            </td>
-                        </tr>
-                        <tr > 
-                            <td>
-                                Industry:
-                            </td>
-                            <td>
-                        <input type ='text' 
-                                id = 'cmpIndustry'
-                                data-fieldid ='cmpIndustry' 
-                                    />
-                            </td>
-                        </tr>
-                    </div>
-                    <div id = 'individualView'>
-                            <tr > 
-                                <td>
-                                    Age:
-                                </td>
-                                <td>
-                            <input type ='number' 
-                                    id = 'indAge'
-                                    data-fieldid ='indAge' 
-                                        />
-                                </td>
-                            </tr>
-                            <tr > 
-                                <td>
-                                    Status:
-                                </td>
-                                <td>
-                            <input type ='text' 
-                                    id = 'indStatus'
-                                    data-fieldid ='indStatus' 
-                                        />
-                                </td>
-                            </tr>
-                        </div>
-                    
-            </table>
-            <button id='saveButton' hidden onclick = 'updateAccount()'> Save </button>
+            </tr>
         </div>
-    <div id="skills">
-    </div>
-    <div class="endorsements">
-            <h1 id = 'endorseCount'></h1>
-    </div>
+        <div id='individualView'>
+            <tr>
+                <td>
+                    Age:
+                </td>
+                <td>
+                    <input type='number'
+                           id='indAge'
+                           data-fieldid='indAge'
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Status:
+                </td>
+                <td>
+                    <input type='text'
+                           id='indStatus'
+                           data-fieldid='indStatus'
+                    />
+                </td>
+            </tr>
+        </div>
+
+    </table>
+    <button id='saveButton' hidden onclick='updateAccount()'> Save</button>
+</div>
+<div id="skills">
+</div>
+<div class="endorsements">
+    <h1 id='endorseCount'></h1>
+</div>
         

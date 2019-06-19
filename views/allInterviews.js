@@ -1,11 +1,11 @@
-window.onload = function(){
+window.onload = function () {
     var url = new URL(window.location.href);
     var applicantId = url.searchParams.get("applicantId");
     getAllInterviews(applicantId);
 };
 
-getAllInterviews = function(applicantId){
-    let urlPath = 'http://localhost:6789/interviews/'+applicantId;
+getAllInterviews = function (applicantId) {
+    let urlPath = 'http://localhost:6789/interviews/' + applicantId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
@@ -17,12 +17,12 @@ getAllInterviews = function(applicantId){
 //interviewData is array of interview json objects
 //map iterates through and calls interviewTemplate on each one
 //join removes commas between array elements
-function populateInterviewTable(interviewData){
+function populateInterviewTable(interviewData) {
     document.getElementById("interviewTable").innerHTML =
         `${interviewData.map(interviewTemplate).join('')}`;
-};
+}
 
-function interviewTemplate(interview){
+function interviewTemplate(interview) {
     return `
         <tr class="interviewTableRow">
             <div>
@@ -37,8 +37,8 @@ function interviewTemplate(interview){
                 <td>${interview.address}</td>
             </div>
         </tr>`
-};
+}
 
-viewInterview = function(offerId){
+viewInterview = function (offerId) {
 //modify from offerView once its done
 };

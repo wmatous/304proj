@@ -1,18 +1,18 @@
-	<script src='./createAndSearchPostingView.js'> </script>
-	<!doctype html>
-	<html lang="en">
-	<head>
-		<!-- meta tags -->
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!--Bootstrap CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-			  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-			  crossorigin="anonymous">
+<script src='./createAndSearchPostingView.js'></script>
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!--Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+		  crossorigin="anonymous">
 
-		<title>Create Posting</title>
+	<title>Create Posting</title>
 
-		<style>
+	<style>
 		.jumbotron {
 			background-color: #FFE4B5;
 			color: black;
@@ -22,145 +22,144 @@
 </head>
 
 <body>
-	<div class="container-fluid">
-		<div class="page-header">
-			<h1>Create a Job Posting</h1>
-		</div>
+<div class="container-fluid">
+	<div class="page-header">
+		<h1>Create a Job Posting</h1>
+	</div>
 
-		<div class="row">
-			<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
-				<div class="jumbotron">
-					<p class="lead">Add information about the postiion here! </p>
-					<hr class="my-4">
-					<table class='table'>
-						<input hidden='true' 
-						id = 'postingId'
-						data-fieldid ='postingId'/>
-						<tr > 
-							<td>
-								Job Title:
-							</td>
-							<td>
-								<input type ='text' 
-								id = 'title'
-								data-fieldid ='title' 
-								style="width:250px"
-								/>
-							</td>
-						</tr>
-						<tr >
-							<td>
-								Active:
-							</td>
-							<td>
-								<input class="radio-inline" type ='radio' name="active" checked
-								id = 'active'
-								data-fieldid ='active' 
-								/> Yes
-								<input class="radio-inline" type ='radio' name="active"
-								id = 'active'
-								data-fieldid ='active' 
-								/> No
-							</td>
-						</tr>
-						<tr >
-							<td>
-								Start Date:
-							</td>
-							<td>
-								<input type ='date' 
-								id = 'startDate'
-								data-fieldid ='startDate'
-								style="width:250px"
-								/>
-							</td>
-						</tr>
-						<tr > 
-							<td>
-								Address:
-							</td>
-							<td>
-								<input type ='text' 
-								id = 'address'
-								data-fieldid ='address' 
-								style="width:250px"
-								/>
-							</td>
-							<tr > 
-								<td>
-									Postal Code:
-								</td>
-								<td>
-									<input type ='text' 
-									id = 'postalCode'
-									data-fieldid ='postalCode' 
-									style="width:250px"
-									/>
-								</td>
-							</tr>
+	<div class="row">
+		<div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+			<div class="jumbotron">
+				<p class="lead">Add information about the postiion here! </p>
+				<hr class="my-4">
+				<table class='table'>
+					<input hidden='true'
+						   id='postingId'
+						   data-fieldid='postingId'/>
+					<tr>
+						<td>
+							Job Title:
+						</td>
+						<td>
+							<input type='text'
+								   id='title'
+								   data-fieldid='title'
+								   style="width:250px"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Active:
+						</td>
+						<td>
+							<input class="radio-inline" type='radio' name="active" checked
+								   id='active'
+								   data-fieldid='active'
+							/> Yes
+							<input class="radio-inline" type='radio' name="active"
+								   id='active'
+								   data-fieldid='active'
+							/> No
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Start Date:
+						</td>
+						<td>
+							<input type='date'
+								   id='startDate'
+								   data-fieldid='startDate'
+								   style="width:250px"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Address:
+						</td>
+						<td>
+							<input type='text'
+								   id='address'
+								   data-fieldid='address'
+								   style="width:250px"
+							/>
+						</td>
+					<tr>
+						<td>
+							Postal Code:
+						</td>
+						<td>
+							<input type='text'
+								   id='postalCode'
+								   data-fieldid='postalCode'
+								   style="width:250px"
+							/>
+						</td>
+					</tr>
 
-							<tr > 
-								<td>
-									City Name:
-								</td>
-								<td>
-									<input type ='text' 
-									id = 'cityName'
-									data-fieldid ='cityName' 
-									style="width:250px"
-									/>
-								</td>
-							</tr>
-							<tr > 
-								<td>
-									State:
-								</td>
-								<td>
-									<input type ='text' 
-									id = 'state'
-									data-fieldid ='state' 
-									style="width:250px"
-									/>
-								</td>
-							</tr>
-							<tr> 
-								<td>
-									Skills:
-								</td>
-								<td>
-									<textarea name="textarea" id="skills" style="width:250px; height: 100px"></textarea>
-								</td>
-							</tr>
-							<tr> 
-								<td>
-									Description:
-								</td>
-								<td>
-									<textarea name="textarea" id="description" style="width:250px; height: 150px"></textarea>
-								</td>
-							</tr>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div>
-			<div class="btn-group btn-group-lg" role="button" style="padding-bottom: 20px">
-				<button type="submit" class="btn btn-success btn-lg" role="button" onclick='updatePosting()'>
-					Submit Job Posting
-				</button>
+					<tr>
+						<td>
+							City Name:
+						</td>
+						<td>
+							<input type='text'
+								   id='cityName'
+								   data-fieldid='cityName'
+								   style="width:250px"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							State:
+						</td>
+						<td>
+							<input type='text'
+								   id='state'
+								   data-fieldid='state'
+								   style="width:250px"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Skills:
+						</td>
+						<td>
+							<textarea name="textarea" id="skills" style="width:250px; height: 100px"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Description:
+						</td>
+						<td>
+							<textarea name="textarea" id="description" style="width:250px; height: 150px"></textarea>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>
+	<div>
+		<div class="btn-group btn-group-lg" role="button" style="padding-bottom: 20px">
+			<button type="submit" class="btn btn-success btn-lg" role="button" onclick='updatePosting()'>
+				Submit Job Posting
+			</button>
+		</div>
+	</div>
+</div>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-			crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-			integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-			crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-			crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
 </body>
 </html> 
