@@ -628,7 +628,16 @@ public class branchtwo implements ActionListener
 	    }
 	}
 	}
-
+	private void createApplicationTable(){
+	PreparedStatement ps = con.prepareStatement("create table Application(
+										ApplicationID integer primary key,
+										CoverLetter char(2000),
+										Resume char(2000),
+										ApplicantID integer NOT NULL,
+										PostingID integer NOT NULL,
+										foreign key(ApplicantID) references Account(AccountID) one delete cascade,
+										foreign key(PostingID) references Account(Posting) one delete cascade);");
+	}
 	/*
      * populates tables
      */ 
