@@ -493,8 +493,8 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 			"CountryLanguage "+
-			"(country char(30) PRIMARY KEY,"+
-			"primaryLanguage char(30))");
+			"(country varchar(30) PRIMARY KEY,"+
+			"primaryLanguage varchar(30))");
 			System.out.println(ps.executeUpdate());
 			con.commit();
 		}
@@ -503,7 +503,7 @@ public class branchtwo implements ActionListener
 		choice = Integer.parseInt(in.readLine());
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE City "+
-			"(cityName char(30), state char(30), country char(30), population int,"+
+			"(cityName varchar(30), state varchar(30), country varchar(30), population int,"+
 			"PRIMARY KEY (cityName, state),"+
 			"FOREIGN KEY (country) REFERENCES CountryLanguage(country))");
 			System.out.println(ps.executeUpdate());
@@ -514,7 +514,7 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 			"PostalCode "+
-			"(postalCode char(10), cityName char(30) not null, state char(30) not null, "+
+			"(postalCode varchar(10), cityName varchar(30) not null, state varchar(30) not null, "+
 			"PRIMARY KEY (postalCode)," +
 			"FOREIGN KEY (cityName, state) REFERENCES City(cityName, state))");
 
@@ -526,7 +526,7 @@ public class branchtwo implements ActionListener
 		choice = Integer.parseInt(in.readLine());
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE Account "+
-			"(accountId int, name char(30), email char(30), postalCode char(10) not null, "+
+			"(accountId int, name varchar(30), email varchar(30), postalCode varchar(10) not null, "+
 			"PRIMARY KEY (accountId),"+
 			"FOREIGN KEY (postalCode) references PostalCode(postalCode))");
 
@@ -538,7 +538,7 @@ public class branchtwo implements ActionListener
 		choice = Integer.parseInt(in.readLine());
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE Skill "+
-			"(name char(30) PRIMARY KEY)");
+			"(name varchar(30) PRIMARY KEY)");
 
 			System.out.println(ps.executeUpdate());
 			con.commit();
@@ -548,7 +548,7 @@ public class branchtwo implements ActionListener
 		choice = Integer.parseInt(in.readLine());
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE Posting "+
-			"(postingId int, title char(30) not null, active char(10), startDate date, address char(30), postalCode char(10) not null, description char(200), accountId int, "+
+			"(postingId int, title varchar(30) not null, active varchar(10), startDate date, address varchar(30), postalCode varchar(10) not null, description varchar(200), accountId int, "+
 			"PRIMARY KEY (postingId),"+
 			"FOREIGN KEY (accountId) references Account(accountId),"+
 			"FOREIGN KEY (postalCode) references PostalCode(postalCode))");
@@ -562,7 +562,7 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE ExperiencedAt ("+
 				"accountId integer, "+
-				"name char(30), "+
+				"name varchar(30), "+
 				"PRIMARY KEY (accountId, name), "+
 				"FOREIGN KEY (accountId) REFERENCES Account(accountId) ON DELETE CASCADE, "+
 				"FOREIGN KEY (name) REFERENCES Skill (name) ON DELETE CASCADE)");
@@ -591,7 +591,7 @@ public class branchtwo implements ActionListener
 		choice = Integer.parseInt(in.readLine());
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE Involves"+
-				"(postingId int, name char(30), yearsExperience int,  "+
+				"(postingId int, name varchar(30), yearsExperience int,  "+
 				"PRIMARY KEY (postingId, name),  "+
 				"FOREIGN KEY (name) REFERENCES Skill(name)  "+
 				"ON DELETE CASCADE,  "+
@@ -607,8 +607,8 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("create table Application("+
 				"applicationID integer primary key, "+
-				"coverLetter char(2000), "+
-				"resume char(2000), "+
+				"coverLetter varchar(2000), "+
+				"resume varchar(2000), "+
 				"applicantId integer NOT NULL, "+
 				"postingID integer NOT NULL, "+
 				"foreign key (applicantId) references Account (accountId) on delete cascade,"+ 
@@ -623,7 +623,7 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Interview "+
-					"(PRIMARY KEY applicantId integer, status char(20), intDate date, address char(20), "+
+					"(PRIMARY KEY applicantId integer, status varchar(20), intDate date, address varchar(20), "+
 					"FOREIGN KEY (applicantId) REFERENCES Account (accountId) ON DELETE CASCADE)");
 			System.out.println(ps.executeUpdate());
 			con.commit();
@@ -634,8 +634,8 @@ public class branchtwo implements ActionListener
 		if (choice !=0){
 			ps = con.prepareStatement("CREATE TABLE "+
 					"Offer "+
-					"( offerId int PRIMARY KEY, status char(20), offerType char(20), hours int, compensation real, " +
-					"terminating char(20), startDate date, endDate date, expiryDate date, accountId int, postingId int, "+
+					"( offerId int PRIMARY KEY, status varchar(20), offerType varchar(20), hours int, compensation real, " +
+					"terminating varchar(20), startDate date, endDate date, expiryDate date, accountId int, postingId int, "+
 					"FOREIGN KEY (accountId) REFERENCES Account (accountId) ON DELETE CASCADE,"+
 					"FOREIGN KEY (postingId) REFERENCES Posting (postingId) ON DELETE CASCADE)");
 
@@ -643,7 +643,7 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 
-		ps = con.prepareStatement("CREATE TABLE test (name char(30) PRIMARY KEY)");
+		ps = con.prepareStatement("CREATE TABLE test (name varchar(30) PRIMARY KEY)");
 		ps.close();
 		
 	}
@@ -1252,14 +1252,14 @@ private String postApplicationTable(int applicationId, String coverletter, Strin
 			return postApplicationTable(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"), queryParams.get("resume") ,Integer.parseInt(queryParams.get("accountId")), Integer.parseInt(queryParams.get("PostingID")));
 		}
 		if (method == "GET"){
-			return getApplication(Integer.parseInt(queryParams.get("applicationId")));
+			return getApplicationTable(Integer.parseInt(queryParams.get("applicationId")));
 		}
 		
 		return "[]";
     }
     	private String getApplicationTable(int applicationId){
-		reparedStatement ps = con.prepareStatement("select (*) from Application where applicationID = ?;");
-		ps.setInt(1, accountId);
+		PreparedStatement ps = con.prepareStatement("select (*) from Application where applicationID = ?;");
+		ps.setInt(1, applicationId);
 		return getRecordsAsJSON(ps);
 	}
     
