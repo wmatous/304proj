@@ -619,7 +619,6 @@ public class branchtwo implements ActionListener
 			con.commit();
 		}
 
-		
 		System.out.println("Add Table Interview? y/n ");
 		choice = Integer.parseInt(in.readLine());
 		if (choice !=0){
@@ -1156,6 +1155,9 @@ public class branchtwo implements ActionListener
 					break;
 				case "posting":
 					response = getRecordsAsJSON(posting.handlePosting(queryParams, urlPath, method));
+					break;
+				case "searchPostings":
+					response = getRecordsAsJSON(posting.handleSearchPostings(queryParams, urlPath, method));
 					break;
 				case "postingSkill":
 					response = getRecordsAsJSON(posting.handlePostingSkill(queryParams, urlPath, method));

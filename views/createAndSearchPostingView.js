@@ -1,6 +1,18 @@
-populateSinglePostingView = function (posting) {
+// for a single posting on a page (when creating a posting or searching for a posting)
 
-    //var posting = postings[0];
+getPosting = function (postingId) {
+    let urlPath = 'http://localhost:6789/posting/' + postingId;
+    fetch(urlPath)
+    .then((res) => res.json())
+    .then(function(data) {
+        console.log(data);
+        populatePostingView(data);
+    })
+    .catch((err) => console.error(err));
+};
+
+populatePostingView = function (postings) {
+    var posting = postings[0];
     document.getElementById('postingId').value = posting.postingId;
     document.getElementById('title').value = posting.title;
     document.getElementById('active').value = posting.active;
@@ -13,7 +25,7 @@ populateSinglePostingView = function (posting) {
     document.getElementById('skills').value = posting.skills;
 };
 
-updatePosting = function () {
+updatePosting = function() {
     const postingId = document.getElementById('postingId').value;
     const title = document.getElementById('title').value;
     const active = document.getElementById('active').value;
@@ -30,7 +42,6 @@ updatePosting = function () {
     //const accountId = document.getElementById('accountId').value;
     // don't think i need to update account ID / shouldn't even be possible?
 
-
     let urlPath = 'http://localhost:6789/posting';
     urlPath += ('/?postingId=' + postingId + '&title=' + title + '&active=' + active + '&startDate=' + startDate + '&address=' + address + '&postalCode=' + postalCode + '&cityName=' + cityName + '&state=' + state + '&description=' + description + '&skills=' + skills);
 
@@ -39,61 +50,27 @@ updatePosting = function () {
     .then((res) => res.json())
     .then((data) => console.log(data))
     .catch((err) => console.error(err));
-};
+}
 
-getPosting = function (postingId) {
-    let urlPath = 'http://localhost:6789/posting/' + postingId;
-    fetch(urlPath)
+searchPostings = function () {
+    const title = document.getElementById('title').value;
+    const cityName = document.getElementById('cityName').value;
+    const state = document.getElementById('state').value;
+    const skills = document.getElementById('skills').value;
+
+    let urlPath = 'http://localhost:6789/searchPostings';
+    urlPath += ('/?title=' + title + '&cityName=' + cityName + '&state=' + state + '&skills=' + skills);
+
+    fetch(urlPath,
+        {method: 'GET'})
     .then((res) => res.json())
-    .then(function(data) {
-        console.log(data);
-        populatePostingView(data);
-    })
+    .then((data) => console.log(data))
     .catch((err) => console.error(err));
-};
+}
 
-populateSkills = function (skills) {
-    let innerHTML = '<h1>Skills</h1>';
-    for (let i = 0; i < skills.length; i++) {
-        innerHTML += "<span class='skillBox'>"+skills[i].name+"</span>";
-    }
-    document.getElementById('skills').innerHTML = innerHTML;
-};
-
-populatePostingView = function(postings){
-    let innerHTML; //= "<div class=tbody id=tableBody>";
-    for (let i = 0; i < postings.length; i++) {
-        innerHTML += "<tr>"+"<div id="+i">"+"<th scope='row'>"+i+"</th>"+
-        "<td>"+postings[i].postingId+"</td>"+
-        "<td>"+postings[i].title+"</td>"+
-        "<td>"+postings[i].active+"</td>"+
-        "<td>"+postings[i].startDate+"</td>"+
-        "<td>"+postings[i].address+"</td>"+
-        "<td>"+postings[i].postalCode+"</td>"+
-        "<td>"+postings[i].cityName+"</td>"+
-        "<td>"+postings[i].state+"</td>"+
-        "<td>"+postings[i].description+"</td>"+
-        "<td>"+posting[i].skills+"</td>";
-
-        innerHTML += "</div>" + "</tr>";
-    }
-    document.getElementById('tableBody').innerHTML = innerHTML;
-};
-
-getSkills = function(postingId){
-    let urlPath = 'http://localhost:6789/postingSkill/'+postingId;
-    fetch(urlPath)
-    .then((res) => res.json())
-    .then(function(data){
-        console.log(data);
-        populateSkills(data);
-    })
-    .catch((err) => console.error(err));
-};
 
 window.onload = function(){
     var url = new URL(window.location.href);
     var postingId = url.searchParams.get("postingId");
     getPosting(postingId);
-    getSkills(postingId);
 }

@@ -32,6 +32,13 @@ class posting {
     return null;
   }
 
+  PreparedStatement handleAllPostings(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+    if (method == "GET"){
+      return getAllPostings();
+    }
+    return null;
+  }
+
   PreparedStatement handleSearchPostings(Map<String, String> queryParams, String[] path, String method) throws SQLException {
     if (method == "GET"){
       return searchPostings(queryParams.get("title"), queryParams.get("cityName"), queryParams.get("state"), queryParams.get("skills"));
@@ -63,14 +70,11 @@ class posting {
     return ps;
   }
 
-
     /*
      * returns specified posting
      */ 
     PreparedStatement getPosting(int postingId) throws SQLException {
       PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE postingId = ?");
-        // !!! add postalCode to get city Name + state?
-        // !!! add skill to get all that too?
       ps.setInt(1, postingId);
       return ps;
     }
@@ -86,7 +90,8 @@ class posting {
     }
 
     PreparedStatement getPostingCityAndAddress(int postingId) throws SQLException {
-      PreparedStatement ps = con.prepareStatement("SELECT cityName, state FROM PostalCode WHERE postalCode IN (SELECT postalCode FROM Posting WHERE postingId = ?");
+      PreparedStatement ps = con.prepareStatement("SELECT cityName, state FROM PostalCode " + 
+        "WHERE postalCode IN (SELECT postalCode FROM Posting WHERE postingId = ?");
       ps.setInt(1, postingId);
         // no idea if i can do it this way
       return ps;
@@ -95,9 +100,9 @@ class posting {
     /*
      * retrieves postings with specified skill
      */ 
-
     PreparedStatement getAllPostingsInvolvingSkill(String skillName) throws SQLException {
-      PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId FROM Involves I, Posting P WHERE I.skillName = ? AND I.postingId = P.postingId");
+      PreparedStatement ps = con.prepareStatement("SELECT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId" + 
+        "FROM Involves I, Posting P WHERE I.skillName = ? AND I.postingId = P.postingId");
       ps.setString(2, skillName);
       return ps;
     }
@@ -106,14 +111,16 @@ class posting {
     * returns all postings in database
     */
     PreparedStatement getAllPostings() throws SQLException {
-      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting P, PostalCode PC, Involves I WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
+      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting P, PostalCode PC, Involves I " + 
+        "WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
       return ps;
-        // natural join would probably be easier?
-        // still need to get all the things here too
     }
 
+    /*
+    * returns a posting by title
+    */
     PreparedStatement getPostingsByTitle(String title) throws SQLException {
-      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE title like %title%");
+      PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting WHERE title LIKE %title%");
       ps.setString(2, title);
       return ps;
     }
