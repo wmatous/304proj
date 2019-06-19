@@ -693,6 +693,39 @@ public class branchtwo implements ActionListener {
             //
             System.out.println("Cities done");
 
+            query = "INSERT INTO PostalCode (postalCode, cityName, state) VALUES (?, ?, ?)";
+            ps = con.prepareStatement(query);
+            //
+            ps.setString(1, "V9M3Z3");
+            ps.setString(2, "Vancouver");
+            ps.setString(3, "BC");
+            ps.addBatch();
+            //
+            ps.setString(1, "V6T1Z4");
+            ps.setString(2, "Vancouver");
+            ps.setString(3, "BC");
+            ps.addBatch();
+
+            ps.setString(1, "94103");
+            ps.setString(2, "San Francisco");
+            ps.setString(3, "CA");
+            ps.addBatch();
+
+            ps.setString(1, "V6B1C1");
+            ps.setString(2, "Mexico City");
+            ps.setString(3, "Mexico");
+            ps.addBatch();
+
+            ps.setString(1, "V6S1H7");
+            ps.setString(2, "Toronto");
+            ps.setString(3, "ON");
+            ps.addBatch();
+
+            ps.executeBatch();
+            con.commit();
+            // 
+            System.out.println("PostalCode done");
+
             query = "INSERT INTO Account (accountId, name, email, postalCode) VALUES (?, ?, ?, ?)";
             ps = con.prepareStatement(query);
             ps.setInt(1, 1);
