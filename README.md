@@ -64,3 +64,23 @@ export CLASSPATH=.:./hb15.zip:$ORACLE_HOME:$CLASSPATH
 export CLASSPATH=.:/usr/lib/oracle/12.2/client64/lib/ojdbc8.jar:$CLASSPATH
 export CLASSPATH=.:./javax.json-api-1.1.jar:$CLASSPATH
 ```
+
+
+# steps
+
+1. put all the repo files in a folder called /javasrc directly inside your home folder (~/javasrc)
+2. add the export lines to your bashsrc file
+  a. if you dont have one already:
+  ```
+  vi ~/.bashsrc
+  ```
+  press i to edit, copy and paste the lines, press escape, type :wq and press enter, then:
+  ```
+  source ~/.bashsrc
+  ```
+3. cd into javasrc
+4. enter your database u/p in helpers/DBVars.java
+5. javac branchtwo.java
+6. java branchtwo
+
+if you entered your u/p in helpers, you dont need to enter them in the popup
