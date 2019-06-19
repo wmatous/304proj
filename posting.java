@@ -92,7 +92,7 @@ class posting {
 
     /*
     * returns all postings in city
-
+    */
 
     String getPostingsByCityName(String cityName)
     {
@@ -104,7 +104,7 @@ class posting {
 
     /*
     * returns all postings in a state
-
+    */
 
     String getPostingsByState(String state)
     {
@@ -116,13 +116,14 @@ class posting {
 
     /*
     * returns all recommended postings
-
+  
     private String getAllRecommendedPostings() {
         // ! should this be in account view or posting view??
       return "";
     }
+    */
 
-*/
+
 
     /*
      * updates posting table for specified posting
@@ -144,7 +145,7 @@ class posting {
     /*
      creates a new job posting
      */
-     
+     /*
     private void createPosting()
     {
     int                postingId;

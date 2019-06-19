@@ -56,9 +56,9 @@ getAccount = function(accountId){
 }
 
 populateSkills = function(skills){
-    let innerHTML = '<h1>Skills</h1>';
+    let innerHTML = `<h1>Skills</h1>`;
     for (let i = 0; i < skills.length; i++){
-        innerHTML += "<span class='skillBox'>"+skills[i].name+"</span>";
+        innerHTML += `<span class='skillBox'>${skills[i].name}</span>`;
     }
     document.getElementById('skills').innerHTML = innerHTML;
 }
@@ -94,7 +94,7 @@ populateRecommended = function(recs){
 }
 
 getRecommended = function(loggedInAccount){
-    let urlPath = 'http://localhost:6789/recommended/?accountId='+accountId;
+    let urlPath = 'http://localhost:6789/recommended/?accountId='+loggedInAccount;
     fetch(urlPath)
     .then((res) => res.json())
     .then(data => {
@@ -117,7 +117,7 @@ window.onload = function(){
     getSkills(accountId);
     getEndorsements(accountId);
     var loggedInAccount = getCookie('accountId');
-    if (loggedInAccount){
+    if (loggedInAccount == accountId){
         document.getElementById("saveButton").hidden = false;
         getRecommended(loggedInAccount);
     }
