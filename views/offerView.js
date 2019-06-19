@@ -1,3 +1,15 @@
+acceptOffer = function(){
+
+};
+
+declineOffer = function(){
+
+};
+
+displayEndDate = function(endDate){
+    `<br> End Date: ${endDate}`
+};
+
 populateOfferView = function(offerData){
     var offer = offerData[0];
     document.getElementById('o-status').innerHTML = `<h3> Status: ${offer.status}</h3>`;
@@ -8,14 +20,16 @@ populateOfferView = function(offerData){
           OfferID: ${offer.offerId}
           <br> Employment Type: ${offer.type}
           <br> Start Date: ${offer.startDate}
-          ////iff there terminating = true display endDate else dont.
+          <script> if ($(offer.terminate) == "true") {
+              displayEndDate(${offer.endDate});
+          } </script>
           <br> Monetary Compensation: $ ${offer.compensation} per hour
           <br> <br>
           <div class="btn-group btn-group-lg" role="button">
-              <button type="submit" class="btn btn-success btn-lg" role="button">
+              <button id="acceptOffer" type="submit" onsubmit="acceptOffer()" class="btn btn-success btn-lg" role="button">
                   Accept
               </button>
-              <button type="submit" class="btn btn-danger btn-lg" role="button">
+              <button id="declineOffer" type="submit" onsubmit="declineOffer()" class="btn btn-danger btn-lg" role="button">
                   Decline
               </button>
           </div>`;
