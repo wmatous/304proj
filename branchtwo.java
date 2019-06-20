@@ -644,7 +644,7 @@ public class branchtwo implements ActionListener {
     		if (choice !=0){
     			ps = con.prepareStatement("CREATE TABLE "+
     				"Offer "+
-    				"( offerId int PRIMARY KEY, status varchar(20), offerType varchar(20), hours int, compensation real, " +
+    				"( offerId int PRIMARY KEY, status varchar(20), offerType varchar(20), hours int, compensation int, " +
     				"terminating varchar(20), startDate date, endDate date, expiryDate date, accountId int, postingId int, "+
     				"FOREIGN KEY (accountId) REFERENCES Account (accountId) ON DELETE CASCADE,"+
     				"FOREIGN KEY (postingId) REFERENCES Posting (postingId) ON DELETE CASCADE)");
@@ -1165,7 +1165,7 @@ public class branchtwo implements ActionListener {
     		ps.setString(2, "Active");
     		ps.setString(3, "Full Time");
     		ps.setInt(4, 40);
-    		ps.setFloat(5, 23.50f);
+    		ps.setFloat(5, 23);
     		ps.setString(6, "false");
     		ps.setDate(7, java.sql.Date.valueOf("2019-09-04"));
     		ps.setNull(8, 0);
@@ -1176,14 +1176,14 @@ public class branchtwo implements ActionListener {
 
             //Construction
     		ps.setInt(1, 1);
-    		ps.setFloat(5, 28.00f);
+    		ps.setFloat(5, 28);
     		ps.setDate(9, java.sql.Date.valueOf("2019-08-28"));
     		ps.setInt(11, 83);
     		ps.addBatch();
 
             //Architect
     		ps.setInt(1, 2);
-    		ps.setFloat(5, 32.13f);
+    		ps.setFloat(5, 32);
     		ps.setString(6, "true");
     		ps.setDate(8, java.sql.Date.valueOf("2021-09-04"));
     		ps.setDate(9, java.sql.Date.valueOf("2019-07-22"));
@@ -1193,7 +1193,7 @@ public class branchtwo implements ActionListener {
             //Lab Technician
     		ps.setInt(1, 3);
     		ps.setString(2, "Expired");
-    		ps.setFloat(5, 18.50f);
+    		ps.setFloat(5, 18);
     		ps.setString(6, "true");
     		ps.setDate(8, java.sql.Date.valueOf("2020-01-13"));
     		ps.setDate(9, java.sql.Date.valueOf("2019-06-17"));
@@ -1202,7 +1202,7 @@ public class branchtwo implements ActionListener {
 
             //Nurse
     		ps.setInt(1, 4);
-    		ps.setFloat(5, 26.45f);
+    		ps.setFloat(5, 26);
     		ps.setDate(9, java.sql.Date.valueOf("2019-08-15"));
     		ps.setInt(11, 37);
     		ps.addBatch();
@@ -1595,8 +1595,9 @@ public class branchtwo implements ActionListener {
 
     			System.out.print("6.  Quit\n>> ");
     			System.out.print("7.  run query\n>> ");
-
-    			choice = Integer.parseInt(in.readLine());
+				try{
+				choice = Integer.parseInt(in.readLine());
+				
 
     			System.out.println(" ");
 
@@ -1621,14 +1622,16 @@ public class branchtwo implements ActionListener {
 					break;
 					case 7:
 					System.out.print("enter query ");
-
     				String qry = in.readLine();
 					System.out.print(runQuery(qry));
 					break;
 					default:
     				runServer(choice);
     				break;
-    			}
+				}
+			}catch(NullPointerException e){
+				System.out.println(e);
+			}
     		}
 
     		con.close();
