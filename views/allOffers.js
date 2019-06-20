@@ -1,11 +1,18 @@
 window.onload = function () {
     var url = new URL(window.location.href);
-    var offerId = url.searchParams.get("offerId");
-    getAllOffers(offerId);
+    var accountId = url.searchParams.get("accountId");
+    getAllOffers(accountId);
 };
 
-getAllOffers = function (offerId) {
-    let urlPath = 'http://localhost:6789/offers/' + offerId;
+getCookie = function(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
+};
+
+
+getAllOffers = function (accountId) {
+    let urlPath = 'http://localhost:6789/allOffers/' + accountId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
