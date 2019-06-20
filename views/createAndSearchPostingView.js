@@ -72,13 +72,12 @@ updatePosting = function () {
 // };
 
 searchPostings = function () {
-    const title = document.getElementById('title').value;
     const cityName = document.getElementById('cityName').value;
     const state = document.getElementById('state').value;
     const skills = document.getElementById('skills').value;
 
     let urlPath = 'http://localhost:6789/searchPostings';
-    urlPath += ('/?title=' + title + '&cityName=' + cityName + '&state=' + state + '&skills=' + skills);
+    urlPath += ('/?title=' + '' + '&cityName=' + cityName + '&state=' + state + '&skills=' + skills);
 
     fetch(urlPath,
         {method: 'GET'})
