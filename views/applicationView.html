@@ -9,7 +9,7 @@
         const resume = document.getElementById('resume').value;
         // const accountId = url.searchParams.get("accountId");
         const accountId = getCookie('accountId');
-        const applicationId = postingid + accountId; // just a way to generate application ID
+        const applicationId = postingid + 100*accountId; // just a way to generate application ID
 
         urlPath = 'http://localhost:6789/application/';
         urlPath += ('?accountId=' + accountId + '&PostingID=' + postingid + '&applicationId=' + applicationId +
