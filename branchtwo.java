@@ -1306,7 +1306,6 @@ public class branchtwo implements ActionListener {
             return "[]";
         }
 
-<<<<<<< HEAD
 	// add a handler method here for each type
 	
 		private String getReviews(Map<String, String> queryParams, String[] path, String method) throws SQLException {
@@ -1316,9 +1315,6 @@ public class branchtwo implements ActionListener {
         	ps.setInt(1, Integer.parseInt(queryParams.get("accountId")));
         	return getRecordsAsJSON(ps);
         }
-=======
-    // add a handler method here for each type
->>>>>>> 5702d4cb23f59c6b8985002c7722e5f137f6dc2e
 
         private String handleRecommended(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         	if (method.equals("GET")) {
