@@ -36,15 +36,24 @@
 
      append=function(data) {
         var accumulator = document.getElementById("applications");
+        
+        tableData = [`<tr>
+            <th>ApplicationID</th>
+            <th>CoverLetter</th>
+            <th>Resume</th>
+            <th>ApplicantID</th>
+            <th>PostingID</th>
+        </tr>`]
         for (var i = 0; i < data.length; i++) {
-            var td = document.createElement("tr");
-            td.append("<th>" + data[i].APPLICATIONID + "<th>");
-            td.append("<th>" + data[i].COVERLETTER + "<th>");
-            td.append("<th>" + data[i].RESUME + "<th>");
-            td.append("<th>" + data[i].APPLICANTID + "<th>");
-            td.append("<th>" + data[i].POSTINGID + "<th>");
-            accumulator.append(td);
+            tableData.push(`<tr>
+            <th>${data[i].APPLICATIONID}</th>
+            <th>${data[i].COVERLETTER}</th>
+            <th>${data[i].RESUME}</th>
+            <th>${data[i].APPLICANTID}</th>
+            <th>${data[i].POSTINGID}</th>
+        </tr>`);
         }
+        accumulator.innerHTML = tableData;
     }
 
     window.onload = function () {
@@ -111,12 +120,5 @@ getCookie = function(name) {
 </div>
 <div id="applics">
     <table id='applications' style="visibility:hidden">
-        <tr>
-            <th>ApplicationID</th>
-            <th>CoverLetter</th>
-            <th>Resume</th>
-            <th>ApplicantID</th>
-            <th>PostingID</th>
-        </tr>
     </table>
 </div>
