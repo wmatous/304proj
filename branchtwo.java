@@ -617,7 +617,7 @@ public class branchtwo implements ActionListener {
     		choice = Integer.parseInt(in.readLine());
     		if (choice !=0){
     			ps = con.prepareStatement("create table Application("+
-    				"applicationID integer primary key, "+
+    				"applicationId integer primary key, "+
     				"coverLetter varchar(2000), "+
     				"resume varchar(2000), "+
     				"applicantId integer NOT NULL, "+
@@ -633,8 +633,8 @@ public class branchtwo implements ActionListener {
     		choice = Integer.parseInt(in.readLine());
     		if (choice !=0){
     			ps = con.prepareStatement("CREATE TABLE Interview "+
-    				"(applicantId integer PRIMARY KEY, status varchar(20), intDate date, address varchar(20), "+
-    				"FOREIGN KEY (applicantId) REFERENCES Account (accountId) ON DELETE CASCADE)");
+    				"(applicationId integer PRIMARY KEY, status varchar(20), intDate date, address varchar(20), "+
+    				"FOREIGN KEY (applicationId) REFERENCES Application (applicationId) ON DELETE CASCADE)");
     			System.out.println(ps.executeUpdate());
     			con.commit();
     		}
@@ -1211,8 +1211,8 @@ public class branchtwo implements ActionListener {
 
     		System.out.println("offers done");
 
-    		query = "INSERT INTO Application (applicationID, coverLetter, " +
-    		"resume, applicantID, postingId) VALUES (?, ? , ?, ?,? )";
+    		query = "INSERT INTO Application (applicationId, coverLetter, " +
+    		"resume, applicantId, postingId) VALUES (?, ? , ?, ?,? )";
             // for Construction posting 83
             // applicant Id references account ID
     		ps = con.prepareStatement(query);
@@ -1264,18 +1264,18 @@ public class branchtwo implements ActionListener {
     		System.out.println("applications done");
 
 
-    		query = "INSERT INTO Interview (applicantId, status , intDate, address) VALUES (?, ?, ?, ?)";
+    		query = "INSERT INTO Interview (applicationId, status , intDate, address) VALUES (?, ?, ?, ?)";
     		ps = con.prepareStatement(query);
 
             //Junior Software Developer
-    		ps.setInt(1, 1);
+    		ps.setInt(1, 6);
     		ps.setString(2, "Active");
     		ps.setDate(3, java.sql.Date.valueOf("2019-07-01"));
     		ps.setString(4, "187 Main Street");
     		ps.addBatch();
 
             //Construction
-    		ps.setInt(1, 2);
+    		ps.setInt(1, 4);
     		ps.setString(2, "Expired");
     		ps.setDate(3, java.sql.Date.valueOf("2019-06-05"));
     		ps.setString(4, "1080 Hamilton St.");
@@ -1289,7 +1289,7 @@ public class branchtwo implements ActionListener {
     		ps.addBatch();
 
             //Lab Technician
-    		ps.setInt(1, 4);
+    		ps.setInt(1, 2);
     		ps.setString(2, "Accepted");
     		ps.setDate(3, java.sql.Date.valueOf("2019-04-17"));
     		ps.setString(4, "955 Hornby St.");

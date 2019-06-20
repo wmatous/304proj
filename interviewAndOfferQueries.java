@@ -61,9 +61,9 @@ class interviewAndOfferQueries {
 
     private PreparedStatement getAllInterviews(int accountId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT I.status, I.intDate, I.address, I.applicantId AS interviewId, Z.name, Z.accountId, B.name AS company, P.postingId, P.title " +
+                "SELECT I.status, I.intDate, I.address, I.applicationId AS interviewId, Z.name, Z.accountId, B.name AS company, P.postingId, P.title " +
                         "FROM Interview I, Account Z, Account B, Posting P, Application A " +
-                        "WHERE A.postingId = P.postingId AND B.accountId = P.accountId AND I.applicantId = A.applicantId AND A.applicantId = Z.accountId AND Z.accountId = ?");
+                        "WHERE A.postingId = P.postingId AND B.accountId = P.accountId AND I.applicationId = A.applicationId AND A.applicantId = Z.accountId AND Z.accountId = ?");
         ps.setInt(1, accountId);
         return ps;
     }
