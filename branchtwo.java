@@ -1493,7 +1493,7 @@ public class branchtwo implements ActionListener {
         }
 
         private String getApplicationTable(int accountId) throws SQLException {
-        	PreparedStatement ps = con.prepareStatement("select * from Application where accountId = ?");
+        	PreparedStatement ps = con.prepareStatement("select * from Application where applicantId = ?");
         	ps.setInt(1, accountId);
         	return getRecordsAsJSON(ps);
         }
