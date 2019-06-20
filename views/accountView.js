@@ -21,7 +21,7 @@ updateAccount = function () {
     const postalCode = document.getElementById('postalCode').value;
     const accountId = document.getElementById('accountId').value;
     let cmpSize, cmpIndustry, indStatus, indAge;
-    if (document.getElementById('companyView')) {
+    if (document.getElementById('companyView').style.visibility != 'hidden') {
         cmpSize = document.getElementById('cmpSize').value;
         cmpIndustry = document.getElementById('cmpIndustry').value;
     } else {
