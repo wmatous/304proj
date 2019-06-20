@@ -1138,9 +1138,9 @@ public class branchtwo implements ActionListener {
     		query = "INSERT INTO Application (applicationId, coverLetter, " +
     		"resume, applicantId, postingId) VALUES (?, ? , ?, ?,? )";
             // for Construction posting 83
-            // applicant Id references account ID
+            // applicant Id references account ID keep applicationIDs
     		ps = con.prepareStatement(query);
-    		ps.setInt(1, 4);
+    		ps.setInt(1, 183);
     		ps.setString(2, "Always been fascinated about constructions!");
     		ps.setString(3, "3 years of working at the construction site");
     		ps.setInt(4, 1);
@@ -1150,7 +1150,7 @@ public class branchtwo implements ActionListener {
 
             // for Software Dev posting 51
 
-    		ps.setInt(1, 6);
+    		ps.setInt(1, 151);
     		ps.setString(2, "Microsoft can provide software engineering services");
     		ps.setString(3, "Highly experienced in software engineering");
     		ps.setInt(4, 1);
@@ -1159,7 +1159,7 @@ public class branchtwo implements ActionListener {
     		ps.addBatch();
             // for Architect 96
 
-    		ps.setInt(1, 3);
+    		ps.setInt(1, 196);
     		ps.setString(2, "Eager to apply my knowledge in the new area");
     		ps.setString(3, "Highly experienced in planning using CAD");
     		ps.setInt(4, 1);
@@ -1168,7 +1168,7 @@ public class branchtwo implements ActionListener {
     		ps.addBatch();
             // for Lab Technician 45
 
-    		ps.setInt(1, 2);
+    		ps.setInt(1, 145);
     		ps.setString(2, "Able to maintain labs in good condition");
     		ps.setString(3, "Highly experienced in lab work. Physics major");
     		ps.setInt(4, 1);
@@ -1176,7 +1176,7 @@ public class branchtwo implements ActionListener {
 
     		ps.addBatch();
             // for Nurse 37
-    		ps.setInt(1, 5);
+    		ps.setInt(1, 137);
     		ps.setString(2, "Excited for this career opportunity in nursing");
     		ps.setString(3, "Highly experienced in nursing");
     		ps.setInt(4, 1);
