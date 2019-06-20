@@ -1190,6 +1190,9 @@ public class branchtwo implements ActionListener {
 
     private String dispatch(Map<String, String> queryParams, String[] urlPath, String method) {
     	try {
+			System.out.println(queryParams);
+			System.out.println(urlPath[1]);
+			System.out.println(method);
     		String response = "";
             if (urlPath.length != 0) { // urlPath[1] will be entity type eg account, skill, posting etc
             	switch (urlPath[1]) {
@@ -1278,7 +1281,7 @@ public class branchtwo implements ActionListener {
     // Anton
         private String postApplicationTable(int applicationId, String coverletter, String resume, int applicantID, int posting) throws SQLException {
         	PreparedStatement ps = con.prepareStatement("INSERT INTO Application (ApplicationID, CoverLetter , " +
-        		"Resume, ApplicantID,PostingID )VALUES (?, ? , ?, ?,? ); ");
+        		"Resume, ApplicantID,PostingID )VALUES (?, ? , ?, ?,? ) ");
         	ps.setInt(1, applicationId);
         	ps.setString(2, coverletter);
         	ps.setString(3, resume);
@@ -1293,14 +1296,14 @@ public class branchtwo implements ActionListener {
         			queryParams.get("resume"), Integer.parseInt(queryParams.get("accountId")),
         			Integer.parseInt(queryParams.get("postingID")));
         	} else if (method.equals("GET")) {
-        		return getApplicationTable(Integer.parseInt(queryParams.get("applicationId")));
+        		return getApplicationTable(Integer.parseInt(queryParams.get("accountId")));
         	}
 
         	return "[]";
         }
 
         private String getApplicationTable(int applicationId) throws SQLException {
-        	PreparedStatement ps = con.prepareStatement("select (*) from Application where applicationID = ?;");
+        	PreparedStatement ps = con.prepareStatement("select (*) from Application where ApplicantID = ?");
         	ps.setInt(1, applicationId);
         	return getRecordsAsJSON(ps);
         }
@@ -1337,7 +1340,9 @@ public class branchtwo implements ActionListener {
         	String connectURL = "jdbc:oracle:thin:@dbhost.students.cs.ubc.ca:1522:stu";
 
         	try {
-        		con = DriverManager.getConnection(connectURL, username, password);
+				con = DriverManager.getConnection(connectURL, username, password);
+				posting = new posting(con);
+				intAndOff = new interviewAndOfferQueries(con);
 
         		System.out.println("\nConnected to Oracle!");
         		return true;
@@ -1411,13 +1416,17 @@ public class branchtwo implements ActionListener {
     				populateTablesJobSite();
     				break;
     				case 4:
-    				runServer();
+    				runServer(6789);
     				break;
     				case 5:
     				clearAllTables();
     				break;
     				case 6:
-    				quit = true;
+					quit = true;
+					break;
+					default:
+    				runServer(choice);
+    				break;
     			}
     		}
 
@@ -1439,19 +1448,14 @@ public class branchtwo implements ActionListener {
     	}
     }
 
-    private int runServer() {
+    private int runServer(Integer choice) {
     	try {
-
-			System.out.print("choose a port number \n>> ");
-    			choice = Integer.parseInt(in.readLine());
 			welcomeSocket = new ServerSocket(choice);
-		catch (IOException e) {
-			System.out.println("IOException!");
 		}
     	catch (Exception ex) {
     		System.out.println("Message: " + ex.getMessage());
     		System.exit(0);
-    	} 
+    	}
     	while (true) {
     		try {
     			String urlPath;
