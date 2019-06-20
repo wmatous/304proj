@@ -82,7 +82,7 @@ class interviewAndOfferQueries {
         PreparedStatement ps = con.prepareStatement(
                 "SELECT I.status, I.intDate, I.address, I.time, I.interviewId, A.name, A.accountId, P.position, P.title, P.postId " +
                         "FROM Interview I, Account A, Posting P " +
-                        "WHERE I.applicationId = ?");
+                        "WHERE I.applicantId = ?");
         ps.setInt(1, applicationId);
         return ps;
     }
