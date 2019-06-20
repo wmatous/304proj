@@ -28,12 +28,12 @@ class posting {
         return null;
     }
 
-    PreparedStatement handlePostingSkill(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method.equals("GET")) {
-            return getPostingSkills(Integer.parseInt(queryParams.get("postingId")));
-        }
-        return null;
-    }
+    // PreparedStatement handlePostingSkill(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+    //     if (method.equals("GET")) {
+    //         return getPostingSkills(Integer.parseInt(queryParams.get("postingId")));
+    //     }
+    //     return null;
+    // }
 
     PreparedStatement handleAllPostings(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         if (method.equals("GET")) {
@@ -44,34 +44,31 @@ class posting {
 
     PreparedStatement handleSearchPostings(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         if (method.equals("GET")) {
+            System.out.println("get method");
             return searchPostings(queryParams.get("title"), queryParams.get("cityName"), queryParams.get("state"), queryParams.get("skills"));
         }
         return null;
     }
 
     private PreparedStatement searchPostings(String title, String cityName, String state, String skills) throws SQLException {
-        PreparedStatement titlePS;
-        PreparedStatement cityNamePS;
-        PreparedStatement statePS;
-        PreparedStatement skillsPS;
+        String query = "SELECT DISTINCT P.postingId, DISTINCT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId " +
+            "FROM Posting P, PostalCode PC, Involves I WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId " +
+            "AND (P.title LIKE ? AND PC.cityName LIKE ? AND PC.state LIKE ? OR I.name LIKE ? ";
 
-        if (title != null) {
-            titlePS = getPostingsByTitle(title);
-        }
-        if (cityName != null) {
-            cityNamePS = getPostingsByCityName(cityName);
-        }
-        if (state != null) {
-            statePS = getPostingsByState(state);
-        }
-        if (skills != null) {
-            skillsPS = getAllPostingsInvolvingSkill(skills);
-        }
+        PreparedStatement ps = con.prepareStatement(query);
+        System.out.println(title);
+        ps.setString(1, "%" + title + "%");
+        ps.setString(2, "%" + cityName + "%");
+        ps.setString(3, "%" + state + "%");
+        ps.setString(4, "%" + skills + "%");
 
-        PreparedStatement ps = con.prepareStatement("titlePS INTERSECT cityNamePS INTERSECT statePS INTERSECT skillsPS");
-        // i have no idea if i can actually do this
+
+            // "INNER JOIN ExperiencedAt ON ExperiencedAt.accountId = Account.accountId) " +
+            // "INNER JOIN Skill ON Skill.name = ExperiencedAt.name) " +
+            // "INNER JOIN Involves ON Involves.name = Skill.name ) WHERE Account.accountId = ?");)
         return ps;
     }
+
 
     /*
      * returns specified posting
@@ -82,15 +79,14 @@ class posting {
         return ps;
     }
 
-    /*
-     * retrieves skills for specified posting
-     */
-    private PreparedStatement getPostingSkills(int postingId) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT name FROM Involves WHERE postingId = ?");
-        ps.setInt(1, postingId);
-        return ps;
-
-    }
+    // /*
+    //  * retrieves skills for specified posting
+    //  */
+    // private PreparedStatement getPostingSkills(int postingId) throws SQLException {
+    //     PreparedStatement ps = con.prepareStatement("SELECT name FROM Involves WHERE postingId = ?");
+    //     ps.setInt(1, postingId);
+    //     return ps;
+    // }
 
     PreparedStatement getPostingCityAndAddress(int postingId) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT cityName, state FROM PostalCode " +
@@ -114,8 +110,8 @@ class posting {
      * returns all postings in database
      */
     private PreparedStatement getAllPostings() throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting P"); //, PostalCode PC, Involves I " +
-                //"WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting P, PostalCode PC, Involves I " +
+                "WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
         return ps;
     }
 
