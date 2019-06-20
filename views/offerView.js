@@ -22,7 +22,7 @@ populateOfferView = function (offerData) {
           <p class="lead">Information about this job offer</p>
           <hr class="my-4">
           OfferID: ${offer.OFFERID}
-          <br> Employment Type: ${offer.TYPE}
+          <br> Employment Type: ${offer.OFFERTYPE}
           <br> Start Date: ${offer.STARTDATE}
           <script> if ($(offer.TERMINATE) == "true") {
               displayEndDate(${offer.ENDDATE});
