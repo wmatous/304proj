@@ -18,9 +18,9 @@ class interviewAndOfferQueries {
     }
 
     private PreparedStatement getAllOffers(int accountId) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT O.status, O.startDate, O.expiryDate, O.offerId, A.name, A.accountId, P.postingId " +
-                "FROM Offer O, Account A, Posting P " +
-                "WHERE  O.postingId = P.postingId AND O.accountId = A.accountId AND O.accountId = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT O.status, O.startDate, O.expiryDate, O.offerId, B.name AS company, A.accountId, P.postingId, P.title " +
+                "FROM Offer O, Account A, Account B, Posting P " +
+                "WHERE  O.postingId = P.postingId AND B.accountId = P.accountId AND O.accountId = A.accountId AND O.accountId = ?");
         ps.setInt(1, accountId);
         return ps;
     }
