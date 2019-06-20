@@ -1614,7 +1614,7 @@ public class branchtwo implements ActionListener {
 					System.out.print("enter query ");
 
     				qry = in.readLine();
-					runQuery(qry);
+					System.out.print(runQuery(qry));
 					break;
 					default:
     				runServer(choice);
@@ -1640,7 +1640,7 @@ public class branchtwo implements ActionListener {
     	}
 	}
 
-	private int runQuery(String qry) {
+	private String runQuery(String qry) {
     	PreparedStatement ps = con.prepareStatement(qry);
 		return getRecordsAsJSON(ps);
     }
