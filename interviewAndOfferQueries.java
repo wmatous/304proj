@@ -61,9 +61,9 @@ class interviewAndOfferQueries {
 
     private PreparedStatement getAllInterviews(int accountId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT I.status, I.intDate, I.address, I.time, I.interviewId, Z.name, Z.accountId, P.postId " +
-                        "FROM Interview I, Account Z, Posting P, Application A " +
-                        "WHERE A.postingId = P.postingId AND I.applicantId = A.applicantId AND A.applicantId = Z.accountId AND A.applicantId = ?");
+                "SELECT I.status, I.intDate, I.address, I.applicantId AS interviewId, Z.name, Z.accountId, B.name AS company, P.postingId, P.title " +
+                        "FROM Interview I, Account Z, Account B, Posting P, Application A " +
+                        "WHERE A.postingId = P.postingId AND B.accountId = P.accountId AND I.applicantId = A.applicantId AND A.applicantId = Z.accountId AND Z.accountId = ?");
         ps.setInt(1, accountId);
         return ps;
     }
@@ -80,7 +80,7 @@ class interviewAndOfferQueries {
 
     private PreparedStatement getAnInterview(int applicationId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT I.status, I.intDate, I.address, I.time, I.interviewId, A.name, A.accountId, P.position, P.title, P.postId " +
+                "SELECT I.status, I.intDate, I.address, I.time, I.applicantId AS interviewId, A.name, A.accountId, P.position, P.title, P.postId " +
                         "FROM Interview I, Account A, Posting P " +
                         "WHERE I.applicantId = ?");
         ps.setInt(1, applicationId);

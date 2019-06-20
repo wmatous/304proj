@@ -5,7 +5,7 @@ getCookie = function (name) {
 };
 
 getAllInterviews = function (accountId) {
-    let urlPath = 'http://localhost:6789/allInterviews/?applicantId=' + accountId;
+    let urlPath = 'http://localhost:6789/allInterviews/?accountId=' + accountId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
@@ -26,14 +26,13 @@ function interviewTemplate(interview) {
     return `
         <tr class="interviewTableRow">
             <div>
-                <th scope="row">${interview.ID}</th>
+                <th scope="row">${interview.INTERVIEWID}</th>
                 <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewInterview(${interview.APPLICANTID})"
                 role="button">View</button></td>
                 <td>${interview.COMPANY}</td>
                 <td>${interview.TITLE}</td>
                 <td>${interview.STATUS}</td>
-                <td>${interview.DATE}</td>
-                <td>${interview.TIME}</td>
+                <td>${interview.INTDATE}</td>
                 <td>${interview.ADDRESS}</td>
             </div>
         </tr>`
