@@ -35,7 +35,7 @@ class interviewAndOfferQueries {
         return null;
     }
 
-    private PreparedStatement getAnOffer(int offerId) throws SQLException {
+    public PreparedStatement getAnOffer(int offerId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
                 "SELECT offerId, status, offerType, hours, compensation, terminating, startDate, endDate, expiryDate " +
                         "FROM Offer " +
@@ -44,7 +44,7 @@ class interviewAndOfferQueries {
         return ps;
     }
 
-    private PreparedStatement updateAnOffer(int offerId, String status) throws SQLException {
+    public PreparedStatement updateAnOffer(int offerId, String status) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
                 "UPDATE TABLE (Offer) SET status = ? WHERE offerId = ?");
         ps.setString(1, status);

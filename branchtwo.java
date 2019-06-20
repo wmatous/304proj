@@ -1304,7 +1304,18 @@ public class branchtwo implements ActionListener {
             	System.out.println(e);
             }
             return "[]";
-        }
+		}
+
+		
+
+		private  handleAnOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+			if (method.equals("GET")) {
+				return getRecordsAsJSON(intAndOff.getAnOffer(Integer.parseInt(queryParams.get("offerId"))));
+			} else if (method.equals("POST")) {
+				return executeUpdateStatement(intAndOff.updateAnOffer(Integer.parseInt(queryParams.get("offerId")),
+						queryParams.get("status")));
+			}
+		}
 
 	// add a handler method here for each type
 	
