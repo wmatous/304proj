@@ -21,7 +21,7 @@ updateAccount = function () {
     const postalCode = document.getElementById('postalCode').value;
     const accountId = document.getElementById('accountId').value;
     let cmpSize, cmpIndustry, indStatus, indAge;
-    if (document.getElementById('companyView')) {
+    if (document.getElementById('companyView').style.visibility != 'hidden') {
         cmpSize = document.getElementById('cmpSize').value;
         cmpIndustry = document.getElementById('cmpIndustry').value;
     } else {
@@ -58,7 +58,7 @@ getAccount = function (accountId) {
 populateSkills = function (skills) {
     let innerHTML = `<h1>Skills</h1>`;
     for (let i = 0; i < skills.length; i++) {
-        innerHTML += `<span class='skillBox'>${skills[i].name}</span>`;
+        innerHTML += `<span class='skillBox'>${skills[i].NAME}</span>`;
     }
     document.getElementById('skills').innerHTML = innerHTML;
 };
@@ -76,7 +76,7 @@ getSkills = function (accountId) {
 };
 
 populateEndorsements = function (endorsements) {
-    document.getElementById('endorseCount').innerHTML = "Endorsed by" + endorsements[0].count;
+    document.getElementById('endorseCount').innerHTML = "Endorsed by" + endorsements[0].COUNT;
 };
 
 getEndorsements = function (accountId) {
