@@ -1294,7 +1294,7 @@ public class branchtwo implements ActionListener {
         	if (method.equals("POST")) {
         		return postApplicationTable(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"),
         			queryParams.get("resume"), Integer.parseInt(queryParams.get("accountId")),
-        			Integer.parseInt(queryParams.get("postingID")));
+        			Integer.parseInt(queryParams.get("PostingID")));
         	} else if (method.equals("GET")) {
         		return getApplicationTable(Integer.parseInt(queryParams.get("accountId")));
         	}
@@ -1302,9 +1302,9 @@ public class branchtwo implements ActionListener {
         	return "[]";
         }
 
-        private String getApplicationTable(int applicationId) throws SQLException {
-        	PreparedStatement ps = con.prepareStatement("select (*) from Application where ApplicantID = ?");
-        	ps.setInt(1, applicationId);
+        private String getApplicationTable(int accountId) throws SQLException {
+        	PreparedStatement ps = con.prepareStatement("select (*) from Application where accountId = ?");
+        	ps.setInt(1, accountId);
         	return getRecordsAsJSON(ps);
         }
 
