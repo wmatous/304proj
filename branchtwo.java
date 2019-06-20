@@ -241,6 +241,12 @@ public class branchtwo implements ActionListener {
 			if (choice != 0) {
 				dropTable(tableName);
 			}
+			tableName = "Individual";
+			System.out.println("Drop Table? y/n " + tableName);
+			choice = Integer.parseInt(in.readLine());
+			if (choice != 0) {
+				dropTable(tableName);
+			}
     		tableName = "Skill";
     		System.out.println("Drop Table? y/n " + tableName);
     		choice = Integer.parseInt(in.readLine());
@@ -515,7 +521,7 @@ public class branchtwo implements ActionListener {
 			choice = Integer.parseInt(in.readLine());
 			if (choice !=0){
 				ps = con.prepareStatement("CREATE TABLE Company "+
-						"(accountId int, csize int, address varchar(30), industry varchar(10), "+
+						"(accountId int, csize int, address varchar(30), industry varchar(30), "+
 						"PRIMARY KEY (accountId),"+
 						"FOREIGN KEY (accountId) references Account(accountId))");
 
@@ -900,7 +906,7 @@ public class branchtwo implements ActionListener {
 
 			System.out.println("Companies done");
 
-			query = "INSERT INTO Company (accountId, age,  status) VALUES (?, ?, ?)";
+			query = "INSERT INTO Individual (accountId, age,  status) VALUES (?, ?, ?)";
     		ps = con.prepareStatement(query);
     		ps.setInt(1, 1);
     		ps.setInt(2, 21);
@@ -1254,7 +1260,6 @@ public class branchtwo implements ActionListener {
     		System.out.println("applications done");
 
 
-//		"(applicantId int, status char(20), date date, time time, address char(20), "
     		query = "INSERT INTO Interview (applicantId, status , intDate, address) VALUES (?, ?, ?, ?)";
     		ps = con.prepareStatement(query);
 
@@ -1613,7 +1618,7 @@ public class branchtwo implements ActionListener {
 					case 7:
 					System.out.print("enter query ");
 
-    				qry = in.readLine();
+    				String qry = in.readLine();
 					System.out.print(runQuery(qry));
 					break;
 					default:
@@ -1640,7 +1645,7 @@ public class branchtwo implements ActionListener {
     	}
 	}
 
-	private String runQuery(String qry) {
+	private String runQuery(String qry) throws SQLException {
     	PreparedStatement ps = con.prepareStatement(qry);
 		return getRecordsAsJSON(ps);
     }
