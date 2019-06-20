@@ -25,15 +25,6 @@ class interviewAndOfferQueries {
         return ps;
     }
 
-    PreparedStatement handleAnOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method.equals("GET")) {
-            return getAnOffer(Integer.parseInt(queryParams.get("offerId")));
-        } else if (method.equals("POST")) {
-            return updateAnOffer(Integer.parseInt(queryParams.get("offerId")),
-                    queryParams.get("status"));
-        }
-        return null;
-    }
 
     public PreparedStatement getAnOffer(int offerId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
@@ -46,7 +37,7 @@ class interviewAndOfferQueries {
 
     public PreparedStatement updateAnOffer(int offerId, String status) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "UPDATE TABLE (Offer) SET status = ? WHERE offerId = ?");
+                "UPDATE Offer SET status = ? WHERE offerId = ?");
         ps.setString(1, status);
         ps.setInt(2, offerId);
         return ps;
@@ -68,28 +59,18 @@ class interviewAndOfferQueries {
         return ps;
     }
 
-    PreparedStatement handleAnInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        if (method.equals("GET")) {
-            return getAnInterview(Integer.parseInt(queryParams.get("applicantId")));
-        } else if (method.equals("POST")) {
-            return updateAnInterview(Integer.parseInt(queryParams.get("applicantId")),
-                    queryParams.get("status"));
-        }
-        return null;
-    }
-
-    private PreparedStatement getAnInterview(int applicationId) throws SQLException {
+    PreparedStatement getAnInterview(int applicationId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT I.status, I.intDate, I.address, I.time, I.applicantId AS interviewId, A.name, A.accountId, P.position, P.title, P.postingId " +
+                "SELECT I.status, I.intDate, I.address, I.time, I.applicationId AS interviewId, A.name, A.accountId, P.title, P.postingId " +
                         "FROM Interview I, Account A, Posting P " +
-                        "WHERE I.applicantId = ?");
+                        "WHERE I.applicationId = ?");
         ps.setInt(1, applicationId);
         return ps;
     }
 
-    private PreparedStatement updateAnInterview(int applicantId, String status) throws SQLException {
+    PreparedStatement updateAnInterview(int applicantId, String status) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "UPDATE TABLE (Interview) SET status = ? WHERE applicantId = ?");
+                "UPDATE Interview SET status = ? WHERE applicantId = ?");
         ps.setString(1, status);
         ps.setInt(2, applicantId);
         return ps;

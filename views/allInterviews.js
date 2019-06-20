@@ -38,8 +38,8 @@ function interviewTemplate(interview) {
         </tr>`
 }
 
-viewInterview = function (offerId) {
-//modify from offerView once its done
+viewInterview = function (applicationId) {
+    window.location = '/'+window.location.pathname.split('/')[1]+'/interviewView.html?applicationId='+applicationId;
 };
 
 window.onload = function () {
