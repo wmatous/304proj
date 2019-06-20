@@ -1585,6 +1585,7 @@ public class branchtwo implements ActionListener {
     			System.out.print("5.  Delete tables\n");
 
     			System.out.print("6.  Quit\n>> ");
+    			System.out.print("7.  run query\n>> ");
 
     			choice = Integer.parseInt(in.readLine());
 
@@ -1609,6 +1610,12 @@ public class branchtwo implements ActionListener {
     				case 6:
 					quit = true;
 					break;
+					case 7:
+					System.out.print("enter query ");
+
+    				qry = in.readLine();
+					runQuery(qry);
+					break;
 					default:
     				runServer(choice);
     				break;
@@ -1631,6 +1638,11 @@ public class branchtwo implements ActionListener {
     	} catch (SQLException ex) {
     		System.out.println("Message: " + ex.getMessage());
     	}
+	}
+
+	private int runQuery(String qry) {
+    	PreparedStatement ps = con.prepareStatement(qry);
+		return getRecordsAsJSON(ps);
     }
 
     private int runServer(Integer choice) {
