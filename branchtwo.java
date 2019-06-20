@@ -1411,13 +1411,13 @@ public class branchtwo implements ActionListener {
                         response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
                         break;
                         case "interview":
-                        response = handleAnInterview(queryParams, urlPath, method);
+                        response = getRecordsAsJSON(intAndOff.handleAnInterview(queryParams, urlPath, method));
                         break;
                         case "allOffers":
                         response = getRecordsAsJSON(intAndOff.handleAllOffers(queryParams, urlPath, method));
                         break;
                         case "offer":
-                        response = handleAnOffer(queryParams, urlPath, method);
+                        response = getRecordsAsJSON(intAndOff.handleAnOffer(queryParams, urlPath, method));
                         break;
                         case "application":
                         response = handleApplication(queryParams, urlPath, method);
@@ -1431,10 +1431,9 @@ public class branchtwo implements ActionListener {
             	System.out.println(e);
             }
             return "[]";
-<<<<<<< HEAD
-        }
-=======
 		}
+		
+	}
 
 	private String handleAnInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method.equals("GET")) {
@@ -1455,7 +1454,6 @@ public class branchtwo implements ActionListener {
 			}
 			return null;
 		}
->>>>>>> b84d23a81ed67d03a40c35eb365d0fc605754d90
 
 	// add a handler method here for each type
 	
@@ -1747,4 +1745,3 @@ public class branchtwo implements ActionListener {
     	branchtwo b = new branchtwo();
     }
 }
-
