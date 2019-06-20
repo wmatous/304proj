@@ -5,7 +5,7 @@ window.onload = function () {
 };
 
 getAllInterviews = function (applicantId) {
-    let urlPath = 'http://localhost:6789/interviews/' + applicantId;
+    let urlPath = 'http://localhost:6789/allInterviews/' + applicantId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
