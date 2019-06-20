@@ -16,7 +16,7 @@ class posting {
     PreparedStatement handlePosting(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         if (method.equals("GET")) {
             return getPosting(Integer.parseInt(queryParams.get("postingId")));
-        } else if (method.equals("PUT")) {
+        } else if (method.equals("POST")) {
             return updatePosting(Integer.parseInt(queryParams.get("postingId")),
                     queryParams.get("title"),
                     queryParams.get("active"),

@@ -64,7 +64,7 @@ acceptOffer = function (offerId) {
     let urlPath = 'http://localhost:6789/offer';
     urlPath += ('/?offerId=' + offerId + '&status=' + "accepted");
     fetch(urlPath,
-        {method: 'PUT'})
+        {method: 'POST'})
         .then((res) => res.json())
         .catch(err => console.error(err));
 };
@@ -73,7 +73,7 @@ declineOffer = function (offerId) {
     let urlPath = 'http://localhost:6789/offer';
     urlPath += ('/?offerId=' + offerId + '&status=' + "declined");
     fetch(urlPath,
-        {method: 'PUT'})
+        {method: 'POST'})
         .then((res) => res.json())
         .catch(err => console.error(err));
 };
