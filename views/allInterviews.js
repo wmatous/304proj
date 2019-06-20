@@ -27,7 +27,7 @@ function interviewTemplate(interview) {
         <tr class="interviewTableRow">
             <div>
                 <th scope="row">${interview.INTERVIEWID}</th>
-                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewInterview(${interview.APPLICANTID})"
+                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewInterview(${interview.INTERVIEWID})"
                 role="button">View</button></td>
                 <td>${interview.COMPANY}</td>
                 <td>${interview.TITLE}</td>
