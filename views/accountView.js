@@ -4,7 +4,7 @@ populateAccountView = function (accounts) {
     document.getElementById('email').value = account.EMAIL;
     document.getElementById('accountId').value = account.ACCOUNTID;
     document.getElementById('postalCode').value = account.POSTALCODE;
-    if (account.SIZE) {
+    if (account.CSIZE) {
         document.getElementById('companyView').style.visibility = 'visible';
         document.getElementById('size').value = account.SIZE;
         document.getElementById('industry').value = account.INDUSTRY;
@@ -22,12 +22,12 @@ updateAccount = function () {
     const postalCode = document.getElementById('postalCode').value;
     const accountId = document.getElementById('accountId').value;
     let cmpSize, cmpIndustry, indStatus, indAge;
-    if (document.getElementById('companyView')) {
+    if (document.getElementById('companyView').style.visibility == 'visible') {
         cmpSize = document.getElementById('cmpSize').value;
         cmpIndustry = document.getElementById('cmpIndustry').value;
     } else {
-        indStatus = document.getElementById('cmpInduindStatusstry').value;
-        indAge = document.getElementById('indAge').value;
+        indStatus = document.getElementById('status').value;
+        indAge = document.getElementById('age').value;
     }
 
     let urlPath = 'http://localhost:6789/account';
@@ -37,7 +37,6 @@ updateAccount = function () {
     } else {
         urlPath += ('&status=' + indStatus + '&age=' + indAge);
     }
-
     fetch(urlPath,
         {method: 'POST'})
         .then((res) => res.json())

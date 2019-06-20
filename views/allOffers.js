@@ -32,7 +32,7 @@ function offerTemplate(offer) {
         <tr class="offerTableRow">
             <div>
                 <th scope="row">${offer.OFFERID}</th>
-                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewOffer(${offer.OFFERID})"
+                <td><button type="submit" class="btn btn-link btn-sm" onclick="viewOffer(${offer.OFFERID})"
                 role="button">View</button></td>
                 <td>${offer.COMPANY}</td>
                 <td>${offer.TITLE}</td>
@@ -43,6 +43,6 @@ function offerTemplate(offer) {
         </tr>`
 }
 
-viewOffer = function (offerId) {
-//modify from offerView once its done
-};
+viewOffer = function(urlEnd){
+    window.location = '/'+window.location.pathname.split('/')[1]+'/offerView.html?offerId='+urlEnd;
+}
