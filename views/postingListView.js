@@ -16,16 +16,16 @@ function postingTemplate(posting) {
     return `
         <tr class="postingTableRow">
             <div>
-                <th scope="row"> ${posting.postingId}</th>
-                <td><a href="http://localhost:6789/application/"+${posting.accountId}+${posting.postingId} style="color: blue; text-decoration: underline"> ${posting.title} </a></td>
-                <td>${posting.active}</td>
-                <td>${posting.startDate}</td>
-                <td>${posting.address}</td>
-                <td>${posting.postalCode}</td>
-                <td>${posting.cityName}</td>
-                <td>${posting.state}</td>
-                <td>${posting.description}</td>
-                <td id="skills">${posting.skills}</td>
+                <th scope="row"> ${posting.POSTINGID}</th>
+                <td><a href="http://localhost:6789/application/"+${posting.ACCOUNTID}+${posting.POSTINGID} style="color: blue; text-decoration: underline"> ${posting.TITLE} </a></td>
+                <td>${posting.ACTIVE}</td>
+                <td>${posting.STARTDATE}</td>
+                <td>${posting.ADDRESS}</td>
+                <td>${posting.POSTALCODE}</td>
+                <td>${posting.CITYNAME}</td>
+                <td>${posting.STATE}</td>
+                <td>${posting.DESCRIPTION}</td>
+                <td id="skills">${posting.SKILLS}</td>
             </div>
         </tr>`;
 }
@@ -40,13 +40,13 @@ function populatePostingTable(postingData) {
 populateSkills = function (skills) {
     let innerHTML = '<h1>Skills</h1>';
     for (let i = 0; i < skills.length; i++) {
-        innerHTML += "<span>" + skills[i].name + "</span>";
+        innerHTML += "<span>" + skills[i].NAME + "</span>";
     }
     document.getElementById('skills').innerHTML = innerHTML;
 };
 
 getSkills = function (postingId) {
-    let urlPath = 'http://localhost:6789/postingSkill/' + postingId;
+    let urlPath = 'http://localhost:6789/postingSkill/?postingId=' + postingId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(function (data) {

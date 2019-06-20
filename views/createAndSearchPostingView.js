@@ -1,7 +1,7 @@
 // for a single posting on a page (when creating a posting or searching for a posting)
 
 getPosting = function (postingId) {
-    let urlPath = 'http://localhost:6789/posting/' + postingId;
+    let urlPath = 'http://localhost:6789/posting/?postingId=' + postingId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(function (data) {
@@ -13,16 +13,16 @@ getPosting = function (postingId) {
 
 populateSinglePostingView = function (postings) {
     var posting = postings[0];
-    document.getElementById('postingId').value = posting.postingId;
-    document.getElementById('title').value = posting.title;
-    document.getElementById('active').value = posting.active;
-    document.getElementById('startDate').value = posting.startDate;
-    document.getElementById('address').value = posting.address;
-    document.getElementById('postalCode').value = posting.postalCode;
-    document.getElementById('cityName').value = posting.cityName;
-    document.getElementById('state').value = posting.state;
-    document.getElementById('description').value = posting.description;
-    document.getElementById('skills').value = posting.skills;
+    document.getElementById('postingId').value = posting.POSTINGID;
+    document.getElementById('title').value = posting.TITLE;
+    document.getElementById('active').value = posting.ACTIVE;
+    document.getElementById('startDate').value = posting.STARTDATE;
+    document.getElementById('address').value = posting.ADDRESS;
+    document.getElementById('postalCode').value = posting.POSTALCODE;
+    document.getElementById('cityName').value = posting.CITYNAME;
+    document.getElementById('state').value = posting.STATE;
+    document.getElementById('description').value = posting.DESCRIPTION;
+    document.getElementById('skills').value = posting.SKILLS;
 };
 
 updatePosting = function () {
@@ -46,7 +46,7 @@ updatePosting = function () {
     urlPath += ('/?postingId=' + postingId + '&title=' + title + '&active=' + active + '&startDate=' + startDate + '&address=' + address + '&postalCode=' + postalCode + '&cityName=' + cityName + '&state=' + state + '&description=' + description + '&skills=' + skills);
 
     fetch(urlPath,
-        {method: 'PUT'})
+        {method: 'POST'})
         .then((res) => res.json())
         .then((data) => console.log(data))
         .catch((err) => console.error(err));

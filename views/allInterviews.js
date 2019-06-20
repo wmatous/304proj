@@ -1,11 +1,14 @@
-window.onload = function () {
-    var url = new URL(window.location.href);
-    var applicantId = url.searchParams.get("applicantId");
-    getAllInterviews(applicantId);
+
+
+getCookie = function (name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
+
 getAllInterviews = function (applicantId) {
-    let urlPath = 'http://localhost:6789/allInterviews/' + applicantId;
+    let urlPath = 'http://localhost:6789/allInterviews/?applicantId=' + applicantId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
@@ -26,19 +29,24 @@ function interviewTemplate(interview) {
     return `
         <tr class="interviewTableRow">
             <div>
-                <th scope="row">${interview.id}</th>
-                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewInterview(${interview.applicantId})"
+                <th scope="row">${interview.ID}</th>
+                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewInterview(${interview.APPLICANTID})"
                 role="button">View</button></td>
-                <td>${interview.company}</td>
-                <td>${interview.position}</td>
-                <td>${interview.status}</td>
-                <td>${interview.date}</td>
-                <td>${interview.time}</td>
-                <td>${interview.address}</td>
+                <td>${interview.COMPANY}</td>
+                <td>${interview.POSITION}</td>
+                <td>${interview.STATUS}</td>
+                <td>${interview.DATE}</td>
+                <td>${interview.TIME}</td>
+                <td>${interview.ADDRESS}</td>
             </div>
         </tr>`
 }
 
 viewInterview = function (offerId) {
 //modify from offerView once its done
+};
+
+window.onload = function () {
+    var loggedInAccount = getCookie('accountId');
+    getAllInterviews(loggedInAccount);
 };

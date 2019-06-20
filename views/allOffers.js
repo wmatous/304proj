@@ -1,7 +1,6 @@
 window.onload = function () {
-    var url = new URL(window.location.href);
-    var accountId = url.searchParams.get("accountId");
-    getAllOffers(accountId);
+    var loggedInAccount = getCookie('accountId');
+    getAllOffers(loggedInAccount);
 };
 
 getCookie = function(name) {
@@ -12,7 +11,7 @@ getCookie = function(name) {
 
 
 getAllOffers = function (accountId) {
-    let urlPath = 'http://localhost:6789/allOffers/' + accountId;
+    let urlPath = 'http://localhost:6789/allOffers/?accountId=' + accountId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {

@@ -5,7 +5,7 @@ window.onload = function () {
 };
 
 getOffer = function (offerId) {
-    let urlPath = 'http://localhost:6789/offer/' + offerId;
+    let urlPath = 'http://localhost:6789/offer/?offerId=' + offerId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
