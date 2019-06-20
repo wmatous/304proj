@@ -28,7 +28,7 @@ class interviewAndOfferQueries {
     PreparedStatement handleAnOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         if (method.equals("GET")) {
             return getAnOffer(Integer.parseInt(queryParams.get("offerId")));
-        } else if (method.equals("PUT")) {
+        } else if (method.equals("POST")) {
             return updateAnOffer(Integer.parseInt(queryParams.get("offerId")),
                     queryParams.get("status"));
         }

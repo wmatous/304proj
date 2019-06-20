@@ -1452,7 +1452,7 @@ public class branchtwo implements ActionListener {
         private String handleAccount(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         	if (method.equals("GET")) {
         		return getAccount(Integer.parseInt(queryParams.get("accountId")));
-        	} else if (method.equals("PUT")) {
+        	} else if (method.equals("POST")) {
         		return updateAccount(Integer.parseInt(queryParams.get("accountId")),
         			queryParams.get("name"),
         			queryParams.get("email"),
