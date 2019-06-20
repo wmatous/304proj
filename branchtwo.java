@@ -370,7 +370,7 @@ public class branchtwo implements ActionListener {
      */
     private String updateAccount(int accountId, String name, String email, String postalCode) throws SQLException {
         // create postalcode?
-    	PreparedStatement ps = con.prepareStatement("UPDATE  Account SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
+    	PreparedStatement ps = con.prepareStatement("UPDATE  Account SET account.name=?, account.email=?, account.postalCode=? WHERE accountId=?");
     	ps.setString(1, name);
     	ps.setString(2, email);
     	ps.setString(3, postalCode);
@@ -1484,7 +1484,7 @@ public class branchtwo implements ActionListener {
         	ps.setString(3, resume);
         	ps.setInt(4, applicantID);
         	ps.setInt(5, posting);
-        	return getRecordsAsJSON(ps);
+        	return String.valueOf(ps.executeUpdate());
         }
 
         private String handleApplication(Map<String, String> queryParams, String[] path, String method) throws SQLException {
