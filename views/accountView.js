@@ -23,11 +23,11 @@ updateAccount = function () {
     const accountId = document.getElementById('accountId').value;
     let cmpSize, cmpIndustry, indStatus, indAge;
     if (document.getElementById('companyView')) {
-        cmpSize = document.getElementById('cmpSize').value;
-        cmpIndustry = document.getElementById('cmpIndustry').value;
+        cmpSize = document.getElementById('size').value;
+        cmpIndustry = document.getElementById('industry').value;
     } else {
-        indStatus = document.getElementById('cmpInduindStatusstry').value;
-        indAge = document.getElementById('indAge').value;
+        indStatus = document.getElementById('statue').value;
+        indAge = document.getElementById('age').value;
     }
 
     let urlPath = 'http://localhost:6789/account';
