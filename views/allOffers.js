@@ -43,6 +43,6 @@ function offerTemplate(offer) {
         </tr>`
 }
 
-viewOffer = function(urlEnd){
-    window.location = '/'+window.location.pathname.split('/')[1]+'/offerView.html?offerId='+urlEnd;
+viewOffer = function(offerId){
+    window.location = '/'+window.location.pathname.split('/')[1]+'/offerView.html?offerId='+offerId;
 }

@@ -28,9 +28,15 @@ populateOfferView = function (offerData) {
               displayEndDate(${offer.ENDDATE});
           } </script>
           <br> Monetary Compensation: $ ${offer.COMPENSATION} per hour
-          <script> if ($(offer.STATUS) != "accepted" && (offer.STATUS) != "declined") {
-              displayButtons(${offer.OFFERID});
-          } </script>`;
+          <br> <br>
+          <div class="btn-group btn-group-lg" role="button">
+              <button id="acceptOffer" onclick="acceptOffer(${offer.OFFERID})" class="btn btn-success btn-lg" role="button">
+                  Accept
+              </button>
+              <button id="declineOffer" onclick="declineOffer(${offer.OFFERID})" class="btn btn-danger btn-lg" role="button">
+                  Decline
+              </button>
+          </div>`
     document.getElementById('companyInfo').innerHTML = `
         <div class="jumbotron">
             <h4> Company-Name-Here </h4>
@@ -62,7 +68,7 @@ populateOfferView = function (offerData) {
 
 acceptOffer = function (offerId) {
     let urlPath = 'http://localhost:6789/offer';
-    urlPath += ('/?offerId=' + offerId + '&status=' + "accepted");
+    urlPath += ('/?offerId=' + offerId + '&status=Accepted');
     fetch(urlPath,
         {method: 'POST'})
         .then((res) => res.json())
@@ -71,7 +77,7 @@ acceptOffer = function (offerId) {
 
 declineOffer = function (offerId) {
     let urlPath = 'http://localhost:6789/offer';
-    urlPath += ('/?offerId=' + offerId + '&status=' + "declined");
+    urlPath += ('/?offerId=' + offerId + '&status=Declined');
     fetch(urlPath,
         {method: 'POST'})
         .then((res) => res.json())
@@ -86,16 +92,4 @@ viewPost = function (postId) {
 
 displayEndDate = function (endDate) {
     `<br> End Date: ${endDate}`
-};
-
-displayButtons = function (offerId) {
-    `<br> <br>
-          <div class="btn-group btn-group-lg" role="button">
-              <button id="acceptOffer" type="submit" onsubmit="acceptOffer(${offerId})" class="btn btn-success btn-lg" role="button">
-                  Accept
-              </button>
-              <button id="declineOffer" type="submit" onsubmit="declineOffer(${offerId})" class="btn btn-danger btn-lg" role="button">
-                  Decline
-              </button>
-          </div>`
 };

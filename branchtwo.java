@@ -1411,13 +1411,13 @@ public class branchtwo implements ActionListener {
                         response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
                         break;
                         case "interview":
-                        response = getRecordsAsJSON(intAndOff.handleAnInterview(queryParams, urlPath, method));
+                        response = handleAnInterview(queryParams, urlPath, method);
                         break;
                         case "allOffers":
                         response = getRecordsAsJSON(intAndOff.handleAllOffers(queryParams, urlPath, method));
                         break;
                         case "offer":
-                        response = getRecordsAsJSON(intAndOff.handleAnOffer(queryParams, urlPath, method));
+                        response = handleAnOffer(queryParams, urlPath, method);
                         break;
                         case "application":
                         response = handleApplication(queryParams, urlPath, method);
@@ -1431,7 +1431,31 @@ public class branchtwo implements ActionListener {
             	System.out.println(e);
             }
             return "[]";
+<<<<<<< HEAD
         }
+=======
+		}
+
+	private String handleAnInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+		if (method.equals("GET")) {
+			return getRecordsAsJSON(intAndOff.getAnInterview(Integer.parseInt(queryParams.get("applicationId"))));
+		} else if (method.equals("POST")) {
+			return getRecordsAsJSON(intAndOff.updateAnInterview(Integer.parseInt(queryParams.get("applicationId")),
+					queryParams.get("status")));
+		}
+		return null;
+	}
+
+		private String handleAnOffer(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+			if (method.equals("GET")) {
+				return getRecordsAsJSON(intAndOff.getAnOffer(Integer.parseInt(queryParams.get("offerId"))));
+			} else if (method.equals("POST")) {
+				return executeUpdateStatement(intAndOff.updateAnOffer(Integer.parseInt(queryParams.get("offerId")),
+						queryParams.get("status")));
+			}
+			return null;
+		}
+>>>>>>> b84d23a81ed67d03a40c35eb365d0fc605754d90
 
 	// add a handler method here for each type
 	

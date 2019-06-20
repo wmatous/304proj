@@ -6,8 +6,8 @@ getCookie = function(name) {
     if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
-getInterview = function (applicantId) {
-    let urlPath = 'http://localhost:6789/interview/?applicantId=' + applicantId;
+getInterview = function (applicationId) {
+    let urlPath = 'http://localhost:6789/interview/?applicationId=' + applicationId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
@@ -27,7 +27,7 @@ populateInterviewView = function (interviewData) {
        <a href="#" class="btn btn-outline-dark btn-md" onsubmit="viewPost(${interview.POSTINGID})" role="button">View Job Posting</a>`;
     document.getElementById('adButtons').innerHTML = `
         <script> if ($(interview.STATUS) != "accepted" && (interview.STATUS) != "declined") {
-                    displayButtons(${interview.APPLICANTID});
+                    displayButtons(${interview.APPLICATIONID});
                     } </script>`;
     document.getElementById('i-position').innerHTML = `
     <h2><a href="#jobInfo" data-toggle="collapse">Position Information</a></h2>
@@ -50,29 +50,29 @@ populateInterviewView = function (interviewData) {
             </div>`
 };
 
-acceptInterview = function (applicantId) {
+acceptInterview = function (applicationId) {
     let urlPath = 'http://localhost:6789/interview';
-    urlPath += ('/?applicantId=' + applicantId + '&status=' + "accepted");
+    urlPath += ('/?applicationId=' + applicationId + '&status=' + "Accepted");
     fetch(urlPath,
         {method: 'POST'})
         .then((res) => res.json())
         .catch(err => console.error(err));
 };
 
-declineInterview = function (applicantId) {
+declineInterview = function (applicationId) {
     let urlPath = 'http://localhost:6789/interview';
-    urlPath += ('/?applicantId=' + applicantId + '&status=' + "declined");
+    urlPath += ('/?applicationId=' + applicationId + '&status=' + "Declined");
     fetch(urlPath,
         {method: 'POST'})
         .then((res) => res.json())
         .catch(err => console.error(err));
 };
 
-displayButtons = function (applicantId) {
-    `    <button type="submit" class="btn btn-success btn-lg" onsubmit="acceptInterview(${applicantId})" role="button">
+displayButtons = function (applicationId) {
+    `    <button type="submit" class="btn btn-success btn-lg" onsubmit="acceptInterview(${applicationId})" role="button">
      Accept
      </button>
-     <button type="submit" class="btn btn-danger btn-lg" onsubmit="declineInterview(${applicantId})" role="button">
+     <button type="submit" class="btn btn-danger btn-lg" onsubmit="declineInterview(${applicationId})" role="button">
      Decline
      </button>`
 };
@@ -84,6 +84,6 @@ viewPost = function (postId) {
 
 window.onload = function () {
     var url = new URL(window.location.href);
-    var applicantId = url.searchParams.get("applicantId");
-    getInterview(applicantId);
+    var applicationId = url.searchParams.get("applicationId");
+    getInterview(applicationId);
 };
