@@ -241,6 +241,12 @@ public class branchtwo implements ActionListener {
 			if (choice != 0) {
 				dropTable(tableName);
 			}
+			tableName = "Individual";
+			System.out.println("Drop Table? y/n " + tableName);
+			choice = Integer.parseInt(in.readLine());
+			if (choice != 0) {
+				dropTable(tableName);
+			}
     		tableName = "Skill";
     		System.out.println("Drop Table? y/n " + tableName);
     		choice = Integer.parseInt(in.readLine());
@@ -515,7 +521,7 @@ public class branchtwo implements ActionListener {
 			choice = Integer.parseInt(in.readLine());
 			if (choice !=0){
 				ps = con.prepareStatement("CREATE TABLE Company "+
-						"(accountId int, csize int, address varchar(30), industry varchar(10), "+
+						"(accountId int, csize int, address varchar(30), industry varchar(30), "+
 						"PRIMARY KEY (accountId),"+
 						"FOREIGN KEY (accountId) references Account(accountId))");
 
@@ -1254,7 +1260,6 @@ public class branchtwo implements ActionListener {
     		System.out.println("applications done");
 
 
-//		"(applicantId int, status char(20), date date, time time, address char(20), "
     		query = "INSERT INTO Interview (applicantId, status , intDate, address) VALUES (?, ?, ?, ?)";
     		ps = con.prepareStatement(query);
 
@@ -1613,6 +1618,10 @@ public class branchtwo implements ActionListener {
 					break;
 					case 7:
 					System.out.print("enter query ");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6650e0f4bde7dd1b9a7d489a16ab1dcdb93af7c6
     				String qry = in.readLine();
 					System.out.print(runQuery(qry));
 					break;
@@ -1643,7 +1652,7 @@ public class branchtwo implements ActionListener {
     	}
 	}
 
-	private String runQuery(String qry) throws SQLException  {
+	private String runQuery(String qry) throws SQLException {
     	PreparedStatement ps = con.prepareStatement(qry);
 		return getRecordsAsJSON(ps);
     }
