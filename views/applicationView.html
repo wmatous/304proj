@@ -66,6 +66,23 @@ getCookie = function(name) {
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
 };
+deleteApplication = function () {
+
+    const postingid = document.getElementById('PostingID').value;
+    // const accountId = url.searchParams.get("accountId");
+    const accountId = getCookie('accountId');
+    const applicationId = postingid + 100 * accountId; // just a way to generate application ID
+    let urlPath = 'http://localhost:6789/application/';
+    urlPath += ('&applicationId=' + applicationId); // applicationId to delete
+    // post coverletter
+    // post resume
+    fetch(urlPath,
+        { method: 'DELETE' })
+        .then((res) => res.json())
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
+};
+    
 
 </script>
 <style>
@@ -117,6 +134,7 @@ getCookie = function(name) {
     </table>
     <button onclick='submitForm()'> Save</button>
     <button onclick='listApplications()'> See your applications</button>
+    <button onclick='deleteApplication()'> Delete your application to Posting(specify above)</button>
 </div>
 <div id="applics">
     <table id='applications'>

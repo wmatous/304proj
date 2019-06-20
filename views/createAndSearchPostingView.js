@@ -91,5 +91,5 @@ searchPostings = function () {
 window.onload = function () {
     var url = new URL(window.location.href);
     var postingId = Math.floor(Math.random);
-    document.getElementById(postingId).value = postingId;
+    document.getElementById('postingId').value = postingId;
 };

@@ -55,20 +55,18 @@ class posting {
 
     private PreparedStatement searchPostings(String title, String cityName, String state, String skills) throws SQLException {
         String query = "SELECT DISTINCT P.postingId, DISTINCT P.title, P.active, P.startDate, P.address, P.postalCode, P.description, P.accountId " +
-            "FROM Posting P, PostalCode PC, Involves I WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId " +
-            "AND (P.title LIKE ? AND PC.cityName LIKE ? AND PC.state LIKE ? OR I.name LIKE ? ";
-
+            "FROM Posting P, PostalCode PC WHERE P.postalCode = PC.postalCode";
+        if (title != null){
+           query += " OR P.title LIKE "+title;
+        } 
+        if(cityName != null ){
+            query += " OR PC.cityName LIKE "+ cityName;
+        }
+        if (state != null){
+            query += "OR PC.state LIKE "+state;
+        }
         PreparedStatement ps = con.prepareStatement(query);
         System.out.println(title);
-        ps.setString(1, "%" + title + "%");
-        ps.setString(2, "%" + cityName + "%");
-        ps.setString(3, "%" + state + "%");
-        ps.setString(4, "%" + skills + "%");
-
-
-            // "INNER JOIN ExperiencedAt ON ExperiencedAt.accountId = Account.accountId) " +
-            // "INNER JOIN Skill ON Skill.name = ExperiencedAt.name) " +
-            // "INNER JOIN Involves ON Involves.name = Skill.name ) WHERE Account.accountId = ?");)
         return ps;
     }
 

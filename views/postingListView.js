@@ -13,7 +13,7 @@ getAllPostings = function () {
 };
 
 function postingTemplate(posting) {
-    var skills = getSkills(${posting.POSTINGID})[0];
+    var skills = getSkills(posting.POSTINGID)[0];
     
     return `
         <tr class="postingTableRow">

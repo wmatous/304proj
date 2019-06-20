@@ -76,7 +76,7 @@ getSkills = function (accountId) {
 };
 
 populateEndorsements = function (endorsements) {
-    document.getElementById('endorseCount').innerHTML = "Endorsed by" + endorsements[0].COUNT;
+    document.getElementById('endorseCount').innerHTML = "Endorsed by " + endorsements[0].COUNT;
 };
 
 getEndorsements = function (accountId) {
@@ -102,6 +102,24 @@ getRecommended = function (loggedInAccount) {
         })
         .catch(err => console.error(err));
 };
+populateReviews = function(data){
+    let innerHTML = `<h1>Reviews</h1>`;
+    for (let i = 0; i < data.length; i++) {
+        innerHTML += `<p>${data[i].STARS} stars:${data[i].COUNT}</span>`;
+    }
+    document.getElementById('reviews').innerHTML = innerHTML;
+}
+
+getReviews = function (loggedInAccount) {
+    let urlPath = 'http://localhost:6789/reviews/?accountId=' + loggedInAccount;
+    fetch(urlPath)
+        .then((res) => res.json())
+        .then(data => {
+            console.log(data);
+            populateReviews(data);
+        })
+        .catch(err => console.error(err));
+};
 
 getCookie = function (name) {
     var value = "; " + document.cookie;
@@ -115,6 +133,7 @@ window.onload = function () {
     getAccount(accountId);
     getSkills(accountId);
     getEndorsements(accountId);
+    getReviews(accountId);
     var loggedInAccount = getCookie('accountId');
     if (loggedInAccount == accountId) {
         document.getElementById("saveButton").hidden = false;
