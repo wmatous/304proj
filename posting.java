@@ -16,14 +16,17 @@ class posting {
     PreparedStatement handlePosting(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         if (method.equals("GET")) {
             return getPosting(Integer.parseInt(queryParams.get("postingId")));
-        } else if (method.equals("POST")) {
+        } else if (method.equals("PUT")) {
             return updatePosting(Integer.parseInt(queryParams.get("postingId")),
                     queryParams.get("title"),
                     queryParams.get("active"),
                     java.sql.Date.valueOf(queryParams.get("startDate")),
                     queryParams.get("address"),
                     queryParams.get("postalCode"),
-                    queryParams.get("description"));
+                    queryParams.get("cityName"),
+                    queryParams.get("state"),
+                    queryParams.get("description"),
+                    queryParams.get("skills"));
         }
         return null;
     }
@@ -145,18 +148,32 @@ class posting {
     /*
      * updates posting table for specified posting
      */
-    private PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String description) throws SQLException {
+    private PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String cityName, String state, String description, String skills) throws SQLException {
         PreparedStatement ps = con.prepareStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ? WHERE postingId = ?");
         // do we need to be guarding against nulls here?
+        System.out.println("updaaaate");
         ps.setString(1, title);
         ps.setString(2, active);
         ps.setDate(3, startDate);
         ps.setString(4, address);
         ps.setString(5, postalCode);
         ps.setString(6, description);
+        ps.executeUpdate();
+
+        ps = con.prepareStatement("UPDATE TABLE PostalCode SET postalCode = ?, cityName = ?, state = ?");
+        ps.setString(1, postalCode);
+        ps.setString(2, cityName);
+        ps.setString(3, state);
+        ps.executeUpdate();
+
+        ps = con.prepareStatement("UPDATE TABLE Involves SET postingId = ?, name = ?");
+        ps.setInt(1, postingId);
+        ps.setString(2, skills);
 
         con.setAutoCommit(false);
+
         ps.executeUpdate();
+
         con.commit();
         ps.close();
 
