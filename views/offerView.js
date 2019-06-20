@@ -43,7 +43,7 @@ populateOfferView = function (offerData) {
         </div>`;
     document.getElementById('jobInfo').innerHTML = `
         <div class="jumbotron">
-            <h4> Position-Name-Here </h4>
+            <h4> ${offer.TITLE} </h4>
             <p class="lead">Information about your potential future employment.</p>
             <hr class="my-4">
             <div class="container">

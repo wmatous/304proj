@@ -18,7 +18,7 @@ class interviewAndOfferQueries {
     }
 
     private PreparedStatement getAllOffers(int accountId) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT O.status, O.startDate, O.expiryDate, O.offerId, A.name, A.accountId, P.position, P.postingId " +
+        PreparedStatement ps = con.prepareStatement("SELECT O.status, O.startDate, O.expiryDate, O.offerId, A.name, A.accountId, P.postingId " +
                 "FROM Offer O, Account A, Posting P " +
                 "WHERE  O.postingId = P.postingID AND P.accountId = A.accountID AND O.accountId = ?");
         ps.setInt(1, accountId);
@@ -61,7 +61,7 @@ class interviewAndOfferQueries {
 
     private PreparedStatement getAllInterviews(int accountId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT I.status, I.intDate, I.address, I.time, I.interviewId, Z.name, Z.accountId, P.position, P.postId " +
+                "SELECT I.status, I.intDate, I.address, I.time, I.interviewId, Z.name, Z.accountId, P.postId " +
                         "FROM Interview I, Account Z, Posting P, Application A " +
                         "WHERE A.postingId = P.postingId AND I.applicantId = A.applicantId AND A.applicantId = Z.accountId AND A.applicantId = ?");
         ps.setInt(1, accountId);
@@ -80,7 +80,7 @@ class interviewAndOfferQueries {
 
     private PreparedStatement getAnInterview(int applicationId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT I.status, I.intDate, I.address, I.time, I.interviewId, A.name, A.accountId, P.position, P.postId " +
+                "SELECT I.status, I.intDate, I.address, I.time, I.interviewId, A.name, A.accountId, P.position, P.title, P.postId " +
                         "FROM Interview I, Account A, Posting P " +
                         "WHERE I.applicationId = ?");
         ps.setInt(1, applicationId);
@@ -109,7 +109,7 @@ class interviewAndOfferQueries {
 
     private PreparedStatement getPositionInfo(int postId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT postId, position, description " +
+                "SELECT postId, title, description " +
                         "FROM Posting " +
                         "WHERE postId = ?");
         ps.setInt(1, postId);

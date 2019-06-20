@@ -30,7 +30,7 @@ function interviewTemplate(interview) {
                 <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewInterview(${interview.APPLICANTID})"
                 role="button">View</button></td>
                 <td>${interview.COMPANY}</td>
-                <td>${interview.POSITION}</td>
+                <td>${interview.TITLE}</td>
                 <td>${interview.STATUS}</td>
                 <td>${interview.DATE}</td>
                 <td>${interview.TIME}</td>
