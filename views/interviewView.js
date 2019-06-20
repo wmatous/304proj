@@ -29,6 +29,25 @@ populateInterviewView = function (interviewData) {
         <script> if ($(interview.STATUS) != "accepted" && (interview.STATUS) != "declined") {
                     displayButtons(${interview.APPLICANTID});
                     } </script>`;
+    document.getElementById('i-position').innerHTML = `
+    <h2><a href="#jobInfo" data-toggle="collapse">Position Information</a></h2>
+            <div id="jobInfo" class="collapse-in">
+                <div class="jumbotron">
+                    <h4> ${offer.TITLE} </h4>
+                    <p class="lead">Information about your potential future employment.</p>
+                    <hr class="my-4">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                Posting Identification Number:
+                                <br> Description:
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="viewButton">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`
 };
 
 acceptInterview = function (applicantId) {

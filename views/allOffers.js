@@ -35,7 +35,7 @@ function offerTemplate(offer) {
                 <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewOffer(${offer.OFFERID})"
                 role="button">View</button></td>
                 <td>${offer.COMPANY}</td>
-                <td>${offer.POSITION}</td>
+                <td>${offer.TITLE}</td>
                 <td>${offer.STATUS}</td>
                 <td>${offer.STARTDATE}</td>
                 <td>${offer.EXPIRYDATE}</td>
