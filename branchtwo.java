@@ -1491,7 +1491,7 @@ public class branchtwo implements ActionListener {
         	if (method.equals("POST")) {
         		return postApplicationTable(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"),
         			queryParams.get("resume"), Integer.parseInt(queryParams.get("accountId")),
-        			Integer.parseInt(queryParams.get("PostingId")));
+        			Integer.parseInt(queryParams.get("PostingID")));
         	} else if (method.equals("GET")) {
         		return getApplicationTable(Integer.parseInt(queryParams.get("accountId")));
         	}
