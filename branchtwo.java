@@ -290,12 +290,17 @@ public class branchtwo implements ActionListener {
     			dropTable(tableName);
     		}
     		tableName = "Offer";
-    		System.out.println("Drop Table? y/n " + tableName);
-    		choice = Integer.parseInt(in.readLine());
-    		if (choice != 0) {
-    			dropTable(tableName);
-    		}
-
+            System.out.println("Drop Table? y/n " + tableName);
+            choice = Integer.parseInt(in.readLine());
+            if (choice != 0) {
+                dropTable(tableName);
+            }
+            tableName = "Review";
+            System.out.println("Drop Table? y/n " + tableName);
+            choice = Integer.parseInt(in.readLine());
+            if (choice != 0) {
+                dropTable(tableName);
+            }
 
     	} catch (IOException e) {
     		System.out.println("IOException!");
@@ -356,7 +361,6 @@ public class branchtwo implements ActionListener {
 			inner = "INNER JOIN Company ON Company.accountId = account.accountId";
 		}
 		ps = con.prepareStatement("SELECT * FROM Account "+inner);
-		ps.setInt(1, accountId);
     	return getRecordsAsJSON(ps);
 
     }
@@ -1309,8 +1313,8 @@ public class branchtwo implements ActionListener {
     		ps.setInt(1, 1);
     		ps.setString(2, "Great worker");
     		ps.setInt(3, 1);
-    		ps.setInt(4, 3);
-    		ps.setInt(5, 1);
+    		ps.setInt(4, 1);
+    		ps.setInt(5, 0);
     		ps.addBatch();
 
             //Construction
@@ -1318,7 +1322,7 @@ public class branchtwo implements ActionListener {
     		ps.setString(2, "Great guy");
     		ps.setInt(3, 3);
 			ps.setInt(4, 1);
-			ps.setInt(5, 2);
+			ps.setInt(5, 1);
 			ps.addBatch();
 			
 			//Construction
@@ -1326,23 +1330,23 @@ public class branchtwo implements ActionListener {
     		ps.setString(2, "Great guy");
     		ps.setInt(3, 3);
     		ps.setInt(4, 3);
+    		ps.setInt(5, 2);
+			ps.addBatch();
+			
+			//Construction
+    		ps.setInt(1, 4);
+    		ps.setString(2, "Great guy");
+    		ps.setInt(3, 3);
+    		ps.setInt(4, 2);
     		ps.setInt(5, 3);
 			ps.addBatch();
 			
 			//Construction
-    		ps.setInt(1, 3);
+    		ps.setInt(1, 5);
     		ps.setString(2, "Great guy");
     		ps.setInt(3, 3);
-    		ps.setInt(4, 3);
+    		ps.setInt(4, 1);
     		ps.setInt(5, 4);
-			ps.addBatch();
-			
-			//Construction
-    		ps.setInt(1, 3);
-    		ps.setString(2, "Great guy");
-    		ps.setInt(3, 3);
-    		ps.setInt(4, 3);
-    		ps.setInt(5, 5);
     		ps.addBatch();
 
     		ps.executeBatch();
