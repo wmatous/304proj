@@ -1274,6 +1274,9 @@ public class branchtwo implements ActionListener {
                         case "searchPostings":
                         response = getRecordsAsJSON(posting.handleSearchPostings(queryParams, urlPath, method));
                         break;
+                        case "allPostings":
+                        response = getRecordsAsJSON(posting.handleAllPostings(queryParams, urlPath, method));
+                        break;
                         case "postingSkill":
                         response = getRecordsAsJSON(posting.handlePostingSkill(queryParams, urlPath, method));
                         break;

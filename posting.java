@@ -114,8 +114,8 @@ class posting {
      * returns all postings in database
      */
     private PreparedStatement getAllPostings() throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting P, PostalCode PC, Involves I " +
-                "WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM Posting P"); //, PostalCode PC, Involves I " +
+                //"WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
         return ps;
     }
 
