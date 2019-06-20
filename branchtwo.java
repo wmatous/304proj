@@ -370,7 +370,7 @@ public class branchtwo implements ActionListener {
      */
     private String updateAccount(int accountId, String name, String email, String postalCode) throws SQLException {
         // create postalcode?
-    	PreparedStatement ps = con.prepareStatement("UPDATE TABLE (Account) SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
+    	PreparedStatement ps = con.prepareStatement("UPDATE  Account SET name = ?, email = ?, postalCode = ? WHERE accountId = ?");
     	ps.setString(1, name);
     	ps.setString(2, email);
     	ps.setString(3, postalCode);
@@ -1456,7 +1456,7 @@ public class branchtwo implements ActionListener {
         		return updateAccount(Integer.parseInt(queryParams.get("accountId")),
         			queryParams.get("name"),
         			queryParams.get("email"),
-        			queryParams.get("postalCode"));
+					queryParams.get("postalCode"));
         	}
         	return "[]";
         }
@@ -1518,7 +1518,7 @@ public class branchtwo implements ActionListener {
         	}
         	for (String param : params) {
         		String name = param.split("=")[0];
-        		String value = param.split("=")[1];
+        		String value = param.split("=")[1].replaceAll("%20", "");
         		map.put(name, value);
         	}
         	return map;

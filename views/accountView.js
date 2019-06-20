@@ -22,11 +22,11 @@ updateAccount = function () {
     const postalCode = document.getElementById('postalCode').value;
     const accountId = document.getElementById('accountId').value;
     let cmpSize, cmpIndustry, indStatus, indAge;
-    if (document.getElementById('companyView')) {
-        cmpSize = document.getElementById('size').value;
-        cmpIndustry = document.getElementById('industry').value;
+    if (document.getElementById('companyView').style.visibility == 'visible') {
+        cmpSize = document.getElementById('cmpSize').value;
+        cmpIndustry = document.getElementById('cmpIndustry').value;
     } else {
-        indStatus = document.getElementById('statue').value;
+        indStatus = document.getElementById('status').value;
         indAge = document.getElementById('age').value;
     }
 
@@ -37,7 +37,6 @@ updateAccount = function () {
     } else {
         urlPath += ('&status=' + indStatus + '&age=' + indAge);
     }
-
     fetch(urlPath,
         {method: 'POST'})
         .then((res) => res.json())
