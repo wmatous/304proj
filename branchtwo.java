@@ -341,8 +341,16 @@ public class branchtwo implements ActionListener {
      * retrieves specified account
      */
     private String getAccount(int accountId) throws SQLException {
-    	PreparedStatement ps = con.prepareStatement("SELECT * FROM Account WHERE accountId = ?");
-    	ps.setInt(1, accountId);
+		PreparedStatement ps = con.prepareStatement("SELECT * FROM Individual WHERE accountId = ?");
+		ps.setInt(1, accountId);
+		String inner = "";
+		if (!getRecordsAsJSON(ps).equals("[]")){
+			inner = "INNER JOIN Individual ON Individual.accountId = account.accountId";
+		} else {
+			inner = "INNER JOIN Company ON Company.accountId = account.accountId";
+		}
+		ps = con.prepareStatement("SELECT * FROM Account "+inner);
+		ps.setInt(1, accountId);
     	return getRecordsAsJSON(ps);
 
     }
@@ -515,6 +523,18 @@ public class branchtwo implements ActionListener {
 				con.commit();
 			}
 
+			System.out.println("Add Table Individual? y/n ");
+			choice = Integer.parseInt(in.readLine());
+			if (choice !=0){
+				ps = con.prepareStatement("CREATE TABLE Individual "+
+						"(accountId int, age int, status varchar(30), "+
+						"PRIMARY KEY (accountId),"+
+						"FOREIGN KEY (accountId) references Account(accountId))");
+
+				System.out.println(ps.executeUpdate());
+				con.commit();
+			}
+
 			System.out.println("Add Table Skill? y/n ");
     		choice = Integer.parseInt(in.readLine());
     		if (choice !=0){
@@ -622,7 +642,22 @@ public class branchtwo implements ActionListener {
     			System.out.println(ps.executeUpdate());
     			con.commit();
     		}
+			System.out.println("Add Table review? y/n ");
+    		choice = Integer.parseInt(in.readLine());
+    		if (choice !=0){
+    			ps = con.prepareStatement("create table Review("+
+					"reviewID integer primary key, "+
+					"details char(2000), "+
+					"stars integer, "+
+					"AccountID integer NOT NULL, "+
+					"OfferID integer NOT NULL, "+
+					" foreign key (AccountID) references Account (AccountID) on delete cascade, "+
+					" foreign key (OfferID) references Offer (OfferID) on delete cascade)");
 
+    			System.out.println(ps.executeUpdate());
+    			con.commit();
+			}
+			
     		ps = con.prepareStatement("CREATE TABLE test (name varchar(30) PRIMARY KEY)");
     		ps.close();
 
@@ -859,6 +894,37 @@ public class branchtwo implements ActionListener {
 			ps.setInt(2, 150);
 			ps.setString(3, "1080 Hamilton St.");
 			ps.setString(4, "Retail");
+			ps.addBatch();
+
+			ps.executeBatch();
+
+			System.out.println("Companies done");
+
+			query = "INSERT INTO Company (accountId, age,  status) VALUES (?, ?, ?)";
+    		ps = con.prepareStatement(query);
+    		ps.setInt(1, 1);
+    		ps.setInt(2, 21);
+    		ps.setString(3, "Student");
+			ps.addBatch();
+
+			ps.setInt(1, 2);
+			ps.setInt(2, 21);
+			ps.setString(3, "Student");
+			ps.addBatch();
+
+			ps.setInt(1, 3);
+			ps.setInt(2, 23);
+			ps.setString(3, "Student");
+			ps.addBatch();
+
+			ps.setInt(1, 4);
+			ps.setInt(2, 24);
+			ps.setString(3, "Student");
+			ps.addBatch();
+
+			ps.setInt(1, 5);
+			ps.setInt(2, 100000);
+			ps.setString(3, "Contractor");
 			ps.addBatch();
 
 			ps.executeBatch();
@@ -1229,7 +1295,56 @@ public class branchtwo implements ActionListener {
 
     		ps.executeBatch();
 
-    		System.out.println("interviews done");
+			System.out.println("interviews done");
+
+			query = "INSERT INTO Review (reviewID, details, stars, AccountID, OfferID ) VALUES (?, ?, ?, ?, ? )";
+    		ps = con.prepareStatement(query);
+
+            //Junior Software Developer
+    		ps.setInt(1, 1);
+    		ps.setString(2, "Great worker");
+    		ps.setInt(3, 1);
+    		ps.setInt(4, 3);
+    		ps.setInt(5, 1);
+    		ps.addBatch();
+
+            //Construction
+    		ps.setInt(1, 2);
+    		ps.setString(2, "Great guy");
+    		ps.setInt(3, 3);
+			ps.setInt(4, 1);
+			ps.setInt(5, 2);
+			ps.addBatch();
+			
+			//Construction
+    		ps.setInt(1, 3);
+    		ps.setString(2, "Great guy");
+    		ps.setInt(3, 3);
+    		ps.setInt(4, 3);
+    		ps.setInt(5, 3);
+			ps.addBatch();
+			
+			//Construction
+    		ps.setInt(1, 3);
+    		ps.setString(2, "Great guy");
+    		ps.setInt(3, 3);
+    		ps.setInt(4, 3);
+    		ps.setInt(5, 4);
+			ps.addBatch();
+			
+			//Construction
+    		ps.setInt(1, 3);
+    		ps.setString(2, "Great guy");
+    		ps.setInt(3, 3);
+    		ps.setInt(4, 3);
+    		ps.setInt(5, 5);
+    		ps.addBatch();
+
+    		ps.executeBatch();
+
+			System.out.println("review done");
+		
+			
     		System.out.println("all tables populated");
 
     		con.commit();
@@ -1258,6 +1373,9 @@ public class branchtwo implements ActionListener {
             	switch (urlPath[1]) {
             		case "account":
                         response = handleAccount(queryParams, urlPath, method); // urlPath[1] will likely be null
+						break;
+						case "reviews":
+                        response = getReviews(queryParams, urlPath, method); // urlPath[1] will likely be null
                         break;
                         case "recommended":
                         response = handleRecommended(queryParams, urlPath, method); // urlPath[1] will likely be null
@@ -1303,7 +1421,14 @@ public class branchtwo implements ActionListener {
             return "[]";
         }
 
-    // add a handler method here for each type
+	// add a handler method here for each type
+	
+		private String getReviews(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+        	PreparedStatement ps = con.prepareStatement("SELECT * " +
+    		"FROM review, offer WHERE offer.accountId =?  AND review.offerId = offer.offerId");
+        	ps.setInt(1, Integer.parseInt(queryParams.get("accountId")));
+        	return getRecordsAsJSON(ps);
+        }
 
         private String handleRecommended(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         	if (method.equals("GET")) {
