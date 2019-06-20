@@ -1436,8 +1436,9 @@ public class branchtwo implements ActionListener {
 	// add a handler method here for each type
 	
 		private String getReviews(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        	PreparedStatement ps = con.prepareStatement("SELECT * " +
-    		"FROM review, offer WHERE offer.accountId =?  AND review.offerId = offer.offerId");
+        	PreparedStatement ps = con.prepareStatement("SELECT stars, count(*) as count " +
+			"FROM review, offer WHERE offer.accountId =?  AND review.offerId = offer.offerId "+
+			"group by stars ");
         	ps.setInt(1, Integer.parseInt(queryParams.get("accountId")));
         	return getRecordsAsJSON(ps);
         }
