@@ -26,7 +26,7 @@ populateInterviewView = function (interviewData) {
        <br>
        <a href="#" class="btn btn-outline-dark btn-md" onsubmit="viewPost(${interview.POSTINGID})" role="button">View Job Posting</a>`;
     document.getElementById('adButtons').innerHTML = `
-        <script> if ($(interview.status) != "accepted" && (offer.status) != "declined") {
+        <script> if ($(interview.STATUS) != "accepted" && (interview.STATUS) != "declined") {
                     displayButtons(${interview.APPLICANTID});
                     } </script>`;
 };

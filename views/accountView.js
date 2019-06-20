@@ -4,7 +4,7 @@ populateAccountView = function (accounts) {
     document.getElementById('email').value = account.EMAIL;
     document.getElementById('accountId').value = account.ACCOUNTID;
     document.getElementById('postalCode').value = account.POSTALCODE;
-    if (account.size) {
+    if (account.SIZE) {
         document.getElementById('companyView').style.visibility = 'visible';
         document.getElementById('size').value = account.SIZE;
         document.getElementById('industry').value = account.INDUSTRY;

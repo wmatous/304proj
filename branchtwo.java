@@ -235,6 +235,12 @@ public class branchtwo implements ActionListener {
     		if (choice != 0) {
     			dropTable(tableName);
     		}
+			tableName = "Company";
+			System.out.println("Drop Table? y/n " + tableName);
+			choice = Integer.parseInt(in.readLine());
+			if (choice != 0) {
+				dropTable(tableName);
+			}
     		tableName = "Skill";
     		System.out.println("Drop Table? y/n " + tableName);
     		choice = Integer.parseInt(in.readLine());
@@ -497,7 +503,19 @@ public class branchtwo implements ActionListener {
     			con.commit();
     		}
 
-    		System.out.println("Add Table Skill? y/n ");
+			System.out.println("Add Table Company? y/n ");
+			choice = Integer.parseInt(in.readLine());
+			if (choice !=0){
+				ps = con.prepareStatement("CREATE TABLE Company "+
+						"(accountId int, csize int, address varchar(30), industry varchar(10), "+
+						"PRIMARY KEY (accountId),"+
+						"FOREIGN KEY (accountId) references Account(accountId))");
+
+				System.out.println(ps.executeUpdate());
+				con.commit();
+			}
+
+			System.out.println("Add Table Skill? y/n ");
     		choice = Integer.parseInt(in.readLine());
     		if (choice !=0){
     			ps = con.prepareStatement("CREATE TABLE Skill "+
@@ -573,9 +591,9 @@ public class branchtwo implements ActionListener {
     				"coverLetter varchar(2000), "+
     				"resume varchar(2000), "+
     				"applicantId integer NOT NULL, "+
-    				"postingID integer NOT NULL, "+
+    				"postingId integer NOT NULL, "+
     				"foreign key (applicantId) references Account (accountId) on delete cascade,"+ 
-    				"foreign key (postingID) references Posting (postingid) on delete cascade)");
+    				"foreign key (postingId) references Posting (postingId) on delete cascade)");
 
     			System.out.println(ps.executeUpdate());
     			con.commit();
@@ -788,8 +806,8 @@ public class branchtwo implements ActionListener {
     		ps.addBatch();
             //
     		ps.setInt(1, 10);
-    		ps.setString(2, "Airbnb");
-    		ps.setString(3, "info@airbnb.com");
+    		ps.setString(2, "UBC");
+    		ps.setString(3, "help@UBC.ca");
     		ps.setString(4, "V6B1C1");
     		ps.addBatch();
             //
@@ -804,6 +822,48 @@ public class branchtwo implements ActionListener {
             //
 
     		System.out.println("accounts done");
+
+    		query = "INSERT INTO Company (accountId, csize,  address, industry) VALUES (?, ?, ?, ?)";
+    		ps = con.prepareStatement(query);
+    		ps.setInt(1, 6);
+    		ps.setInt(2, 400000);
+    		ps.setString(3, "955 Hornby St.");
+    		ps.setString(4, "Technology");
+			ps.addBatch();
+
+			ps.setInt(1, 7);
+			ps.setInt(2, 50000);
+			ps.setString(3, "2044 West Broadway");
+			ps.setString(4, "Ridesharing");
+			ps.addBatch();
+
+			ps.setInt(1, 8);
+			ps.setInt(2, 10000);
+			ps.setString(3, "1010 Cambie St.");
+			ps.setString(4, "Vacation Rentals");
+			ps.addBatch();
+
+			ps.setInt(1, 9);
+			ps.setInt(2, 200000);
+			ps.setString(3, "187 Main Street");
+			ps.setString(4, "Analytics");
+			ps.addBatch();
+
+			ps.setInt(1, 10);
+			ps.setInt(2, 100000);
+			ps.setString(3, "123 Granville St.");
+			ps.setString(4, "Education");
+			ps.addBatch();
+
+			ps.setInt(1, 11);
+			ps.setInt(2, 150);
+			ps.setString(3, "1080 Hamilton St.");
+			ps.setString(4, "Retail");
+			ps.addBatch();
+
+			ps.executeBatch();
+
+			System.out.println("Companies done");
 
     		query = "INSERT INTO Posting (postingId, title, active, startDate, address, postalCode, description, accountId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     		ps = con.prepareStatement(query);
@@ -860,7 +920,7 @@ public class branchtwo implements ActionListener {
 
     		ps.executeBatch();
 
-    		System.out.println("postings done");
+    		System.out.println("Postings done");
 
     		query = "INSERT INTO Skill (name) VALUES (?)";
     		ps = con.prepareStatement(query);
@@ -1076,7 +1136,7 @@ public class branchtwo implements ActionListener {
     		System.out.println("offers done");
 
     		query = "INSERT INTO Application (applicationID, coverLetter, " +
-    		"resume, applicantID, postingID) VALUES (?, ? , ?, ?,? )";
+    		"resume, applicantID, postingId) VALUES (?, ? , ?, ?,? )";
             // for Construction posting 83
             // applicant Id references account ID
     		ps = con.prepareStatement(query);
@@ -1281,7 +1341,7 @@ public class branchtwo implements ActionListener {
     // Anton
         private String postApplicationTable(int applicationId, String coverletter, String resume, int applicantID, int posting) throws SQLException {
         	PreparedStatement ps = con.prepareStatement("INSERT INTO Application (ApplicationID, CoverLetter , " +
-        		"Resume, ApplicantID,PostingID )VALUES (?, ? , ?, ?,? ) ");
+        		"Resume, ApplicantID,PostingId )VALUES (?, ? , ?, ?,? ) ");
         	ps.setInt(1, applicationId);
         	ps.setString(2, coverletter);
         	ps.setString(3, resume);
@@ -1294,7 +1354,7 @@ public class branchtwo implements ActionListener {
         	if (method.equals("POST")) {
         		return postApplicationTable(Integer.parseInt(queryParams.get("applicationId")), queryParams.get("coverletter"),
         			queryParams.get("resume"), Integer.parseInt(queryParams.get("accountId")),
-        			Integer.parseInt(queryParams.get("PostingID")));
+        			Integer.parseInt(queryParams.get("PostingId")));
         	} else if (method.equals("GET")) {
         		return getApplicationTable(Integer.parseInt(queryParams.get("accountId")));
         	}

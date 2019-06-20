@@ -31,14 +31,14 @@ function offerTemplate(offer) {
     return `
         <tr class="offerTableRow">
             <div>
-                <th scope="row">${offer.offerId}</th>
-                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewOffer(${offer.offerId})"
+                <th scope="row">${offer.OFFERID}</th>
+                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewOffer(${offer.OFFERID})"
                 role="button">View</button></td>
-                <td>${offer.company}</td>
-                <td>${offer.position}</td>
-                <td>${offer.status}</td>
-                <td>${offer.startDate}</td>
-                <td>${offer.expiryDate}</td>
+                <td>${offer.COMPANY}</td>
+                <td>${offer.POSITION}</td>
+                <td>${offer.STATUS}</td>
+                <td>${offer.STARTDATE}</td>
+                <td>${offer.EXPIRYDATE}</td>
             </div>
         </tr>`
 }

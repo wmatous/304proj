@@ -16,20 +16,20 @@ getOffer = function (offerId) {
 
 populateOfferView = function (offerData) {
     var offer = offerData[0];
-    document.getElementById('o-status').innerHTML = `<h3> Status: ${offer.status}</h3>`;
+    document.getElementById('o-status').innerHTML = `<h3> Status: ${offer.STATUS}</h3>`;
     document.getElementById('o-details').innerHTML = `
         <h4>Details</h4>
           <p class="lead">Information about this job offer</p>
           <hr class="my-4">
-          OfferID: ${offer.offerId}
-          <br> Employment Type: ${offer.type}
-          <br> Start Date: ${offer.startDate}
-          <script> if ($(offer.terminate) == "true") {
-              displayEndDate(${offer.endDate});
+          OfferID: ${offer.OFFERID}
+          <br> Employment Type: ${offer.TYPE}
+          <br> Start Date: ${offer.STARTDATE}
+          <script> if ($(offer.TERMINATE) == "true") {
+              displayEndDate(${offer.ENDDATE});
           } </script>
-          <br> Monetary Compensation: $ ${offer.compensation} per hour
-          <script> if ($(offer.status) != "accepted" && (offer.status) != "declined") {
-              displayButtons(${offer.offerId});
+          <br> Monetary Compensation: $ ${offer.COMPENSATION} per hour
+          <script> if ($(offer.STATUS) != "accepted" && (offer.STATUS) != "declined") {
+              displayButtons(${offer.OFFERID});
           } </script>`;
     document.getElementById('companyInfo').innerHTML = `
         <div class="jumbotron">
@@ -53,7 +53,7 @@ populateOfferView = function (offerData) {
                         <br> Description:
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                        <a href="#" class="btn btn-outline-dark btn-lg" type="submit" onsubmit="viewPost(${offer.postId})" role="button">View Job Posting</a>
+                        <a href="#" class="btn btn-outline-dark btn-lg" type="submit" onsubmit="viewPost(${offer.POSTID})" role="button">View Job Posting</a>
                     </div>
                 </div>
             </div>

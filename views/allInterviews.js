@@ -1,14 +1,11 @@
-
-
 getCookie = function (name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
-
-getAllInterviews = function (applicantId) {
-    let urlPath = 'http://localhost:6789/allInterviews/?applicantId=' + applicantId;
+getAllInterviews = function (accountId) {
+    let urlPath = 'http://localhost:6789/allInterviews/?applicantId=' + accountId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
