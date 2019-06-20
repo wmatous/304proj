@@ -1,17 +1,17 @@
 populateAccountView = function (accounts) {
     var account = accounts[0];
-    document.getElementById('name').value = account.name;
-    document.getElementById('email').value = account.email;
-    document.getElementById('accountId').value = account.accountId;
-    document.getElementById('postalCode').value = account.postalCode;
+    document.getElementById('name').value = account.NAME;
+    document.getElementById('email').value = account.EMAIL;
+    document.getElementById('accountId').value = account.ACCOUNTID;
+    document.getElementById('postalCode').value = account.POSTALCODE;
     if (account.size) {
         document.getElementById('companyView').style.visibility = 'visible';
-        document.getElementById('size').value = account.size;
-        document.getElementById('industry').value = account.industry;
+        document.getElementById('size').value = account.SIZE;
+        document.getElementById('industry').value = account.INDUSTRY;
     } else {
         document.getElementById('individualView').style.visibility = 'visible';
-        document.getElementById('age').value = account.age;
-        document.getElementById('status').value = account.status;
+        document.getElementById('age').value = account.AGE;
+        document.getElementById('status').value = account.STATUS;
     }
 };
 
