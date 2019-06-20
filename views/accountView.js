@@ -13,6 +13,7 @@ populateAccountView = function (accounts) {
         document.getElementById('age').value = account.AGE;
         document.getElementById('status').value = account.STATUS;
     }
+    
 };
 
 updateAccount = function () {
@@ -21,7 +22,7 @@ updateAccount = function () {
     const postalCode = document.getElementById('postalCode').value;
     const accountId = document.getElementById('accountId').value;
     let cmpSize, cmpIndustry, indStatus, indAge;
-    if (document.getElementById('companyView').style.visibility != 'hidden') {
+    if (document.getElementById('companyView')) {
         cmpSize = document.getElementById('cmpSize').value;
         cmpIndustry = document.getElementById('cmpIndustry').value;
     } else {
@@ -38,7 +39,7 @@ updateAccount = function () {
     }
 
     fetch(urlPath,
-        {method: 'PUT'})
+        {method: 'POST'})
         .then((res) => res.json())
         .then(data => console.log(data))
         .catch(err => console.error(err));
