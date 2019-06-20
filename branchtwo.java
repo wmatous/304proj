@@ -1268,35 +1268,35 @@ public class branchtwo implements ActionListener {
     		ps = con.prepareStatement(query);
 
             //Junior Software Developer
-    		ps.setInt(1, 6);
+    		ps.setInt(1, 151);
     		ps.setString(2, "Active");
     		ps.setDate(3, java.sql.Date.valueOf("2019-07-01"));
     		ps.setString(4, "187 Main Street");
     		ps.addBatch();
 
             //Construction
-    		ps.setInt(1, 4);
+    		ps.setInt(1, 183);
     		ps.setString(2, "Expired");
     		ps.setDate(3, java.sql.Date.valueOf("2019-06-05"));
     		ps.setString(4, "1080 Hamilton St.");
     		ps.addBatch();
 
             //Architect
-    		ps.setInt(1, 3);
+    		ps.setInt(1, 196);
     		ps.setString(2, "Accepted");
     		ps.setDate(3, java.sql.Date.valueOf("2019-07-12"));
     		ps.setString(4, "123 Granville St.");
     		ps.addBatch();
 
             //Lab Technician
-    		ps.setInt(1, 2);
+    		ps.setInt(1, 145);
     		ps.setString(2, "Accepted");
     		ps.setDate(3, java.sql.Date.valueOf("2019-04-17"));
     		ps.setString(4, "955 Hornby St.");
     		ps.addBatch();
 
             //Nurse
-    		ps.setInt(1, 5);
+    		ps.setInt(1, 137);
     		ps.setString(2, "Declined");
     		ps.setDate(3, java.sql.Date.valueOf("2019-06-21"));
     		ps.setString(4, "11 Hamilton St.");
@@ -1404,24 +1404,27 @@ public class branchtwo implements ActionListener {
                         case "allPostings":
                         response = getRecordsAsJSON(posting.handleAllPostings(queryParams, urlPath, method));
                         break;
-                        case "postingSkill":
-                        response = getRecordsAsJSON(posting.handlePostingSkill(queryParams, urlPath, method));
-                        break;
+//                        case "postingSkill":
+//                        response = getRecordsAsJSON(posting.handlePostingSkill(queryParams, urlPath, method));
+//                        break;
                         case "allInterviews":
                         response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
                         break;
                         case "interview":
-                        response = getRecordsAsJSON(intAndOff.handleAnInterview(queryParams, urlPath, method));
+                        response = handleAnInterview(queryParams, urlPath, method);
                         break;
                         case "allOffers":
                         response = getRecordsAsJSON(intAndOff.handleAllOffers(queryParams, urlPath, method));
                         break;
                         case "offer":
-                        response = getRecordsAsJSON(intAndOff.handleAnOffer(queryParams, urlPath, method));
+                        response = handleAnOffer(queryParams, urlPath, method);
                         break;
                         case "application":
                         response = handleApplication(queryParams, urlPath, method);
                         break;
+					case "appdelete":
+						response = delApplication(queryParams, urlPath, method);
+						break;
 
                     // add entries here for each database entity type
                     }
@@ -1432,8 +1435,6 @@ public class branchtwo implements ActionListener {
             }
             return "[]";
 		}
-		
-	
 
 	private String handleAnInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method.equals("GET")) {
@@ -1521,6 +1522,16 @@ public class branchtwo implements ActionListener {
 
         	return "[]";
         }
+
+	private String delApplication(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+			return deleteApplicationTable(Integer.parseInt(queryParams.get("applicationId")));
+	}
+
+	private String deleteApplicationTable(int applicationId) throws SQLException {
+		PreparedStatement ps = con.prepareStatement("Delete from Application where applicationId = ?");
+		ps.setInt(1, applicationId);
+		return getRecordsAsJSON(ps);
+	}
 
         private String getApplicationTable(int accountId) throws SQLException {
         	PreparedStatement ps = con.prepareStatement("select * from Application where applicantId = ?");

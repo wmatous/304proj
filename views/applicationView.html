@@ -9,7 +9,7 @@
         const resume = document.getElementById('resume').value;
         // const accountId = url.searchParams.get("accountId");
         const accountId = getCookie('accountId');
-        const applicationId = postingid + 100*accountId; // just a way to generate application ID
+        const applicationId = postingid + (100*accountId); // just a way to generate application ID
 
         urlPath = 'http://localhost:6789/application/';
         urlPath += ('?accountId=' + accountId + '&PostingID=' + postingid + '&applicationId=' + applicationId +
@@ -71,13 +71,11 @@ deleteApplication = function () {
     const postingid = document.getElementById('PostingID').value;
     // const accountId = url.searchParams.get("accountId");
     const accountId = getCookie('accountId');
-    const applicationId = postingid + 100 * accountId; // just a way to generate application ID
-    let urlPath = 'http://localhost:6789/application/';
-    urlPath += ('&applicationId=' + applicationId); // applicationId to delete
-    // post coverletter
-    // post resume
+    const applicationId = postingid + (100*accountId); // just a way to generate application ID
+    let urlPath = 'http://localhost:6789/appdelete/';
+    urlPath += ('applicationId=' + applicationId); // applicationId to delete
     fetch(urlPath,
-        { method: 'DELETE' })
+        { method: 'POST' })
         .then((res) => res.json())
         .then(data => console.log(data))
         .catch(err => console.error(err));
