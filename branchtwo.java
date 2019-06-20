@@ -900,7 +900,7 @@ public class branchtwo implements ActionListener {
 
 			System.out.println("Companies done");
 
-			query = "INSERT INTO Company (accountId, age,  status) VALUES (?, ?, ?)";
+			query = "INSERT INTO Individual (accountId, age,  status) VALUES (?, ?, ?)";
     		ps = con.prepareStatement(query);
     		ps.setInt(1, 1);
     		ps.setInt(2, 21);
@@ -1586,8 +1586,9 @@ public class branchtwo implements ActionListener {
 
     			System.out.print("6.  Quit\n>> ");
     			System.out.print("7.  run query\n>> ");
-
-    			choice = Integer.parseInt(in.readLine());
+				try{
+				choice = Integer.parseInt(in.readLine());
+				
 
     			System.out.println(" ");
 
@@ -1612,14 +1613,16 @@ public class branchtwo implements ActionListener {
 					break;
 					case 7:
 					System.out.print("enter query ");
-
-    				qry = in.readLine();
+    				String qry = in.readLine();
 					System.out.print(runQuery(qry));
 					break;
 					default:
     				runServer(choice);
     				break;
-    			}
+				}
+			}catch(NullPointerException e){
+				System.out.println(e);
+			}
     		}
 
     		con.close();
@@ -1640,7 +1643,7 @@ public class branchtwo implements ActionListener {
     	}
 	}
 
-	private String runQuery(String qry) {
+	private String runQuery(String qry) throws SQLException  {
     	PreparedStatement ps = con.prepareStatement(qry);
 		return getRecordsAsJSON(ps);
     }
