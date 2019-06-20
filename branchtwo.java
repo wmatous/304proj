@@ -1494,7 +1494,10 @@ public class branchtwo implements ActionListener {
         			Integer.parseInt(queryParams.get("PostingID")));
         	} else if (method.equals("GET")) {
         		return getApplicationTable(Integer.parseInt(queryParams.get("accountId")));
+        	} else if (method.equals("DELETE")) {
+        		return deleteApplicationTable(Integer.parseInt(queryParams.get("applicationId")));
         	}
+
 
         	return "[]";
         }
@@ -1505,7 +1508,11 @@ public class branchtwo implements ActionListener {
         	return getRecordsAsJSON(ps);
         }
 
-
+	private String deleteApplicationTable(int applicationId) throws SQLException {
+        	PreparedStatement ps = con.prepareStatement("Delete from Application where applicationId = ?");
+        	ps.setInt(1, applicationId);
+        	return getRecordsAsJSON(ps);
+        }
         private Map<String, String> getQueryMap(String query) {
         	Map<String, String> map = new HashMap<>();
         	if (query == null) {
