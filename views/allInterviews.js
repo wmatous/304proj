@@ -5,10 +5,11 @@ getCookie = function (name) {
 };
 
 getAllInterviews = function (accountId) {
-    let urlPath = 'http://localhost:6789/allInterviews/?accountId=' + accountId;
+    let urlPath = 'http://localhost:6789/allInterviews/?applicantId=' + accountId;
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
+            console.log(data);
             populateInterviewTable(data);
         })
         .catch(err => console.error(err));
@@ -27,7 +28,7 @@ function interviewTemplate(interview) {
         <tr class="interviewTableRow">
             <div>
                 <th scope="row">${interview.INTERVIEWID}</th>
-                <td><button type="submit" class="btn btn-link btn-sm" onsubmit="viewInterview(${interview.INTERVIEWID})"
+                <td><button type="submit" class="btn btn-link btn-sm" onclick="viewInterview(${interview.INTERVIEWID})"
                 role="button">View</button></td>
                 <td>${interview.COMPANY}</td>
                 <td>${interview.TITLE}</td>
@@ -38,9 +39,9 @@ function interviewTemplate(interview) {
         </tr>`
 }
 
-viewInterview = function (applicationId) {
-    window.location = '/'+window.location.pathname.split('/')[1]+'/interviewView.html?applicationId='+applicationId;
-};
+viewInterview = function (INTERVIEWID) {
+    window.location = '/'+window.location.pathname.split('/')[1]+'/interviewView.html?applicationId='+INTERVIEWID;
+}
 
 window.onload = function () {
     var loggedInAccount = getCookie('accountId');

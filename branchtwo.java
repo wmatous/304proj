@@ -386,9 +386,9 @@ public class branchtwo implements ActionListener {
     	try {
             // disable auto commit mode
     		con.setAutoCommit(false);
-    		String updatedRecords = "{ status: 'success', updatedRecords : " + ps.executeUpdate() + "}";
+    		String updatedRecords = "{ \"status\": \"success\", \"updatedRecords\" : " + ps.executeUpdate() + "}";
     		con.commit();
-    		ps.close();
+			ps.close();
     		return updatedRecords;
 
     	} catch (SQLException ex) {
@@ -400,7 +400,7 @@ public class branchtwo implements ActionListener {
     			System.out.println("Message: " + ex2.getMessage());
     			System.exit(-1);
     		}
-    		return "{ status: 'failure'}";
+    		return "{ \"status\": \"failure\"}";
     	}
     }
 
@@ -1268,35 +1268,35 @@ public class branchtwo implements ActionListener {
     		ps = con.prepareStatement(query);
 
             //Junior Software Developer
-    		ps.setInt(1, 151);
+    		ps.setInt(1, 6);
     		ps.setString(2, "Active");
     		ps.setDate(3, java.sql.Date.valueOf("2019-07-01"));
     		ps.setString(4, "187 Main Street");
     		ps.addBatch();
 
             //Construction
-    		ps.setInt(1, 183);
+    		ps.setInt(1, 4);
     		ps.setString(2, "Expired");
     		ps.setDate(3, java.sql.Date.valueOf("2019-06-05"));
     		ps.setString(4, "1080 Hamilton St.");
     		ps.addBatch();
 
             //Architect
-    		ps.setInt(1, 196);
+    		ps.setInt(1, 3);
     		ps.setString(2, "Accepted");
     		ps.setDate(3, java.sql.Date.valueOf("2019-07-12"));
     		ps.setString(4, "123 Granville St.");
     		ps.addBatch();
 
             //Lab Technician
-    		ps.setInt(1, 145);
+    		ps.setInt(1, 2);
     		ps.setString(2, "Accepted");
     		ps.setDate(3, java.sql.Date.valueOf("2019-04-17"));
     		ps.setString(4, "955 Hornby St.");
     		ps.addBatch();
 
             //Nurse
-    		ps.setInt(1, 137);
+    		ps.setInt(1, 5);
     		ps.setString(2, "Declined");
     		ps.setDate(3, java.sql.Date.valueOf("2019-06-21"));
     		ps.setString(4, "11 Hamilton St.");
@@ -1404,9 +1404,6 @@ public class branchtwo implements ActionListener {
                         case "allPostings":
                         response = getRecordsAsJSON(posting.handleAllPostings(queryParams, urlPath, method));
                         break;
-//                        case "postingSkill":
-//                        response = getRecordsAsJSON(posting.handlePostingSkill(queryParams, urlPath, method));
-//                        break;
                         case "allInterviews":
                         response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
                         break;
@@ -1422,9 +1419,6 @@ public class branchtwo implements ActionListener {
                         case "application":
                         response = handleApplication(queryParams, urlPath, method);
                         break;
-					case "appdelete":
-						response = delApplication(queryParams, urlPath, method);
-						break;
 
                     // add entries here for each database entity type
                     }
@@ -1435,12 +1429,14 @@ public class branchtwo implements ActionListener {
             }
             return "[]";
 		}
+		
+	
 
 	private String handleAnInterview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
 		if (method.equals("GET")) {
 			return getRecordsAsJSON(intAndOff.getAnInterview(Integer.parseInt(queryParams.get("applicationId"))));
 		} else if (method.equals("POST")) {
-			return getRecordsAsJSON(intAndOff.updateAnInterview(Integer.parseInt(queryParams.get("applicationId")),
+			return executeUpdateStatement(intAndOff.updateAnInterview(Integer.parseInt(queryParams.get("applicationId")),
 					queryParams.get("status")));
 		}
 		return null;
@@ -1459,7 +1455,7 @@ public class branchtwo implements ActionListener {
 	// add a handler method here for each type
 	
 		private String getReviews(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        	PreparedStatement ps = con.prepareStatement("SELECT stars, count(*) " +
+        	PreparedStatement ps = con.prepareStatement("SELECT stars, count(*) as count " +
 			"FROM review, offer WHERE offer.accountId =?  AND review.offerId = offer.offerId "+
 			"group by stars ");
         	ps.setInt(1, Integer.parseInt(queryParams.get("accountId")));
@@ -1522,16 +1518,6 @@ public class branchtwo implements ActionListener {
 
         	return "[]";
         }
-
-	private String delApplication(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-			return deleteApplicationTable(Integer.parseInt(queryParams.get("applicationId")));
-	}
-
-	private String deleteApplicationTable(int applicationId) throws SQLException {
-		PreparedStatement ps = con.prepareStatement("Delete from Application where applicationId = ?");
-		ps.setInt(1, applicationId);
-		return getRecordsAsJSON(ps);
-	}
 
         private String getApplicationTable(int accountId) throws SQLException {
         	PreparedStatement ps = con.prepareStatement("select * from Application where applicantId = ?");
@@ -1730,7 +1716,8 @@ public class branchtwo implements ActionListener {
     			} catch (Exception e) {
     				System.out.println(e);
     				response = "[]";
-    			}
+				}
+				System.out.println(response);
 
     			PrintWriter pw = new PrintWriter(outToClient);
                 pw.print("HTTP/1.1 200 \r\n"); // Version & status code

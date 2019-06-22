@@ -45,34 +45,37 @@ class interviewAndOfferQueries {
 
     PreparedStatement handleAllInterviews(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         if (method.equals("GET")) {
-            return getAllInterviews(Integer.parseInt(queryParams.get("accountId")));
+            PreparedStatement ps = getAllInterviews(Integer.parseInt(queryParams.get("applicantId")));
+            return ps;
         }
         return null;
     }
 
-    private PreparedStatement getAllInterviews(int accountId) throws SQLException {
+    private PreparedStatement getAllInterviews(int applicantId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
                 "SELECT I.status, I.intDate, I.address, I.applicationId AS interviewId, Z.name, Z.accountId, B.name AS company, P.postingId, P.title " +
                         "FROM Interview I, Account Z, Account B, Posting P, Application A " +
                         "WHERE A.postingId = P.postingId AND B.accountId = P.accountId AND I.applicationId = A.applicationId AND A.applicantId = Z.accountId AND Z.accountId = ?");
-        ps.setInt(1, accountId);
+        ps.setInt(1, applicantId);
         return ps;
     }
 
-    PreparedStatement getAnInterview(int applicationId) throws SQLException {
+    public PreparedStatement getAnInterview(int applicationId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT I.status, I.intDate, I.address, I.time, I.applicationId AS interviewId, A.name, A.accountId, P.title, P.postingId " +
-                        "FROM Interview I, Account A, Posting P " +
-                        "WHERE I.applicationId = ?");
+                "SELECT I.status, I.intDate, I.address, I.applicationId AS interviewId, "+
+                " A.name as companyname, A.email as companyemail, P.title, P.postingId , C.Industry as companyindustry, C.cSize as companysize, app.applicantId as applicantID " +
+                        " FROM Interview I, Account A, Posting P, Company C, Application APP " +
+                        " WHERE app.applicationId =  I.applicationId AND app.postingId = p.postingId and "+
+                        " p.accountId = A.accountId and a.accountId = c.accountId AND I.applicationId = ? ");
         ps.setInt(1, applicationId);
         return ps;
     }
 
-    PreparedStatement updateAnInterview(int applicantId, String status) throws SQLException {
+    public PreparedStatement updateAnInterview(int applicationId, String status) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "UPDATE Interview SET status = ? WHERE applicantId = ?");
+                "UPDATE Interview SET status = ? WHERE applicationId = ?");
         ps.setString(1, status);
-        ps.setInt(2, applicantId);
+        ps.setInt(2, applicationId);
         return ps;
     }
 
