@@ -105,7 +105,7 @@ getRecommended = function (loggedInAccount) {
 populateReviews = function(data){
     let innerHTML = `<h1>Reviews</h1>`;
     for (let i = 0; i < data.length; i++) {
-        innerHTML += `<p>${data[i].STARS} stars:${data[i].COUNT}</span>`;
+        innerHTML += `<p>${data[i].STARS} Star Reviews:${data[i].COUNT}</span>`;
     }
     document.getElementById('reviews').innerHTML = innerHTML;
 }
@@ -121,6 +121,23 @@ getReviews = function (loggedInAccount) {
         .catch(err => console.error(err));
 };
 
+getMostCommonReview = function (loggedInAccount){
+    let urlPath = 'http://localhost:6789/mostCommonReview/?accountId=' + loggedInAccount;
+    fetch(urlPath)
+        .then((res) => res.json())
+        .then(data => {
+            console.log(data);
+            populateMostCommonReview(data);
+        })
+        .catch(err => console.error(err));
+}
+
+populateMostCommonReview = function(data){
+    let innerHTML = `<h3>Most Commonly Given Rating</h3>`;
+        innerHTML += `<p>${data[0].STARS} Stars</span>`;
+    document.getElementById('mostCommonReview').innerHTML = innerHTML;
+}
+
 getCookie = function (name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");
@@ -134,6 +151,7 @@ window.onload = function () {
     getSkills(accountId);
     getEndorsements(accountId);
     getReviews(accountId);
+    getMostCommonReview(accountId);
     var loggedInAccount = getCookie('accountId');
     if (loggedInAccount == accountId) {
         document.getElementById("saveButton").hidden = false;
