@@ -1386,9 +1386,6 @@ public class branchtwo implements ActionListener {
 						case "reviews":
                         response = getReviews(queryParams, urlPath, method); // urlPath[1] will likely be null
                         break;
-                        case "mostCommonReview":
-                        response = getMostCommonReview(queryParams, urlPath, method);
-                        break;
                         case "recommended":
                         response = handleRecommended(queryParams, urlPath, method); // urlPath[1] will likely be null
                         break;
@@ -1422,10 +1419,9 @@ public class branchtwo implements ActionListener {
                         case "application":
                         response = handleApplication(queryParams, urlPath, method);
                         break;
-						case "deleteApplication":
-						handleDeleteApplication(queryParams, urlPath, method);
-						response = "deleted";
-						break;
+                        case "appdelete":
+                        response = handleApplicationDelete(queryParams, urlPath, method);
+                        break;
 
                     // add entries here for each database entity type
                     }
@@ -1468,16 +1464,6 @@ public class branchtwo implements ActionListener {
         	ps.setInt(1, Integer.parseInt(queryParams.get("accountId")));
         	return getRecordsAsJSON(ps);
         }
-
-    private String getMostCommonReview(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT stars, count(*) as count " +
-                "FROM review, offer WHERE offer.accountId =?  AND review.offerId = offer.offerId "+
-                "group by stars " +
-                "HAVING count(*) >= ALL(SELECT count(*) FROM review, offer WHERE offer.accountId= ? AND review.offerId = offer.offerId GROUP BY stars)");
-        ps.setInt(1, Integer.parseInt(queryParams.get("accountId")));
-        ps.setInt(2, Integer.parseInt(queryParams.get("accountId")));
-        return getRecordsAsJSON(ps);
-    }
 
         private String handleRecommended(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         	if (method.equals("GET")) {
@@ -1522,6 +1508,12 @@ public class branchtwo implements ActionListener {
         	ps.setInt(4, applicantID);
         	ps.setInt(5, posting);
         	return String.valueOf(ps.executeUpdate());
+		}
+		
+		private String deleteApplication(int applicationId) throws SQLException {
+        	PreparedStatement ps = con.prepareStatement("Delete from Application where applicationID = ?");
+        	ps.setInt(1, applicationId);
+        	return String.valueOf(ps.executeUpdate());
         }
 
         private String handleApplication(Map<String, String> queryParams, String[] path, String method) throws SQLException {
@@ -1531,24 +1523,20 @@ public class branchtwo implements ActionListener {
         			Integer.parseInt(queryParams.get("PostingID")));
         	} else if (method.equals("GET")) {
         		return getApplicationTable(Integer.parseInt(queryParams.get("accountId")));
+			}
+			else if (method.equals("POST")) {
+        		return deleteApplication(Integer.parseInt(queryParams.get("applicationId")));
         	}
 
         	return "[]";
-        }
-
-	private void handleDeleteApplication(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-			deleteApplication(Integer.parseInt(queryParams.get("applicationId")));
-	}
-
-        private void deleteApplication(int applicationId) throws SQLException {
-			PreparedStatement ps = con.prepareStatement("DELETE FROM Application WHERE applicationId = ?");
-			ps.setInt(1, applicationId);
-			try{ps.executeUpdate();
-            }
-			catch(SQLException e){
-                System.out.println(e.getMessage());
-            }
 		}
+		
+		private String handleApplicationDelete(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+        	if (method.equals("POST")) {
+        		return deleteApplication(Integer.parseInt(queryParams.get("applicationId")));
+        	}
+        	return "[]";
+        }
 
         private String getApplicationTable(int accountId) throws SQLException {
         	PreparedStatement ps = con.prepareStatement("select * from Application where applicantId = ?");

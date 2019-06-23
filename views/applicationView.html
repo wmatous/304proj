@@ -68,8 +68,9 @@ getCookie = function(name) {
 };
 deleteApplication = function () {
     const applicationId = document.getElementById('PostingID').value;
+    console.log(applicationId);
     let urlPath = 'http://localhost:6789/appdelete/';
-    urlPath += ('applicationId=' + applicationId); // applicationId to delete
+    urlPath += ('?applicationId=' + applicationId); // applicationId to delete
     fetch(urlPath,
         { method: 'POST' })
         .then((res) => res.json())
