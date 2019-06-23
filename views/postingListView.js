@@ -7,14 +7,14 @@ getAllPostings = function () {
         .then((res) => res.json())
         .then(data => {
             console.log(data);
+            console.log("post data");
             populatePostingTable(data);
         })
         .catch(err => console.error(err));
 };
 
 function postingTemplate(posting) {
-    var skills = getSkills(posting.POSTINGID)[0];
-    
+
     return `
         <tr class="postingTableRow">
             <div>
@@ -27,7 +27,7 @@ function postingTemplate(posting) {
                 <td>${posting.CITYNAME}</td>
                 <td>${posting.STATE}</td>
                 <td>${posting.DESCRIPTION}</td>
-                <td id="skills"> ${skills}</td>
+                <td>${posting.NAME}</td>
             </div>
         </tr>`;
 }
@@ -38,20 +38,6 @@ function postingTemplate(posting) {
 function populatePostingTable(postingData) {
     document.getElementById("postingTable").innerHTML = `${postingData.map(postingTemplate).join('')}`;
 }
-
-populateSkills = function (skills) {
-    document.getElementById('skills').value = skills.NAME;
-};
-
-getSkills = function (postingId) {
-    let urlPath = 'http://localhost:6789/postingSkill/?postingId=' + postingId;
-    fetch(urlPath)
-        .then((res) => res.json())
-        .then(function (data) {
-            return data;
-        })
-        .catch((err) => console.error(err));
-};
 
 window.onload = function () {
     var url = new URL(window.location.href);

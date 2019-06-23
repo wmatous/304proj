@@ -6,7 +6,7 @@
 //         .then((res) => res.json())
 //         .then(function (data) {
 //             console.log(data);
-//             //populateSinglePostingView(data);
+//             populateSinglePostingView(data);
 //         })
 //         .catch((err) => console.error(err));
 // };
@@ -22,7 +22,7 @@
 //     document.getElementById('cityName').value = posting.CITYNAME;
 //     document.getElementById('state').value = posting.STATE;
 //     document.getElementById('description').value = posting.DESCRIPTION;
-//     document.getElementById('skills').value = posting.SKILLS;
+//     document.getElementById('skills').value = posting.NAME;
 // };
 
 updatePosting = function () {
@@ -52,33 +52,27 @@ updatePosting = function () {
         .catch((err) => console.error(err));
 };
 
-// populateSkills = function (skills) {
-//     let innerHTML = '<h1>Skills</h1>';
-//     for (let i = 0; i < skills.length; i++) {
-//         innerHTML += "<span>" + skills[i].name + "</span>";
-//     }
-//     document.getElementById('skills').innerHTML = innerHTML;
-// };
-
-// getSkills = function (postingId) {
-//     let urlPath = 'http://localhost:6789/postingSkill/' + postingId;
-//     fetch(urlPath)
-//         .then((res) => res.json())
-//         .then(function (data) {
-//             console.log(data);
-//             populateSkills(data);
-//         })
-//         .catch((err) => console.error(err));
-// };
 
 searchPostings = function () {
+    const title = document.getElementById('title').value;
     const cityName = document.getElementById('cityName').value;
     const state = document.getElementById('state').value;
-    const skills = document.getElementById('skills').value;
 
-    let urlPath = 'http://localhost:6789/searchPostings';
-    urlPath += ('/?title=' + '' + '&cityName=' + cityName + '&state=' + state + '&skills=' + skills);
+    console.log(title + cityName + state);
 
+    let urlPath = 'http://localhost:6789/searchPostings/';
+    urlPath += ('/?title=' + title + '&cityName=' + cityName + '&state=' + state);
+    // if (title) {
+    //     urlPath += ('&title=' + title);
+    // }
+    // if (cityName) {
+    //     urlPath += ('&cityName=' + cityName);
+    // }
+    // if (state) {
+    //     urlPath += ('&state=' + state);
+    // }
+
+    console.log("fetching data");
     fetch(urlPath,
         {method: 'GET'})
         .then((res) => res.json())
@@ -91,4 +85,5 @@ window.onload = function () {
     var url = new URL(window.location.href);
     var postingId = Math.floor(Math.random);
     document.getElementById('postingId').value = postingId;
+    //getPosting(postingId);
 };

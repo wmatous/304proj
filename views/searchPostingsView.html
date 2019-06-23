@@ -38,10 +38,23 @@
 						   data-fieldid='postingId'>
 					<tr>
 						<td>
+							Title:
+						</td>
+						<td>
+							<input hidden = 'false' 
+								   type='title'
+								   id='title'
+								   data-fieldid='title'
+								   style="width:250px"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td>
 							City Name:
 						</td>
 						<td>
-							<input type='text'
+							<input type='cityName'
 								   id='cityName'
 								   data-fieldid='cityName'
 								   style="width:250px"
@@ -53,19 +66,11 @@
 							State:
 						</td>
 						<td>
-							<input type='text'
+							<input type='state'
 								   id='state'
 								   data-fieldid='state'
 								   style="width:250px"
 							/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							Skills:
-						</td>
-						<td>
-							<textarea name="textarea" id="skills" style="width:250px; height: 100px"></textarea>
 						</td>
 					</tr>
 				</table>
@@ -73,11 +78,9 @@
 		</div>
 	</div>
 	<div>
-		<div class="btn-group btn-group-lg" role="button" style="padding-bottom: 20px">
-			<button type="submit" class="btn btn-success btn-lg" role="button" onclick='searchPostings()'>
+			<button id="searchButton" role="button"style="padding-bottom: 20px" class="btn btn-success btn-lg" onclick='searchPostings()'>
 				Search Job Postings
 			</button>
-		</div>
 	</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
