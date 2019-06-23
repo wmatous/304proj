@@ -28,9 +28,9 @@ class interviewAndOfferQueries {
 
     public PreparedStatement getAnOffer(int offerId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
-                "SELECT offerId, status, offerType, hours, compensation, terminating, startDate, endDate, expiryDate " +
-                        "FROM Offer " +
-                        "WHERE offerId = ?");
+                "SELECT O.offerId, O.status, O.offerType, O.hours, O.compensation, O.terminating, O.startDate, O.endDate, O.expiryDate, P.title, P.postingId, P.description, B.name AS companyname, C.csize AS companysize, C.industry AS companyindustry, C.address, B.email AS companyemail " +
+                        "FROM Offer O,  Account B, Company C, Posting P " +
+                        "WHERE P.postingId = O.postingId AND B.accountId = P.accountId AND B.accountId = C.accountId AND O.offerId = ?");
         ps.setInt(1, offerId);
         return ps;
     }
@@ -63,7 +63,7 @@ class interviewAndOfferQueries {
     public PreparedStatement getAnInterview(int applicationId) throws SQLException {
         PreparedStatement ps = con.prepareStatement(
                 "SELECT I.status, I.intDate, I.address, I.applicationId AS interviewId, "+
-                " A.name as companyname, A.email as companyemail, P.title, P.postingId , C.Industry as companyindustry, C.cSize as companysize, app.applicantId as applicantID " +
+                " A.name as companyname, A.email as companyemail, P.title, P.description, P.postingId , C.Industry as companyindustry, C.cSize as companysize, app.applicantId as applicantID " +
                         " FROM Interview I, Account A, Posting P, Company C, Application APP " +
                         " WHERE app.applicationId =  I.applicationId AND app.postingId = p.postingId and "+
                         " p.accountId = A.accountId and a.accountId = c.accountId AND I.applicationId = ? ");

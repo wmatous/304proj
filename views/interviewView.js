@@ -24,8 +24,8 @@ populateInterviewView = function (interviewData) {
     document.getElementById('i-address').innerHTML = `<h3> Address: ${interview.ADDRESS}</h3>`;
     if (interview.STATUS != "accepted" && interview.STATUS != "declined" && getCookie('accountId') == interview.APPLICANTID){
         document.getElementById('buttons').innerHTML = `
-        <button onclick='acceptInterview(${interview.INTERVIEWID})' >Accept</button>
-        <button onclick='declineInterview(${interview.INTERVIEWID})' >Decline</button>`;
+        <button class="btn btn-success btn-lg" role="button" onclick='acceptInterview(${interview.INTERVIEWID})' >Accept</button>
+        <button  class="btn btn-danger btn-lg" role="button" onclick='declineInterview(${interview.INTERVIEWID})' >Decline</button>`;
     }
     
     document.getElementById('i-position').innerHTML = `
@@ -37,21 +37,14 @@ populateInterviewView = function (interviewData) {
                     <hr class="my-4">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 Posting Identification Number: ${interview.POSTINGID}
-                                <br> Description:
+                                <br> Description: ${interview.DESCRIPTION}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>`;
-            /*
-            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="viewButton">
-            <br>
-                 <a href="#" class="btn btn-outline-dark btn-md" onclick="viewPost(${interview.POSTINGID})" role="button">View Job Posting</a>
-            </div>
-            there is no single posting view*/
-
 
     document.getElementById('i-company').innerHTML = `
             <h2><a href="#companyInfo" data-toggle="collapse">Company Information</a></h2>
@@ -96,11 +89,6 @@ displayButtons = function (applicationId) {
      Decline
      </button>`
 };
-
-viewPost = function(postId){
-    window.location = '/'+window.location.pathname.split('/')[1]+'/offerView.html?offerId='+urlEnd;
-}
-
 
 window.onload = function () {
     var url = new URL(window.location.href);

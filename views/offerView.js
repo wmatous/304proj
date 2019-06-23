@@ -39,13 +39,13 @@ populateOfferView = function (offerData) {
           </div>`
     document.getElementById('companyInfo').innerHTML = `
         <div class="jumbotron">
-            <h4> Company-Name-Here </h4>
+            <h4> ${offer.COMPANYNAME} </h4>
             <p class="lead">Information about your potential future employer.</p>
             <hr class="my-4">
-            Number of Employees:
-            <br> Industry:
-            <br> Address:
-            <br> Email Address:
+            Number of Employees: ${offer.COMPANYSIZE}
+            <br> Industry: ${offer.COMPANYINDUSTRY}
+            <br> Address: ${offer.ADDRESS}
+            <br> Email Address: ${offer.COMPANYEMAIL}
         </div>`;
     document.getElementById('jobInfo').innerHTML = `
         <div class="jumbotron">
@@ -54,12 +54,9 @@ populateOfferView = function (offerData) {
             <hr class="my-4">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                        Posting Identification Number:
-                        <br> Description:
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                        <a href="#" class="btn btn-outline-dark btn-lg" type="submit" onsubmit="viewPost(${offer.POSTID})" role="button">View Job Posting</a>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        Posting Identification Number: ${offer.POSTINGID}
+                        <br> Description: ${offer.DESCRIPTION}
                     </div>
                 </div>
             </div>
@@ -82,12 +79,6 @@ declineOffer = function (offerId) {
         {method: 'POST'})
         .then((res) => res.json())
         .catch(err => console.error(err));
-};
-
-viewPost = function (postId) {
-    //need some way to pass postId to page so that it loads correct data
-    //need some way to parse cwl login id so that window.location points to current users public_html folder.
-    //window.location = "https://www.students.cs.ubc.ca/VARIABLE_FOR_CWL_LOGIN_HERE/postingView.html"
 };
 
 displayEndDate = function (endDate) {
