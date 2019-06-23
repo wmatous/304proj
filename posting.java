@@ -42,8 +42,17 @@ class posting {
 
     PreparedStatement handleAllPostings(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         System.out.println("handle all");
+        String title = queryParams.get("title");
+        String cityName = queryParams.get("cityName");
+        String state = queryParams.get("state");
+        System.out.println(title + cityName + state);
+
         if (method.equals("GET")) {
-            return getAllPostings();
+            if (title != null && cityName != null && state != null) {
+                return searchPostings(title, cityName, state);
+            } else {
+                return getAllPostings();
+            }
         }
         return null;
     }
@@ -60,8 +69,11 @@ class posting {
     private PreparedStatement searchPostings(String title, String cityName, String state) throws SQLException {
         System.out.println("searching postings");
 
-        String query = "SELECT P.postingId, P.title, P.active, P.startDate, P.address, P.postalCode, P.description FROM Posting P, PostalCode PC " +
-            "WHERE P.postalCode = PC.postalCode AND";
+        String query = "SELECT DISTINCT * "
+        + "FROM ((Posting P INNER JOIN Involves I ON P.postingId = I.postingId) " +
+        "INNER JOIN PostalCode PC ON P.postalCode = PC.postalCode) " +
+            "WHERE";
+
         if (title != null){
            query += " P.title LIKE ?";
         } 
