@@ -34,8 +34,15 @@ class posting {
 
     PreparedStatement handlePostingsWithoutLocation(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         System.out.println("handle postings without location");
+        String title = queryParams.get("title");
+        String cityName = queryParams.get("cityName");
+        String state = queryParams.get("state");
         if (method.equals("GET")) {
-            return getPostingsWithoutLocation();
+            if (title != null && cityName != null && state != null) {
+                return searchPostingsWithoutReturningLocation(title, cityName, state);
+            } else {
+                return getAllPostingsWithoutLocation();
+            }
         }
         return null;
     }
@@ -76,7 +83,6 @@ class posting {
 
     private PreparedStatement searchPostings(String title, String cityName, String state) throws SQLException {
         System.out.println("searching postings");
-
         String query = "SELECT DISTINCT * "
         + "FROM ((Posting P INNER JOIN Involves I ON P.postingId = I.postingId) " +
         "INNER JOIN PostalCode PC ON P.postalCode = PC.postalCode) " +
@@ -113,6 +119,34 @@ class posting {
         return ps;
     }
 
+        private PreparedStatement searchPostingsWithoutReturningLocation(String title, String cityName, String state) throws SQLException {
+        System.out.println("searching postings");
+
+        String query = "SELECT DISTINCT P.postingId, P.title, P.active, P.startDate, P.description, I.name "
+        + "FROM ((Posting P INNER JOIN Involves I ON P.postingId = I.postingId) " +
+        "INNER JOIN PostalCode PC ON P.postalCode = PC.postalCode) " +
+            "WHERE";
+
+        if (title != null){
+           query += " P.title LIKE ?";
+        } 
+        if(cityName != null ){
+            query += " OR PC.cityName LIKE ?";
+        }
+        if (state != null){
+            query += " OR PC.state LIKE ?";
+        }
+
+        System.out.println(query);
+
+        PreparedStatement ps = con.prepareStatement(query);
+        ps.setString(1, title);
+        ps.setString(2, cityName);
+        ps.setString(3, state);
+        System.out.println(title + cityName + state);
+        System.out.println(ps);
+        return ps;
+    }
 
     /*
      * returns specified posting
@@ -167,8 +201,8 @@ class posting {
     /*
      * returns all postings in database
      */
-    private PreparedStatement getPostingsWithoutLocation() throws SQLException {
-        System.out.println("get all postings");
+    private PreparedStatement getAllPostingsWithoutLocation() throws SQLException {
+        System.out.println("get all postings without locn");
         PreparedStatement ps = con.prepareStatement("SELECT P.postingId, P.title, P.active, P.startDate, P.description, P.accountId, I.name FROM Posting P, Involves I " +
                 "WHERE I.postingId = P.postingId");
         return ps;

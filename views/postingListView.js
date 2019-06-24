@@ -21,6 +21,10 @@ getAllPostings = function (title, cityName, state) {
 getPostingsWithoutLocation = function () {
     // or do i need to combine with search here
     let urlPath = 'http://localhost:6789/postingsWithoutLocation/';
+
+    if (title) {
+        urlPath += ('/?title=' + title + '&cityName=' + cityName + '&state=' + state);
+    }
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
@@ -66,10 +70,15 @@ function postingTemplateWithoutLocation(posting) {
 updatePostingDisplay = function() {
     var hideLocationChecked = document.getElementById('hideLocationCheckBox').checked;
 
+    var title = url.searchParams.get("title");
+    var cityName = url.searchParams.get("cityName");
+    var state = url.searchParams.get("state");
+    console.log(title + cityName + state);
+
     if (hideLocationChecked) {
-        getPostingsWithoutLocation();
+        getPostingsWithoutLocation(title, cityName, state);
     } else {
-        getAllPostings();
+        getAllPostings(title, cityName, state);
     }
 }
 
