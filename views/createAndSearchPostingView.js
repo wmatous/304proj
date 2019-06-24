@@ -39,11 +39,11 @@ updatePosting = function () {
     const description = document.getElementById('description').value;
     const skills = document.getElementById('skills').value;
 
-    //const accountId = document.getElementById('accountId').value;
+    const accountId = document.getElementById('accountId').value;
     // don't think i need to update account ID / shouldn't even be possible?
 
     let urlPath = 'http://localhost:6789/posting';
-    urlPath += ('/?postingId=' + postingId + '&title=' + title + '&active=' + active + '&startDate=' + startDate + '&address=' + address + '&postalCode=' + postalCode + '&cityName=' + cityName + '&state=' + state + '&description=' + description + '&skills=' + skills);
+    urlPath += ('/?postingId=' + postingId + '&title=' + title + '&active=' + active + '&startDate=' + startDate + '&address=' + address + '&postalCode=' + postalCode + '&cityName=' + cityName + '&state=' + state + '&description=' + description + '&accountId=' + accountId + '&skills=' + skills);
 
     fetch(urlPath,
         {method: 'POST'})
@@ -60,7 +60,7 @@ searchPostings = function () {
 
     console.log(title + cityName + state);
 
-    let urlPath = 'http://localhost:6789/searchPostings/';
+    let urlPath = 'http://localhost:6789/allPostings';
     urlPath += ('/?title=' + title + '&cityName=' + cityName + '&state=' + state);
     // if (title) {
     //     urlPath += ('&title=' + title);
@@ -78,12 +78,23 @@ searchPostings = function () {
         .then((res) => res.json())
         .then((data) => console.log(data))
         .catch((err) => console.error(err));
+
+    // !!! will have to update this to whoever's ID
+    window.location.href = "https://www.students.cs.ubc.ca/~kierap14/postingListView.html?title=" + title + "&cityName=" + cityName + "&state=" + state;
+};
+
+getCookie = function (name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
 };
 
 
 window.onload = function () {
     var url = new URL(window.location.href);
-    var postingId = Math.floor(Math.random);
+    var postingId = Math.floor(Math.random() * 1000);
     document.getElementById('postingId').value = postingId;
+    var accountId= getCookie('accountId');
+    document.getElementById('accountId').value = accountId;
     //getPosting(postingId);
 };

@@ -17,8 +17,8 @@ class posting {
         System.out.println("handle posting");
         if (method.equals("GET")) {
             return getPosting(Integer.parseInt(queryParams.get("postingId")));
-        } else if (method.equals("PUT")) {
-            return updatePosting(Integer.parseInt(queryParams.get("postingId")),
+        } else if (method.equals("POST")) {
+            updatePosting(Integer.parseInt(queryParams.get("postingId")),
                     queryParams.get("title"),
                     queryParams.get("active"),
                     java.sql.Date.valueOf(queryParams.get("startDate")),
@@ -27,7 +27,9 @@ class posting {
                     queryParams.get("cityName"),
                     queryParams.get("state"),
                     queryParams.get("description"),
+                    Integer.parseInt(queryParams.get("accountId")),
                     queryParams.get("skills"));
+            return null;
         }
         return null;
     }
@@ -240,36 +242,61 @@ class posting {
     /*
      * updates posting table for specified posting
      */
-    private PreparedStatement updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String cityName, String state, String description, String skills) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ? WHERE postingId = ?");
+    private void updatePosting(int postingId, String title, String active, java.sql.Date startDate, String address, String postalCode, String cityName, String state, String description, int accountId, String skills) throws SQLException {
+        //PreparedStatement ps = con.prepareStatement("UPDATE TABLE Posting SET title = ?, active = ?, startDate = ?, address = ?, postalCode = ?, description = ? WHERE postingId = ?");
         // do we need to be guarding against nulls here?
-        System.out.println("updaaaate");
-        ps.setString(1, title);
-        ps.setString(2, active);
-        ps.setDate(3, startDate);
-        ps.setString(4, address);
-        ps.setString(5, postalCode);
-        ps.setString(6, description);
-        ps.executeUpdate();
-
-        ps = con.prepareStatement("UPDATE TABLE PostalCode SET postalCode = ?, cityName = ?, state = ?");
-        ps.setString(1, postalCode);
-        ps.setString(2, cityName);
-        ps.setString(3, state);
-        ps.executeUpdate();
-
-        ps = con.prepareStatement("UPDATE TABLE Involves SET postingId = ?, name = ?");
-        ps.setInt(1, postingId);
-        ps.setString(2, skills);
 
         con.setAutoCommit(false);
 
+        if (active == "on") {
+            active = "true";
+        } else {
+            active = "false";
+        }
+
+        PreparedStatement ps = con.prepareStatement("INSERT INTO City(cityName, state, country, population) VALUES (?, ?, ?, ?)");
+        ps.setString(1, cityName);
+        ps.setString(2, state);
+        ps.setString(3, null);
+        ps.setInt(4, 0);
+
         ps.executeUpdate();
+
+        PreparedStatement ps2 = con.prepareStatement("INSERT INTO PostalCode(postalCode, cityName, state) VALUES (?, ?, ?)");
+        //ps = con.prepareStatement("UPDATE TABLE PostalCode SET postalCode = ?, cityName = ?, state = ?");
+        ps2.setString(1, postalCode);
+        ps2.setString(2, cityName);
+        ps2.setString(3, state);
+        ps2.executeUpdate();
+
+        PreparedStatement ps3 = con.prepareStatement("INSERT INTO Posting(postingID, title, active, startDate, address, postalCode, description, accountId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        ps3.setInt(1, postingId);
+        ps3.setString(2, title);
+        ps3.setString(3, active);
+        ps3.setDate(4, startDate);
+        ps3.setString(5, address);
+        ps3.setString(6, postalCode);
+        ps3.setString(7, description);
+        ps3.setInt(8, accountId);
+        ps3.executeUpdate();
+
+        PreparedStatement ps4 = con.prepareStatement("INSERT INTO Skill(name) VALUES (?)");
+        ps4.setString(1, skills);
+        ps4.executeUpdate();
+
+        //ps = con.prepareStatement("UPDATE TABLE Involves SET postingId = ?, name = ?");
+        PreparedStatement ps5 = con.prepareStatement("INSERT INTO Involves(postingId, name, yearsExperience) VALUES (?, ?)");
+        ps5.setInt(1, postingId);
+        ps5.setString(2, skills);
+        ps5.executeUpdate();
 
         con.commit();
         ps.close();
+        ps2.close();
+        ps3.close();
+        ps4.close();
+        ps5.close();
 
-        return ps;
     }
 
 }
