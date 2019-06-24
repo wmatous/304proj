@@ -318,33 +318,30 @@ public class branchtwo implements ActionListener {
      * retrieves recommended postings for account
      */
     private String getRecommendedPostings(int accountId) throws SQLException {
-    	PreparedStatement ps = con.prepareStatement("SELECT DISTINCT Posting.postingId, Posting.description " +
+    	PreparedStatement ps = con.prepareStatement("SELECT DISTINCT Posting.postingId, Posting.description " + 
     		"FROM ((((Account " +
     		"INNER JOIN ExperiencedAt ON ExperiencedAt.accountId = Account.accountId) " +
     		"INNER JOIN Skill ON Skill.name = ExperiencedAt.name) " +
-    		"INNER JOIN Involves ON Involves.name = Skill.name ) " +
-            "INNER JOIN Posting ON Posting.postingId = Involves.postingId) " +
-            "WHERE Account.accountId = ?");
+			"INNER JOIN Involves ON Involves.name = Skill.name )"+
+			"INNER JOIN Posting ON Involces.postingId = Posting.postingId) WHERE Account.accountId = ?");
     	ps.setInt(1, accountId);
     	return getRecordsAsJSON(ps);
 
-    }
-
-    private String getRequiresAll(int accountId) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("(SELECT Posting.postingId, Posting.description " +
-                "FROM Posting " +
-                "WHERE Posting.postingId NOT IN (SELECT postingId FROM" +
-                "((SELECT Skill.name, Posting.postingId FROM Skill, Posting, Account, ExperiencedAt " +
-                "WHERE Account.accountId = ? AND ExperiencedAt.accountId = Account.accountId AND ExperiencedAt.name = Skill.name) " +
-                "MINUS " +
-                "(SELECT Skill.name, Posting.postingId FROM Skill, Posting, Involves, ExperiencedAt, Account " +
-                "WHERE Posting.postingId = Involves.postingId AND Involves.name = Skill.name AND Skill.name = ExperiencedAt.name AND ExperiencedAt.accountId = Account.accountId AND Account.accountId = ?))))");
-        ps.setInt(1, accountId);
-        ps.setInt(2, accountId);
-        return getRecordsAsJSON(ps);
-    }
-
-
+	}
+	
+	private String getRequiresAll(int accountId) throws SQLException {
+		        PreparedStatement ps = con.prepareStatement("(SELECT Posting.postingId, Posting.description " +
+		                "FROM Posting " +
+		                "WHERE Posting.postingId NOT IN (SELECT postingId FROM" +
+		                "((SELECT Skill.name, Posting.postingId FROM Skill, Posting, Account, ExperiencedAt " +
+		                "WHERE Account.accountId = ? AND ExperiencedAt.accountId = Account.accountId AND ExperiencedAt.name = Skill.name) " +
+		                "MINUS " +
+		                "(SELECT Skill.name, Posting.postingId FROM Skill, Posting, Involves, ExperiencedAt, Account " +
+		                "WHERE Posting.postingId = Involves.postingId AND Involves.name = Skill.name AND Skill.name = ExperiencedAt.name AND ExperiencedAt.accountId = Account.accountId AND Account.accountId = ?))))");
+		        ps.setInt(1, accountId);
+		        ps.setInt(2, accountId);
+		        return getRecordsAsJSON(ps);
+		    }
 
     /*
      * retrieves endorsement count for account
@@ -1149,13 +1146,12 @@ public class branchtwo implements ActionListener {
     		ps.setInt(1, 51);
     		ps.setString(2, "database");
     		ps.setInt(3, 3);
-    		ps.addBatch();
-
-            ps.setInt(1, 45);
+			ps.addBatch();
+			
+			ps.setInt(1, 45);
             ps.setString(2, "database");
             ps.setInt(3, 3);
-            ps.addBatch();
-
+           ps.addBatch();
             //
     		ps.setInt(1, 83);
     		ps.setString(2, "forklift");
@@ -1409,18 +1405,21 @@ public class branchtwo implements ActionListener {
 						break;
 						case "reviews":
                         response = getReviews(queryParams, urlPath, method); // urlPath[1] will likely be null
+						break;
+						case "mostCommonReview":	
+                        response = getMostCommonReview(queryParams, urlPath, method);	
                         break;
                         case "recommended":
                         response = handleRecommended(queryParams, urlPath, method); // urlPath[1] will likely be null
-                        break;
-                        case "requiresAll":
-                        response = handleRequiresAll(queryParams, urlPath, method); // urlPath[1] will likely be null
                         break;
                         case "endorsement":
                         response = handleEndorsement(queryParams, urlPath, method); // urlPath[1] will likely be null
                         break;
                         case "skill":
                         response = handleSkill(queryParams, urlPath, method); // urlPath[1] will likely be null
+						break;
+						case "requiresAll":
+                        response = handleRequiresAll(queryParams, urlPath, method); // urlPath[1] will likely be null
                         break;
                         case "posting":
                         response = getRecordsAsJSON(posting.handlePosting(queryParams, urlPath, method));
@@ -1459,6 +1458,21 @@ public class branchtwo implements ActionListener {
             }
             return "[]";
 		}
+
+		private String getMostCommonReview(Map<String, String> queryParams, String[] path, String method) throws SQLException {	
+			PreparedStatement ps = con.prepareStatement("SELECT stars, count(*) as count " +	
+					"FROM review, offer WHERE offer.accountId =?  AND review.offerId = offer.offerId "+	
+					"group by stars " +	
+					"HAVING count(*) >= ALL(SELECT count(*) FROM review, offer WHERE offer.accountId= ? AND review.offerId = offer.offerId GROUP BY stars)");	
+			ps.setInt(1, Integer.parseInt(queryParams.get("accountId")));	
+			ps.setInt(2, Integer.parseInt(queryParams.get("accountId")));	
+			return getRecordsAsJSON(ps);	
+		}
+		
+		private void handleDeleteApplication(Map<String, String> queryParams, String[] path, String method) throws SQLException {	
+			deleteApplication(Integer.parseInt(queryParams.get("applicationId")));	
+			}	
+	
 		
 	
 
@@ -1493,12 +1507,14 @@ public class branchtwo implements ActionListener {
         }
 
         private String handleRecommended(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+        	if (method.equals("GET")) {
         		return getRecommendedPostings(Integer.parseInt(queryParams.get("accountId")));
-        }
-
-        private String handleRequiresAll(Map<String, String> queryParams, String[] path, String method) throws SQLException {
-            return getRequiresAll(Integer.parseInt(queryParams.get("accountId")));
-        }
+        	}
+        	return "[]";
+		}
+		private String handleRequiresAll(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+			            return getRequiresAll(Integer.parseInt(queryParams.get("accountId")));
+			               }
 
         private String handleAccount(Map<String, String> queryParams, String[] path, String method) throws SQLException {
         	if (method.equals("GET")) {
