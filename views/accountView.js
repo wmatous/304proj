@@ -89,21 +89,23 @@ getEndorsements = function (accountId) {
         })
         .catch(err => console.error(err));
 };
-populateRecommended = function (data) {
-    let innerHTML = `<h2>Recommended Job Postings</h2>`;
-    for (let i = 0; i < data.length; i++) {
-        innerHTML += `<p>Job Posting ID: ${data[i].POSTINGID} Description: ${data[i].DESCRIPTION}</span>`;
-    }
-    document.getElementById('recommended').innerHTML = innerHTML;
-};
 
-populateRequiresAll = function(data){
-    let innerHTML = `<h3>Job postings that require all your skills</h3>`;
-    for (let i = 0; i < data.length; i++) {
-        innerHTML += `<p>Job Posting ID: ${data[i].POSTINGID} Description: ${data[i].DESCRIPTION}</span>`;
+
+populateRecommended = function (data) {
+        let innerHTML = `<h2>Recommended Job Postings</h2>`;
+        for (let i = 0; i < data.length; i++) {
+            innerHTML += `<p>Job Posting ID: ${data[i].POSTINGID} Description: ${data[i].DESCRIPTION}</span>`;
+        }
+        document.getElementById('recommended').innerHTML = innerHTML;
+    };
+     
+    populateRequiresAll = function(data){
+        let innerHTML = `<h3>Job postings that require all your skills</h3>`;
+        for (let i = 0; i < data.length; i++) {
+            innerHTML += `<p>Job Posting ID: ${data[i].POSTINGID} Description: ${data[i].DESCRIPTION}</span>`;
+        }
+        document.getElementById('requiresAll').innerHTML = innerHTML;
     }
-    document.getElementById('requiresAll').innerHTML = innerHTML;
-}
 
 getRecommended = function (loggedInAccount) {
     let urlPath = 'http://localhost:6789/recommended/?accountId=' + loggedInAccount;
@@ -117,16 +119,15 @@ getRecommended = function (loggedInAccount) {
 };
 
 getRequiresAll = function (loggedInAccount) {
-    let urlPath = 'http://localhost:6789/requiresAll/?accountId=' + loggedInAccount;
-    fetch(urlPath)
-        .then((res) => res.json())
-        .then(data => {
-            console.log(data);
-            populateRequiresAll(data);
-        })
-        .catch(err => console.error(err));
-};
-
+        let urlPath = 'http://localhost:6789/requiresAll/?accountId=' + loggedInAccount;
+        fetch(urlPath)
+            .then((res) => res.json())
+            .then(data => {
+                console.log(data);
+                populateRequiresAll(data);
+            })
+            .catch(err => console.error(err));
+    };
 populateReviews = function(data){
     let innerHTML = `<h1>Reviews</h1>`;
     for (let i = 0; i < data.length; i++) {
@@ -174,15 +175,14 @@ window.onload = function () {
     var accountId = url.searchParams.get("accountId");
     getAccount(accountId);
     getSkills(accountId);
+    getEndorsements(accountId);
     getRecommended(accountId);
     getRequiresAll(accountId);
-    getEndorsements(accountId);
     getReviews(accountId);
     getMostCommonReview(accountId);
     var loggedInAccount = getCookie('accountId');
     if (loggedInAccount == accountId) {
         document.getElementById("saveButton").hidden = false;
-        getRecommended(loggedInAccount);
     }
 
 };
