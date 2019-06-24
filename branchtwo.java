@@ -1407,6 +1407,9 @@ public class branchtwo implements ActionListener {
                         case "allPostings":
                         response = getRecordsAsJSON(posting.handleAllPostings(queryParams, urlPath, method));
                         break;
+                        case "postingsWithoutLocation":
+                        response = getRecordsAsJSON(posting.handlePostingsWithoutLocation(queryParams, urlPath, method));
+                        break;
                         case "allInterviews":
                         response = getRecordsAsJSON(intAndOff.handleAllInterviews(queryParams, urlPath, method));
                         break;

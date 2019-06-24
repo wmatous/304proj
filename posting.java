@@ -32,6 +32,14 @@ class posting {
         return null;
     }
 
+    PreparedStatement handlePostingsWithoutLocation(Map<String, String> queryParams, String[] path, String method) throws SQLException {
+        System.out.println("handle postings without location");
+        if (method.equals("GET")) {
+            return getPostingsWithoutLocation();
+        }
+        return null;
+    }
+
     // PreparedStatement handlePostingSkill(Map<String, String> queryParams, String[] path, String method) throws SQLException {
     //     System.out.println("handle posting skill");
     //     if (method.equals("GET")) {
@@ -154,6 +162,19 @@ class posting {
                 "WHERE P.postalCode = PC.postalCode AND I.postingId = P.postingId");
         return ps;
     }
+
+
+    /*
+     * returns all postings in database
+     */
+    private PreparedStatement getPostingsWithoutLocation() throws SQLException {
+        System.out.println("get all postings");
+        PreparedStatement ps = con.prepareStatement("SELECT P.postingId, P.title, P.active, P.startDate, P.description, P.accountId, I.name FROM Posting P, Involves I " +
+                "WHERE I.postingId = P.postingId");
+        return ps;
+    }
+
+
 
     /*
      * returns a posting by title
