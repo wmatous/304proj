@@ -1,8 +1,13 @@
 // displaying a grid of postings (either all postings or a subset that have been searched for)
 
-getAllPostings = function () {
+getAllPostings = function (title, cityName, state) {
     // or do i need to combine with search here
     let urlPath = 'http://localhost:6789/allPostings/';
+
+    if (title) {
+        urlPath += ('/?title=' + title + '&cityName=' + cityName + '&state=' + state);
+    }
+    console.log(urlPath);
     fetch(urlPath)
         .then((res) => res.json())
         .then(data => {
@@ -88,5 +93,9 @@ function populatePostingTable(postingData, hideLocation) {
 
 window.onload = function () {
     var url = new URL(window.location.href);
-    getAllPostings();
+    var title = url.searchParams.get("title");
+    var cityName = url.searchParams.get("cityName");
+    var state = url.searchParams.get("state");
+    console.log(title + cityName + state);
+    getAllPostings(title, cityName, state);
 };
